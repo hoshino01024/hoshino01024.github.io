@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <pre id="content">初始文本内容</pre>
+  <script>
+    // 自动加载外部文本
+    fetch('https://raw.githubusercontent.com/hoshino01024/hoshino01024.github.io/main/content.txt')
+      .then(r => r.text())
+      .then(t => document.getElementById('content').innerText = t)
+  </script>
+</body>
+</html>
