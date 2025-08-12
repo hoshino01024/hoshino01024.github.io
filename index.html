@@ -1,12 +1,25 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <pre id="content">这是初始加载文本，如果你看见，说明文本加载失败了</pre>
+  <!-- 添加加载状态提示 -->
+  <pre id="content">正在加载最新内容...</pre>
+  
   <script>
-    // 自动加载外部文本
-    fetch('https://raw.githubusercontent.com/hoshino01024/hoshino01024.github.io/main/content.txt')
-      .then(r => r.text())
-      .then(t => document.getElementById('content').innerText = t)
+    // 确保替换以下两个参数：
+    const 你的用户名 = "hoshino01024";
+    const 你的仓库名 = "hoshino01024.github.io";
+    
+    fetch(`https://raw.githubusercontent.com/${你的用户名}/${你的仓库名}/main/content.txt`)
+      .then(r => {
+        if (!r.ok) throw new Error('网络响应不正常');
+        return r.text();
+      })
+      .then(t => {
+        document.getElementById('content').innerText = t;
+      })
+      .catch(e => {
+        document.getElementById('content').innerText = `加载失败：${e.message}`;
+      });
   </script>
 </body>
 </html>
