@@ -13,7 +13,7 @@
             --card-bg: #ffffff;
             --error-color: #e63946;
         }
-        
+
         body {
             font-family: 'Segoe UI', 'PingFang SC', sans-serif;
             line-height: 1.6;
@@ -24,7 +24,7 @@
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .container {
             background: var(--card-bg);
             border-radius: 12px;
@@ -32,7 +32,7 @@
             padding: 25px;
             margin-top: 20px;
         }
-        
+
         h1 {
             color: var(--primary-color);
             text-align: center;
@@ -41,7 +41,7 @@
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
         }
-        
+
         .content-section {
             margin-bottom: 20px;
             padding: 15px;
@@ -49,18 +49,18 @@
             border-radius: 8px;
             border-left: 4px solid var(--primary-color);
         }
-        
+
         .content-section h2 {
             color: var(--secondary-color);
             margin-top: 0;
             font-size: 1.3rem;
         }
-        
+
         .loading {
             text-align: center;
             padding: 30px;
         }
-        
+
         .spinner {
             width: 40px;
             height: 40px;
@@ -70,18 +70,18 @@
             border-top-color: var(--primary-color);
             animation: spin 1s ease-in-out infinite;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
+
         .action-buttons {
             display: flex;
             gap: 10px;
             margin-top: 20px;
             flex-wrap: wrap;
         }
-        
+
         .btn {
             padding: 10px 15px;
             border-radius: 6px;
@@ -92,22 +92,22 @@
             align-items: center;
             justify-content: center;
         }
-        
+
         .btn-primary {
             background: var(--primary-color);
             color: white;
         }
-        
+
         .btn-secondary {
             background: #e9ecef;
             color: var(--text-color);
         }
-        
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        
+
         .error-message {
             color: var(--error-color);
             background: #fee;
@@ -115,14 +115,14 @@
             border-radius: 8px;
             text-align: center;
         }
-        
+
         .update-time {
             text-align: right;
             color: #666;
             font-size: 0.9rem;
             margin-top: 20px;
         }
-        
+
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -131,19 +131,51 @@
                 padding: 15px;
             }
         }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #4361ee;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+        
+        .refresh-btn:hover {
+            transform: rotate(180deg) scale(1.1);
+            background: #3a0ca3;
+        }
+        
+        @media (max-width: 600px) {
+            .refresh-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📚 九年级学习资料通知</h1>
-        
+
         <div id="content">
             <div class="loading">
                 <div class="spinner"></div>
                 <p>正在加载最新内容...</p>
             </div>
         </div>
-        
+
         <div class="action-buttons">
             <a href="mailto:2709923043@qq.com" class="btn btn-primary">
                 ✉️ 联系开发者
@@ -152,7 +184,7 @@
                 📲 下载安卓软件
             </a>
         </div>
-        
+
         <div class="update-time" id="updateTime"></div>
     </div>
 
@@ -163,29 +195,29 @@
             repository: "hoshino01024.github.io",
             filePath: "content.txt"
         };
-        
+
         // 解析文本内容为结构化数据
         function parseContent(text) {
             const sections = text.split('\n\n').filter(section => section.trim() !== '');
             let structuredData = {};
-            
+
             sections.forEach(section => {
                 const lines = section.split('\n');
                 const title = lines[0].replace(':', '').trim();
                 const content = lines.slice(1).join('<br>').trim();
-                
+
                 if (title && content) {
                     structuredData[title] = content;
                 }
             });
-            
+
             return structuredData;
         }
-        
+
         // 渲染内容到页面
         function renderContent(data) {
             let html = '';
-            
+
             // 添加日期信息
             if (data['2025年8月15日']) {
                 html += `
@@ -196,7 +228,7 @@
                 `;
                 delete data['2025年8月15日'];
             }
-            
+
             // 添加注意事项
             if (data['注意事项']) {
                 html += `
@@ -207,23 +239,23 @@
                 `;
                 delete data['注意事项'];
             }
-            
+
             // 添加其他内容
             for (const [title, content] of Object.entries(data)) {
                 let sectionContent = content;
-                
+
                 // 自动识别链接
                 sectionContent = sectionContent.replace(
                     /(https?:\/\/[^\s]+)/g, 
                     '<a href="$1" target="_blank">$1</a>'
                 );
-                
+
                 // 自动识别邮箱
                 sectionContent = sectionContent.replace(
                     /(\S+@\S+\.\S+)/g,
                     '<a href="mailto:$1">$1</a>'
                 );
-                
+
                 html += `
                     <div class="content-section">
                         <h2>${title.includes('分享') ? '🔗' : 'ℹ️'} ${title}</h2>
@@ -231,15 +263,15 @@
                     </div>
                 `;
             }
-            
+
             document.getElementById('content').innerHTML = html;
             document.getElementById('updateTime').textContent = `最后更新: ${new Date().toLocaleString()}`;
         }
-        
+
         // 加载内容
         function loadContent() {
             const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
-            
+
             fetch(url + '?t=' + new Date().getTime())
                 .then(response => {
                     if (!response.ok) throw new Error('网络响应不正常');
@@ -260,9 +292,12 @@
                     `;
                 });
         }
-        
+
         // 页面加载完成后执行
         document.addEventListener('DOMContentLoaded', loadContent);
     </script>
+    <div class="refresh-btn" onclick="window.location.reload()" title="刷新内容">
+        🔄
+    </div>
 </body>
 </html>
