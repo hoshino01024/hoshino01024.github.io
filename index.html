@@ -204,122 +204,140 @@
         <div class="update-time" id="updateTime"></div>
     </div>
 
-    <script>
-        // 配置信息
-        const config = {
-            username: "hoshino01024",
-            repository: "hoshino01024.github.io",
-            filePath: "content.txt"
-        };
+<script>
+    // 配置信息
+    const config = {
+        username: "hoshino01024",
+        repository: "hoshino01024.github.io",
+        filePath: "content.txt"
+    };
 
-        // 解析文本内容为结构化数据
-        function parseContent(text) {
-            const sections = text.split('\n\n').filter(section => section.trim() !== '');
-            let structuredData = {};
+    // 解析文本内容为结构化数据
+    function parseContent(text) {
+        const sections = text.split('\n\n').filter(section => section.trim() !== '');
+        let structuredData = {};
 
-            sections.forEach(section => {
-                const lines = section.split('\n');
-                const title = lines[0].replace(':', '').trim();
-                const content = lines.slice(1).join('<br>').trim();
+        sections.forEach(section => {
+            const lines = section.split('\n');
+            const title = lines[0].replace(':', '').trim();
+            const content = lines.slice(1).join('<br>').trim();
 
-                if (title && content) {
-                    structuredData[title] = content;
-                }
-            });
+            if (title && content) {
+                structuredData[title] = content;
+            }
+        });
 
-            return structuredData;
+        return structuredData;
+    }
+
+    // 渲染内容到页面
+    function renderContent(data) {
+        let html = '';
+
+        // 添加日期信息
+        if (data['2025年8月15日']) {
+            html += `
+                <div class="content-section">
+                    <h2>📅 ${Object.keys(data)[0]}</h2>
+                    <p>${data['2025年8月15日'].replace('9年级开始托管（上学）', '<strong>9年级开始托管（上学）</strong>')}</p>
+                </div>
+            `;
+            delete data['2025年8月15日'];
         }
 
-        // 渲染内容到页面
-        function renderContent(data) {
-            let html = '';
-
-            // 添加日期信息
-            if (data['2025年8月15日']) {
-                html += `
-                    <div class="content-section">
-                        <h2>📅 ${Object.keys(data)[0]}</h2>
-                        <p>${data['2025年8月15日'].replace('9年级开始托管（上学）', '<strong>9年级开始托管（上学）</strong>')}</p>
-                    </div>
-                `;
-                delete data['2025年8月15日'];
-            }
-
-            // 添加注意事项
-            if (data['注意事项']) {
-                html += `
-                    <div class="content-section">
-                        <h2>📌 注意事项</h2>
-                        <p>${data['注意事项'].replace(/购买或借用/g, '📖 购买或借用')}</p>
-                    </div>
-                `;
-                delete data['注意事项'];
-            }
-
-            // 添加其他内容
-            for (const [title, content] of Object.entries(data)) {
-                let sectionContent = content;
-
-                // 自动识别链接
-                sectionContent = sectionContent.replace(
-                    /(https?:\/\/[^\s]+)/g, 
-                    '<a href="$1" target="_blank">$1</a>'
-                );
-
-                // 自动识别邮箱
-                sectionContent = sectionContent.replace(
-                    /(\S+@\S+\.\S+)/g,
-                    '<a href="mailto:$1">$1</a>'
-                );
-
-                html += `
-                    <div class="content-section">
-                        <h2>${title.includes('分享') ? '🔗' : 'ℹ️'} ${title}</h2>
-                        <p>${sectionContent}</p>
-                    </div>
-                `;
-            }
-
-            document.getElementById('content').innerHTML = html;
-            document.getElementById('updateTime').textContent = `最后更新: ${new Date().toLocaleString()}`;
+        // 添加注意事项
+        if (data['注意事项']) {
+            html += `
+                <div class="content-section">
+                    <h2>📌 注意事项</h2>
+                    <p>${data['注意事项'].replace(/购买或借用/g, '📖 购买或借用')}</p>
+                </div>
+            `;
+            delete data['注意事项'];
         }
 
-        // 加载内容
-        function updateCountdown() {
-        const startDate = new Date(2025, 7, 15); // 2025年8月15日（月份0-11）
+        // 添加其他内容
+        for (const [title, content] of Object.entries(data)) {
+            let sectionContent = content;
+
+            // 自动识别链接
+            sectionContent = sectionContent.replace(
+                /(https?:\/\/[^\s]+)/g, 
+                '<a href="$1" target="_blank">$1</a>'
+            );
+
+            // 自动识别邮箱
+            sectionContent = sectionContent.replace(
+                /(\S+@\S+\.\S+)/g,
+                '<a href="mailto:$1">$1</a>'
+            );
+
+            html += `
+                <div class="content-section">
+                    <h2>${title.includes('分享') ? '🔗' : 'ℹ️'} ${title}</h2>
+                    <p>${sectionContent}</p>
+                </div>
+            `;
+        }
+
+        document.getElementById('content').innerHTML = html;
+        document.getElementById('updateTime').textContent = `最后更新: ${new Date().toLocaleString()}`;
+    }
+
+    // 倒计时功能
+    function updateCountdown() {
+        const startDate = new Date(2025, 7, 15);
         const now = new Date();
-  
+        
         if (now >= startDate) {
             document.getElementById('days').textContent = '已开学';
-        return;
-  }
-        function loadContent() {
-            const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
-
-            fetch(url + '?t=' + new Date().getTime())
-                .then(response => {
-                    if (!response.ok) throw new Error('网络响应不正常');
-                    return response.text();
-                })
-                .then(text => {
-                    const structuredData = parseContent(text);
-                    renderContent(structuredData);
-                })
-                .catch(error => {
-                    document.getElementById('content').innerHTML = `
-                        <div class="error-message">
-                            <h2>⚠️ 加载失败</h2>
-                            <p>${error.message}</p>
-                            <p>请检查网络连接后刷新页面</p>
-                            <button onclick="window.location.reload()">🔄 重新加载</button>
-                        </div>
-                    `;
-                });
+            document.getElementById('hours').textContent = '';
+            return;
         }
 
-        // 页面加载完成后执行
-        document.addEventListener('DOMContentLoaded', loadContent);
-    </script>
+        const diff = startDate - now;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
+    }
+
+    // 加载内容
+    function loadContent() {
+        const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
+
+        fetch(url + '?t=' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) throw new Error('网络响应不正常');
+                return response.text();
+            })
+            .then(text => {
+                const structuredData = parseContent(text);
+                renderContent(structuredData);
+            })
+            .catch(error => {
+                document.getElementById('content').innerHTML = `
+                    <div class="error-message">
+                        <h2>⚠️ 加载失败</h2>
+                        <p>${error.message}</p>
+                        <p>请检查网络连接后刷新页面</p>
+                        <button onclick="window.location.reload()">🔄 重新加载</button>
+                    </div>
+                `;
+            });
+    }
+
+    // 页面初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        // 立即显示倒计时
+        updateCountdown();
+        // 每秒更新倒计时
+        setInterval(updateCountdown, 1000);
+        // 加载内容
+        loadContent();
+    });
+</script>
     <div class="refresh-btn" onclick="window.location.reload()" title="刷新内容">
         🔄
     </div>
