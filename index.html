@@ -14,18 +14,18 @@
             --error-color: #e63946;
         }
 
-body {
-    font-family: 'Segoe UI', 'PingFang SC', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
-    background: 
-        linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)),
-        url('https://img.kanxizai.cn/v2/SjpbBHM.png') no-repeat center center/cover fixed;
-    margin: 0;
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    min-height: 100vh;
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background: 
+                linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)),
+                url('https://img.kanxizai.cn/v2/SjpbBHM.png') no-repeat center center/cover fixed;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            min-height: 100vh;
 }
 
         .container {
@@ -125,7 +125,18 @@ body {
             font-size: 0.9rem;
             margin-top: 20px;
         }
-
+        
+        .countdown {
+        text-align: center;
+        margin: -15px 0 20px;
+        color: var(--secondary-color);
+        font-weight: bold;
+        background: rgba(67, 97, 238, 0.1);
+        padding: 8px;
+        border-radius: 20px;
+        display: inline-block;
+        width: calc(100% - 60px);
+        }
         @media (max-width: 600px) {
             body {
                 padding: 10px;
@@ -170,8 +181,10 @@ body {
 </head>
 <body>
     <div class="container">
-        <h1>📚卧中 九年级通知</h1>
-
+        <h1>📚 九年级学习资料通知</h1>
+        <div class="countdown">
+        距离九年级开学还有：<span id="days">--</span>天 <span id="hours">--</span>小时
+        </div>
         <div id="content">
             <div class="loading">
                 <div class="spinner"></div>
@@ -272,6 +285,14 @@ body {
         }
 
         // 加载内容
+        function updateCountdown() {
+        const startDate = new Date(2025, 7, 15); // 2025年8月15日（月份0-11）
+        const now = new Date();
+  
+        if (now >= startDate) {
+            document.getElementById('days').textContent = '已开学';
+        return;
+  }
         function loadContent() {
             const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
 
