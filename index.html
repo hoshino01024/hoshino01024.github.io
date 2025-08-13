@@ -231,8 +231,8 @@ body.dark-mode {
             }
         }
     </style>
-    <!-- 添加这行在<head>结束前 -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<!-- 替换原来的supabase加载脚本 -->
+<script src="https://unpkg.com/@supabase/supabase-js@2.55.0/dist/umd/supabase.js"></script>
 </head>
 <body>
     <div class="theme-btn" onclick="toggleTheme()">🌙</div>
@@ -417,50 +417,58 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
-// ▼▼▼ 访问统计代码 ▼▼▼
-// ▼▼▼ Supabase访问统计代码 ▼▼▼
+// ▼▼▼ 调试版Supabase统计代码 ▼▼▼
 const SUPABASE_CONFIG = {
-  url: 'https://gkvybyqhdgtwpndflkmh.supabase.co',  // 替换为你的URL
-  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrdnlieXFoZGd0d3BuZGZsa21oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwNTQ0NzksImV4cCI6MjA3MDYzMDQ3OX0.ehphhGsIU4DSLAO9_v3urqrVBno5zaaHaRJfwgcDUPo',                      // 替换为你的密钥
+  url: 'https://gkvybyqhdgtwpndflkmh.supabase.co',
+  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrdnlieXFoZGd0d3BuZGZsa21oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwNTQ0NzksImV4cCI6MjA3MDYzMDQ3OX0.ehphhGsIU4DSLAO9_v3urqrVBno5zaaHaRJfwgcDUPo', // 必须替换！
   table: 'site_visits'
 };
 
-// 初始化Supabase连接
+// 调试初始化
+console.log("初始化Supabase...");
 const supabase = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+console.log("Supabase实例:", supabase);
 
 async function updateCounter() {
   const counterEl = document.getElementById("count");
+  console.log("开始更新计数器...");
   
-  // 先显示缓存数据（如果有）
-  counterEl.textContent = localStorage.getItem('visitCount') || "加载中...";
-
   try {
-    // 1. 获取当前访问量
+    // 1. 先尝试读取
+    console.log("正在查询数据库...");
     const { data, error } = await supabase
       .from(SUPABASE_CONFIG.table)
       .select('visit_count')
       .limit(1)
       .single();
 
-    if (error) throw error;
-
-    // 2. 计算新访问量
-    const newCount = (data.visit_count || 0) + 1;
+    console.log("查询结果:", { data, error });
     
-    // 3. 更新页面显示
+    if (error) throw error;
+    
+    // 2. 计算新值
+    const newCount = (data?.visit_count || 0) + 1;
+    console.log("新计数值:", newCount);
+    
+    // 3. 更新显示
     counterEl.textContent = newCount;
     localStorage.setItem('visitCount', newCount);
     
-    // 4. 更新数据库（后台静默更新）
-    supabase
+    // 4. 异步更新数据库
+    console.log("正在更新数据库...");
+    const { error: updateError } = await supabase
       .from(SUPABASE_CONFIG.table)
       .update({ visit_count: newCount })
-      .then(({ error }) => {
-        if (error) console.error("后台更新失败:", error);
-      });
-
+      .eq('id', 1); // 确保更新的是第一条记录
+    
+    if (updateError) {
+      console.error("更新错误:", updateError);
+      counterEl.textContent = "❤️";
+    }
+    
   } catch (error) {
     console.error("统计出错:", error);
+    // 显示最后一次缓存值
     counterEl.textContent = localStorage.getItem('visitCount') || "❤️";
   }
 }
