@@ -12,6 +12,9 @@
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
             --error-color: #e63946;
+            --dark-bg-color: #121212;
+            --dark-card-bg: #1e1e1e;
+            --dark-text-color: #e0e0e0;
         }
 
         body {
@@ -19,15 +22,26 @@
             line-height: 1.6;
             color: var(--text-color);
             background: 
-                linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)),
-                url('https://img.kanxizai.cn/v2/SjpbBHM.png') no-repeat center center/cover fixed;
+            linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)),
+            url('https://img.kanxizai.cn/v2/SjpbBHM.png') no-repeat center center/cover fixed;
             margin: 0;
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
             min-height: 100vh;
+            transition: background-color 0.5s ease, color 0.3s ease;
+}
+        .container, 
+.content-section,
+.btn,
+.countdown,
+.update-time {
+    transition: all 0.3s ease;
 }
 
+.dark-mode .container {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
         .container {
             background: var(--card-bg);
             border-radius: 12px;
@@ -137,14 +151,41 @@
         display: inline-block;
         width: calc(100% - 60px);
         }
-        @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            .container {
-                padding: 15px;
-            }
+        
+body.dark-mode {
+    --bg-color: var(--dark-bg-color);
+    --text-color: var(--dark-text-color);
+    --card-bg: var(--dark-card-bg);
+    background: var(--dark-bg-color) !important;  /* 强制覆盖背景图 */
+    background-image: none !important;  /* 移除渐变和背景图 */
+    transition: background-color 0.5s ease !important; /* 强制过渡 */
+}
+        
+        .dark-mode .btn-secondary {
+    background: #374151;
+    color: #f3f4f6;
+    transition: background-color 0.3s ease;
+}
+        .dark-mode .content-section {
+            background: #2d3748;
+           border-left-color: #4f46e5;
         }
+        
+        .dark-mode .countdown {
+            background: rgba(79, 70, 229, 0.2);
+        }
+@media (max-width: 600px) {
+    .refresh-btn {
+        bottom: 140px;  /* 从180px调整 */
+    }
+    .theme-btn {
+        bottom: 200px;  /* 从220px调整 */
+        transition: all 0.3s ease, transform 0.2s ease;
+    }
+    .theme-btn:hover {
+    transform: scale(1.1) rotate(30deg); /* 添加旋转效果 */
+}
+}
         
         .refresh-btn {
             position: fixed;
@@ -170,16 +211,41 @@
             background: #3a0ca3;
         }
         
+        .theme-btn {
+            position: fixed;
+            bottom: 240px;  /* 在刷新按钮上方 */
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: #4361ee;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
         @media (max-width: 600px) {
-            .refresh-btn {
+            .theme-btn {
                 width: 40px;
                 height: 40px;
+                bottom: 220px;
                 font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="theme-btn" onclick="toggleTheme()">🌙</div>
     <div class="container">
         <h1>📚 九年级学习资料通知</h1>
         <div class="countdown">
@@ -304,6 +370,51 @@
     }
 
     // 加载内容
+    // 夜间模式切换功能
+function toggleTheme() {
+    // 添加过渡类
+    document.body.classList.add('theme-change-transition');
+    
+    document.body.classList.toggle('dark-mode');
+    const themeBtn = document.querySelector('.theme-btn');
+    themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    
+    // 过渡结束后移除类
+    setTimeout(() => {
+        document.body.classList.remove('theme-change-transition');
+    }, 500);
+}
+
+// 移到DOMContentLoaded外部
+if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+}
+
+// 页面初始化
+document.addEventListener('DOMContentLoaded', () => {
+    // 初始化主题
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.theme-btn').textContent = '☀️';
+    }
+
+    // 主题切换函数
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        document.querySelector('.theme-btn').textContent = isDarkMode ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDarkMode);
+    }
+
+    // 绑定事件
+    document.querySelector('.theme-btn').addEventListener('click', toggleTheme);
+
+    // 其他初始化代码...
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    loadContent();
+});
     function loadContent() {
         const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
 
@@ -328,15 +439,7 @@
             });
     }
 
-    // 页面初始化
-    document.addEventListener('DOMContentLoaded', () => {
-        // 立即显示倒计时
-        updateCountdown();
-        // 每秒更新倒计时
-        setInterval(updateCountdown, 1000);
-        // 加载内容
-        loadContent();
-    });
+
 </script>
     <div class="refresh-btn" onclick="window.location.reload()" title="刷新内容">
         🔄
