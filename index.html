@@ -174,18 +174,6 @@ body.dark-mode {
         .dark-mode .countdown {
             background: rgba(79, 70, 229, 0.2);
         }
-@media (max-width: 600px) {
-    .refresh-btn {
-        bottom: 140px;  /* 从180px调整 */
-    }
-    .theme-btn {
-        bottom: 200px;  /* 从220px调整 */
-        transition: all 0.3s ease, transform 0.2s ease;
-    }
-    .theme-btn:hover {
-    transform: scale(1.1) rotate(30deg); /* 添加旋转效果 */
-}
-}
         
         .refresh-btn {
             position: fixed;
@@ -401,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCountdown();
     setInterval(updateCountdown, 1000);
     loadContent();
+    updateCounter();
 });
     function loadContent() {
         const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
@@ -426,10 +415,58 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+// ▼▼▼ 访问统计代码 ▼▼▼
+const JSONBIN_CONFIG = {
+  binId: "689bf9aeae596e708fc8b020",
+  apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
+};
 
+async function updateCounter() {
+  try {
+    // 1. 获取当前计数
+    const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+      headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
+    });
+    const { record } = await getRes.json();
+    
+    // 2. 计数+1并更新
+    const newCount = (record.count || 0) + 1;
+    await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+      method: "PUT",
+      headers: { 
+        "Content-Type": "application/json",
+        "X-Master-Key": JSONBIN_CONFIG.apiKey 
+      },
+      body: JSON.stringify({ count: newCount })
+    });
+
+    // 3. 显示最新计数
+    document.getElementById("count").textContent = newCount;
+  } catch (error) {
+    console.error("统计失败:", error);
+    document.getElementById("count").textContent = "❤️";
+  }
+}
+
+// ▲▲▲ 统计代码结束 ▲▲▲
 </script>
     <div class="refresh-btn" onclick="window.location.reload()" title="刷新内容">
         🔄
     </div>
+    <!-- 访问计数器 -->
+<div id="visit-counter" style="
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    background: #4361ee;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-family: sans-serif;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+">
+    👥 总访问量: <span id="count">加载中...</span>
+</div>
 </body>
 </html>
