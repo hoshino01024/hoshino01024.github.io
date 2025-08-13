@@ -252,6 +252,7 @@ body.dark-mode {
 </head>
 <body>
     <div class="theme-btn" onclick="toggleTheme()">🌙</div>
+    <div id="updateTime" class="update-time"></div>
     <div class="container">
         <h1>📚 九年级学习资料通知</h1>
         <div class="countdown">
@@ -339,8 +340,10 @@ function loadContent() {
 
     const cdnUrl = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
     const githubUrl = `https://raw.githubusercontent.com/${config.username}/${config.repository}/main/${config.filePath}`;
-    
-    // 显示加载状态
+
+    console.log("尝试从 CDN 加载:", cdnUrl); // 调试
+    console.log("备用 GitHub 地址:", githubUrl); // 调试
+
     contentEl.innerHTML = `
         <div class="loading">
             <div class="spinner"></div>
@@ -348,37 +351,45 @@ function loadContent() {
         </div>
     `;
 
-    // 尝试从CDN加载
     fetch(cdnUrl + '?t=' + new Date().getTime())
         .then(response => {
+            console.log("CDN 响应状态:", response.status); // 调试
             if (!response.ok) throw new Error(`CDN加载失败: ${response.status}`);
             return response.text();
         })
-        .catch(() => {
-            // 如果CDN失败，尝试直接从GitHub加载
-            return fetch(githubUrl + '?t=' + new Date().getTime())
-                .then(response => {
-                    if (!response.ok) throw new Error(`GitHub加载失败: ${response.status}`);
-                    return response.text();
-                });
-        })
         .then(text => {
+            console.log("成功获取内容:", text.slice(0, 50) + "..."); // 只打印前50字符
             if (!text.trim()) throw new Error("内容为空");
             const structuredData = parseContent(text);
             renderContent(structuredData);
         })
         .catch(error => {
-            console.error("加载失败:", error);
-            contentEl.innerHTML = `
-                <div class="error-message">
-                    <h2>⚠️ 加载失败</h2>
-                    <p>${error.message}</p>
-                    <p>尝试直接访问：</p>
-                    <p><a href="${cdnUrl}" target="_blank">CDN链接</a></p>
-                    <p><a href="${githubUrl}" target="_blank">GitHub链接</a></p>
-                    <button onclick="window.location.reload()">🔄 重新加载</button>
-                </div>
-            `;
+            console.error("CDN 加载失败，尝试 GitHub:", error); // 调试
+            return fetch(githubUrl + '?t=' + new Date().getTime())
+                .then(response => {
+                    console.log("GitHub 响应状态:", response.status); // 调试
+                    if (!response.ok) throw new Error(`GitHub加载失败: ${response.status}`);
+                    return response.text();
+                })
+                .then(text => {
+                    console.log("成功获取 GitHub 内容:", text.slice(0, 50) + "...");
+                    if (!text.trim()) throw new Error("内容为空");
+                    const structuredData = parseContent(text);
+                    renderContent(structuredData);
+                })
+                .catch(error => {
+                    console.error("GitHub 也加载失败:", error); // 调试
+                    contentEl.innerHTML = `
+                        <div class="error-message">
+                            <h2>⚠️ 加载失败</h2>
+                            <p>${error.message}</p>
+                            <p>尝试直接访问：</p>
+                            <p><a href="${cdnUrl}" target="_blank">CDN链接</a></p>
+                            <p><a href="${githubUrl}" target="_blank">GitHub链接</a></p>
+                            <button onclick="window.location.reload()">🔄 重新加载</button>
+                        </div>
+                    `;
+                });
         });
 }
 
