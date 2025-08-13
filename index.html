@@ -413,23 +413,30 @@ document.addEventListener('DOMContentLoaded', () => {
 async function updateCounter() {
   const counterEl = document.getElementById("count");
   try {
-    // 完全降级到本地计数
-    let localCount = parseInt(localStorage.getItem('visitCount') || 0);
+    // 更健壮的本地计数
+    let localCount = parseInt(localStorage.getItem('visitCount')) || 0;
     localCount++;
+    
+    // 立即显示本地计数（不等待网络）
     counterEl.textContent = localCount;
     localStorage.setItem('visitCount', localCount);
     
-    // 尝试静默更新Supabase（不影响主流程）
+    // 异步尝试更新远程（静默失败）
     if (window.supabase) {
-      window.supabase
+      const { error } = await window.supabase
         .from('site_visits')
-        .update({ visit_count: localCount })
-        .eq('id', 1)
-        .catch(e => console.error("后台更新失败（可忽略）:", e));
+        .upsert({ 
+          id: 1, 
+          visit_count: localCount,
+          last_updated: new Date().toISOString()
+        });
+      
+      if (error) console.warn("Supabase更新失败（不影响使用）:", error);
     }
   } catch (e) {
-    console.error("计数器降级错误:", e);
-    counterEl.textContent = "❤️";
+    console.error("计数器错误:", e);
+    // 更友好的降级显示
+    counterEl.textContent = "❤️ " + (localStorage.getItem('visitCount') || "N/A");
   }
 }
 </script>
