@@ -427,7 +427,7 @@ async function updateCounter() {
   
   // 时间级限制（可选）
   const lastCountTime = localStorage.getItem('lastCountTime');
-  if (lastCountTime && Date.now() - lastCountTime < 1 * 60 * 1000) { // 5分钟内不重复统计
+  if (lastCountTime && Date.now() - lastCountTime < 1 * 60 * 1000) { // 1分钟内不重复统计
     return;
   }
 
