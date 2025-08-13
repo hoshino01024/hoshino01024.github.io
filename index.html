@@ -341,23 +341,26 @@ body.dark-mode {
     }
 
     // 倒计时功能
-    function updateCountdown() {
-        const startDate = new Date(2025, 7, 15);
-        const now = new Date();
-        
-        if (now >= startDate) {
-            document.getElementById('days').textContent = '已开学';
-            document.getElementById('hours').textContent = '';
-            return;
-        }
-
-        const diff = startDate - now;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        
-        document.getElementById('days').textContent = days;
-        document.getElementById('hours').textContent = hours;
+function updateCountdown() {
+  try {
+    const startDate = new Date(2025, 7, 15); // 2025-08-15
+    const now = new Date();
+    const diff = startDate - now;
+    
+    if (diff <= 0) {
+      document.getElementById('days').textContent = '已开学';
+      return;
     }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    document.getElementById('days').textContent = days || '--';
+    document.getElementById('hours').textContent = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) || '--';
+  } catch (e) {
+    console.error("倒计时错误:", e);
+    document.getElementById('days').textContent = '--';
+    document.getElementById('hours').textContent = '--';
+  }
+}
 
     // 加载内容
     // 夜间模式切换功能
@@ -410,22 +413,22 @@ document.addEventListener('DOMContentLoaded', () => {
 async function updateCounter() {
   const counterEl = document.getElementById("count");
   try {
-    // 方法1：直接更新值（推荐）
-    const newCount = parseInt(localStorage.getItem('visitCount') || 0 + 1;
+    // 完全降级到本地计数
+    let localCount = parseInt(localStorage.getItem('visitCount') || 0);
+    localCount++;
+    counterEl.textContent = localCount;
+    localStorage.setItem('visitCount', localCount);
     
-    // 更新数据库
-    const { error } = await window.supabase
-      .from('site_visits')
-      .update({ visit_count: newCount })
-      .eq('id', 1);
-    
-    if (!error) {
-      counterEl.textContent = newCount;
-      localStorage.setItem('visitCount', newCount);
+    // 尝试静默更新Supabase（不影响主流程）
+    if (window.supabase) {
+      window.supabase
+        .from('site_visits')
+        .update({ visit_count: localCount })
+        .eq('id', 1)
+        .catch(e => console.error("后台更新失败（可忽略）:", e));
     }
-    
-  } catch (error) {
-    console.error("更新失败:", error);
+  } catch (e) {
+    console.error("计数器降级错误:", e);
     counterEl.textContent = "❤️";
   }
 }
