@@ -231,8 +231,6 @@ body.dark-mode {
             }
         }
     </style>
-<!-- 替换原来的supabase加载脚本 -->
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="theme-btn" onclick="toggleTheme()">🌙</div>
@@ -341,26 +339,23 @@ body.dark-mode {
     }
 
     // 倒计时功能
-function updateCountdown() {
-  try {
-    const startDate = new Date(2025, 7, 15); // 2025-08-15
-    const now = new Date();
-    const diff = startDate - now;
-    
-    if (diff <= 0) {
-      document.getElementById('days').textContent = '已开学';
-      return;
+    function updateCountdown() {
+        const startDate = new Date(2025, 7, 15);
+        const now = new Date();
+        
+        if (now >= startDate) {
+            document.getElementById('days').textContent = '已开学';
+            document.getElementById('hours').textContent = '';
+            return;
+        }
+
+        const diff = startDate - now;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        document.getElementById('days').textContent = days;
+        document.getElementById('hours').textContent = hours;
     }
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    document.getElementById('days').textContent = days || '--';
-    document.getElementById('hours').textContent = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) || '--';
-  } catch (e) {
-    console.error("倒计时错误:", e);
-    document.getElementById('days').textContent = '--';
-    document.getElementById('hours').textContent = '--';
-  }
-}
 
     // 加载内容
     // 夜间模式切换功能
@@ -373,17 +368,28 @@ if (localStorage.getItem('darkMode') === 'true') {
 
 // 页面初始化
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. 先初始化Supabase
-  console.log("初始化Supabase...");
-  window.supabase = supabase.createClient(
-    'https://gkvybyqhdgtwpndflkmh.supabase.co',
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdrdnlieXFoZGd0d3BuZGZsa21oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwNTQ0NzksImV4cCI6MjA3MDYzMDQ3OX0.ehphhGsIU4DSLAO9_v3urqrVBno5zaaHaRJfwgcDUPo' // 你的key
-  );
+    // 1. 初始化主题
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.theme-btn').textContent = '☀️';
+    }
 
-  // 2. 再执行其他初始化
-  updateCountdown();
-  loadContent();
-  updateCounter(); // 现在可以安全调用
+    // 2. 主题切换函数
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        document.querySelector('.theme-btn').textContent = isDarkMode ? '☀️' : '🌙';
+        localStorage.setItem('darkMode', isDarkMode);
+    }
+
+    // 3. 绑定按钮事件
+    document.querySelector('.theme-btn').addEventListener('click', toggleTheme);
+
+    // 其他初始化代码...
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+    loadContent();
+    updateCounter();
 });
     function loadContent() {
         const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
@@ -408,35 +414,48 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             });
     }
-;
+
+// ▼▼▼ 访问统计代码 ▼▼▼
+const JSONBIN_CONFIG = {
+  binId: "689bf9aeae596e708fc8b020",
+  apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
+};
 
 async function updateCounter() {
-  const counterEl = document.getElementById("count");
+  // 会话级限制
+  if (sessionStorage.getItem('hasCounted')) return;
+  
+  // 时间级限制（可选）
+  const lastCountTime = localStorage.getItem('lastCountTime');
+  if (lastCountTime && Date.now() - lastCountTime < 1 * 60 * 1000) { // 1分钟内不重复统计
+    return;
+  }
+
   try {
-    // 更健壮的本地计数
-    let localCount = parseInt(localStorage.getItem('visitCount')) || 0;
-    localCount++;
+    const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+      headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
+    });
+    const { record } = await getRes.json();
     
-    // 立即显示本地计数（不等待网络）
-    counterEl.textContent = localCount;
-    localStorage.setItem('visitCount', localCount);
-    
-    // 异步尝试更新远程（静默失败）
-    if (window.supabase) {
-      const { error } = await window.supabase
-        .from('site_visits')
-        .upsert({ 
-          id: 1, 
-          visit_count: localCount,
-          last_updated: new Date().toISOString()
-        });
-      
-      if (error) console.warn("Supabase更新失败（不影响使用）:", error);
-    }
-  } catch (e) {
-    console.error("计数器错误:", e);
-    // 更友好的降级显示
-    counterEl.textContent = "❤️ " + (localStorage.getItem('visitCount') || "N/A");
+    const newCount = (record.count || 0) + 1;
+    await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+      method: "PUT",
+      headers: { 
+        "Content-Type": "application/json",
+        "X-Master-Key": JSONBIN_CONFIG.apiKey 
+      },
+      body: JSON.stringify({ 
+        count: newCount,
+        lastUpdate: new Date().toISOString() 
+      })
+    });
+
+    document.getElementById("count").textContent = newCount;
+    sessionStorage.setItem('hasCounted', 'true');
+    localStorage.setItem('lastCountTime', Date.now());
+  } catch (error) {
+    console.error("统计失败:", error);
+    document.getElementById("count").textContent = "❤️";
   }
 }
 </script>
