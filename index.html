@@ -371,20 +371,7 @@ body.dark-mode {
 
     // 加载内容
     // 夜间模式切换功能
-function toggleTheme() {
-    // 添加过渡类
-    document.body.classList.add('theme-change-transition');
-    
-    document.body.classList.toggle('dark-mode');
-    const themeBtn = document.querySelector('.theme-btn');
-    themeBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    
-    // 过渡结束后移除类
-    setTimeout(() => {
-        document.body.classList.remove('theme-change-transition');
-    }, 500);
-}
+
 
 // 移到DOMContentLoaded外部
 if (localStorage.getItem('darkMode') === 'true') {
@@ -393,13 +380,13 @@ if (localStorage.getItem('darkMode') === 'true') {
 
 // 页面初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 初始化主题
+    // 1. 初始化主题
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
         document.querySelector('.theme-btn').textContent = '☀️';
     }
 
-    // 主题切换函数
+    // 2. 主题切换函数
     function toggleTheme() {
         document.body.classList.toggle('dark-mode');
         const isDarkMode = document.body.classList.contains('dark-mode');
@@ -407,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('darkMode', isDarkMode);
     }
 
-    // 绑定事件
+    // 3. 绑定按钮事件
     document.querySelector('.theme-btn').addEventListener('click', toggleTheme);
 
     // 其他初始化代码...
