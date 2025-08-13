@@ -422,14 +422,21 @@ const JSONBIN_CONFIG = {
 };
 
 async function updateCounter() {
+  // 会话级限制
+  if (sessionStorage.getItem('hasCounted')) return;
+  
+  // 时间级限制（可选）
+  const lastCountTime = localStorage.getItem('lastCountTime');
+  if (lastCountTime && Date.now() - lastCountTime < 1 * 60 * 1000) { // 5分钟内不重复统计
+    return;
+  }
+
   try {
-    // 1. 获取当前计数
     const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
       headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
     });
     const { record } = await getRes.json();
     
-    // 2. 计数+1并更新
     const newCount = (record.count || 0) + 1;
     await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
       method: "PUT",
@@ -437,18 +444,20 @@ async function updateCounter() {
         "Content-Type": "application/json",
         "X-Master-Key": JSONBIN_CONFIG.apiKey 
       },
-      body: JSON.stringify({ count: newCount })
+      body: JSON.stringify({ 
+        count: newCount,
+        lastUpdate: new Date().toISOString() 
+      })
     });
 
-    // 3. 显示最新计数
     document.getElementById("count").textContent = newCount;
+    sessionStorage.setItem('hasCounted', 'true');
+    localStorage.setItem('lastCountTime', Date.now());
   } catch (error) {
     console.error("统计失败:", error);
     document.getElementById("count").textContent = "❤️";
   }
 }
-
-// ▲▲▲ 统计代码结束 ▲▲▲
 </script>
     <div class="refresh-btn" onclick="window.location.reload()" title="刷新内容">
         🔄
