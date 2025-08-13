@@ -231,6 +231,8 @@ body.dark-mode {
             }
         }
     </style>
+    <!-- 添加这行在<head>结束前 -->
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <div class="theme-btn" onclick="toggleTheme()">🌙</div>
@@ -416,46 +418,50 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 // ▼▼▼ 访问统计代码 ▼▼▼
-const JSONBIN_CONFIG = {
-  binId: "689bf9aeae596e708fc8b020",
-  apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
+// ▼▼▼ Supabase访问统计代码 ▼▼▼
+const SUPABASE_CONFIG = {
+  url: 'https://gkvybyqhdgtmpndf1kani.supabase.co',  // 替换为你的URL
+  key: '你的anon/public key',                      // 替换为你的密钥
+  table: 'site_visits'
 };
 
+// 初始化Supabase连接
+const supabase = supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.key);
+
 async function updateCounter() {
-  // 会话级限制
-  if (sessionStorage.getItem('hasCounted')) return;
+  const counterEl = document.getElementById("count");
   
-  // 时间级限制（可选）
-  const lastCountTime = localStorage.getItem('lastCountTime');
-  if (lastCountTime && Date.now() - lastCountTime < 1 * 60 * 1000) { // 1分钟内不重复统计
-    return;
-  }
+  // 先显示缓存数据（如果有）
+  counterEl.textContent = localStorage.getItem('visitCount') || "加载中...";
 
   try {
-    const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
-      headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
-    });
-    const { record } = await getRes.json();
-    
-    const newCount = (record.count || 0) + 1;
-    await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
-      method: "PUT",
-      headers: { 
-        "Content-Type": "application/json",
-        "X-Master-Key": JSONBIN_CONFIG.apiKey 
-      },
-      body: JSON.stringify({ 
-        count: newCount,
-        lastUpdate: new Date().toISOString() 
-      })
-    });
+    // 1. 获取当前访问量
+    const { data, error } = await supabase
+      .from(SUPABASE_CONFIG.table)
+      .select('visit_count')
+      .limit(1)
+      .single();
 
-    document.getElementById("count").textContent = newCount;
-    sessionStorage.setItem('hasCounted', 'true');
-    localStorage.setItem('lastCountTime', Date.now());
+    if (error) throw error;
+
+    // 2. 计算新访问量
+    const newCount = (data.visit_count || 0) + 1;
+    
+    // 3. 更新页面显示
+    counterEl.textContent = newCount;
+    localStorage.setItem('visitCount', newCount);
+    
+    // 4. 更新数据库（后台静默更新）
+    supabase
+      .from(SUPABASE_CONFIG.table)
+      .update({ visit_count: newCount })
+      .then(({ error }) => {
+        if (error) console.error("后台更新失败:", error);
+      });
+
   } catch (error) {
-    console.error("统计失败:", error);
-    document.getElementById("count").textContent = "❤️";
+    console.error("统计出错:", error);
+    counterEl.textContent = localStorage.getItem('visitCount') || "❤️";
   }
 }
 </script>
