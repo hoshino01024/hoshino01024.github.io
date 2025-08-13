@@ -431,44 +431,31 @@ console.log("Supabase实例:", supabase);
 
 async function updateCounter() {
   const counterEl = document.getElementById("count");
-  console.log("开始更新计数器...");
-  
   try {
-    // 1. 先尝试读取
-    console.log("正在查询数据库...");
+    // 1. 获取当前值（调试用）
+    console.log("正在查询...");
     const { data, error } = await supabase
-      .from(SUPABASE_CONFIG.table)
-      .select('visit_count')
-      .limit(1)
-      .single();
+      .from('site_visits')
+      .select('*');
+    console.log("当前数据:", data);
 
-    console.log("查询结果:", { data, error });
+    // 2. 原子性更新（关键修改！）
+    const { data: updated, error: updateError } = await supabase
+      .from('site_visits')
+      .update({ 
+        visit_count: supabase.rpc('increment')  // 使用SQL增量函数
+      })
+      .eq('id', 1)  // 明确指定更新哪一行
+      .select();  // 返回更新后的数据
+
+    if (updateError) throw updateError;
     
-    if (error) throw error;
-    
-    // 2. 计算新值
-    const newCount = (data?.visit_count || 0) + 1;
-    console.log("新计数值:", newCount);
-    
-    // 3. 更新显示
-    counterEl.textContent = newCount;
-    localStorage.setItem('visitCount', newCount);
-    
-    // 4. 异步更新数据库
-    console.log("正在更新数据库...");
-    const { error: updateError } = await supabase
-      .from(SUPABASE_CONFIG.table)
-      .update({ visit_count: newCount })
-      .eq('id', 1); // 确保更新的是第一条记录
-    
-    if (updateError) {
-      console.error("更新错误:", updateError);
-      counterEl.textContent = "❤️";
-    }
-    
+    // 3. 更新页面显示
+    counterEl.textContent = updated[0].visit_count;
+    localStorage.setItem('visitCount', updated[0].visit_count);
+
   } catch (error) {
-    console.error("统计出错:", error);
-    // 显示最后一次缓存值
+    console.error("更新失败:", error);
     counterEl.textContent = localStorage.getItem('visitCount') || "❤️";
   }
 }
