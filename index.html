@@ -231,6 +231,7 @@ body.dark-mode {
     transform: rotate(180deg) scale(1.1);
 }
 
+
 /* 移动端适配 */
 @media (max-width: 600px) {
     .theme-btn {
@@ -246,6 +247,46 @@ body.dark-mode {
         bottom: 140px;
         font-size: 20px;
     }
+    
+    /* 触摸设备专用样式 */
+    @media (hover: none) {
+        .active-click {
+            transform: scale(0.97) !important;
+        }
+    }
+}
+    
+    /* 添加点击放大效果 */
+.clickable {
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+    cursor: pointer;
+}
+
+.clickable:active {
+    transform: scale(0.97);
+}
+
+/* 按钮特别效果 */
+.btn:active, 
+.theme-btn:active, 
+.refresh-btn:active {
+    transform: scale(0.92) !important;
+}
+
+/* 内容卡片效果 */
+.content-section:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+/* 访问计数器效果 */
+#visit-counter:active {
+    transform: scale(0.95);
+}
+
+/* 防止缩放时内容溢出 */
+.content-section, .btn, #visit-counter {
+    transform-origin: center;
 }
     </style>
 </head>
@@ -407,6 +448,22 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateCountdown, 1000);
     loadContent();
     updateCounter();
+    // 在DOMContentLoaded事件中添加以下代码
+const clickableElements = [
+    ...document.querySelectorAll('.btn, .content-section, #visit-counter')
+];
+
+clickableElements.forEach(el => {
+    el.classList.add('clickable');
+    
+    // 添加触摸设备支持
+    el.addEventListener('touchstart', function() {
+        this.classList.add('active-click');
+    }, {passive: true});
+    
+    el.addEventListener('touchend', function() {
+        this.classList.remove('active-click');
+    }, {passive: true});
 });
     function loadContent() {
         const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
