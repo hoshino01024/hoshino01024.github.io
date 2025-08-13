@@ -333,32 +333,54 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 内容加载
-    function loadContent() {
-        const url = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
+function loadContent() {
+    const contentEl = document.getElementById('content');
+    if (!contentEl) return;
 
-        fetch(url + '?t=' + new Date().getTime())
-            .then(response => {
-                if (!response.ok) throw new Error('网络响应不正常');
-                return response.text();
-            })
-            .then(text => {
-                const structuredData = parseContent(text);
-                renderContent(structuredData);
-            })
-            .catch(error => {
-                const contentEl = document.getElementById('content');
-                if (contentEl) {
-                    contentEl.innerHTML = `
-                        <div class="error-message">
-                            <h2>⚠️ 加载失败</h2>
-                            <p>${error.message}</p>
-                            <p>请检查网络连接后刷新页面</p>
-                            <button onclick="window.location.reload()">🔄 重新加载</button>
-                        </div>
-                    `;
-                }
-            });
-    }
+    const cdnUrl = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
+    const githubUrl = `https://raw.githubusercontent.com/${config.username}/${config.repository}/main/${config.filePath}`;
+    
+    // 显示加载状态
+    contentEl.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>正在加载最新内容...</p>
+        </div>
+    `;
+
+    // 尝试从CDN加载
+    fetch(cdnUrl + '?t=' + new Date().getTime())
+        .then(response => {
+            if (!response.ok) throw new Error(`CDN加载失败: ${response.status}`);
+            return response.text();
+        })
+        .catch(() => {
+            // 如果CDN失败，尝试直接从GitHub加载
+            return fetch(githubUrl + '?t=' + new Date().getTime())
+                .then(response => {
+                    if (!response.ok) throw new Error(`GitHub加载失败: ${response.status}`);
+                    return response.text();
+                });
+        })
+        .then(text => {
+            if (!text.trim()) throw new Error("内容为空");
+            const structuredData = parseContent(text);
+            renderContent(structuredData);
+        })
+        .catch(error => {
+            console.error("加载失败:", error);
+            contentEl.innerHTML = `
+                <div class="error-message">
+                    <h2>⚠️ 加载失败</h2>
+                    <p>${error.message}</p>
+                    <p>尝试直接访问：</p>
+                    <p><a href="${cdnUrl}" target="_blank">CDN链接</a></p>
+                    <p><a href="${githubUrl}" target="_blank">GitHub链接</a></p>
+                    <button onclick="window.location.reload()">🔄 重新加载</button>
+                </div>
+            `;
+        });
+}
 
     // 访问统计
     const JSONBIN_CONFIG = {
@@ -366,51 +388,59 @@ document.addEventListener('DOMContentLoaded', () => {
         apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
     };
 
-    async function updateCounter() {
-        const counterElement = document.getElementById("count");
-        if (!counterElement) {
-            console.warn("访问计数器元素未找到");
-            return;
-        }
-        
-        // 会话级限制
-        if (sessionStorage.getItem('hasCounted')) return;
-        
-        // 时间级限制
-        const lastCountTime = localStorage.getItem('lastCountTime');
-        if (lastCountTime && Date.now() - lastCountTime < 1 * 60 * 1000) {
-            return;
-        }
-
-        try {
-            const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
-                headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
-            });
-            const { record } = await getRes.json();
-            
-            const newCount = (record.count || 0) + 1;
-            await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
-                method: "PUT",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "X-Master-Key": JSONBIN_CONFIG.apiKey 
-                },
-                body: JSON.stringify({ 
-                    count: newCount,
-                    lastUpdate: new Date().toISOString() 
-                })
-            });
-
-            counterElement.textContent = newCount;
-            sessionStorage.setItem('hasCounted', 'true');
-            localStorage.setItem('lastCountTime', Date.now());
-        } catch (error) {
-            console.error("统计失败:", error);
-            if (counterElement) {
-                counterElement.textContent = "❤️";
-            }
-        }
+async function updateCounter() {
+    const counterElement = document.getElementById("count");
+    if (!counterElement) return;
+    
+    // 先显示加载状态
+    counterElement.textContent = "加载中...";
+    
+    // 本地回退方案
+    const localCount = localStorage.getItem('localVisitCount') || 0;
+    
+    // 会话级限制
+    if (sessionStorage.getItem('hasCounted')) {
+        counterElement.textContent = localStorage.getItem('lastCount') || localCount;
+        return;
     }
+    
+    try {
+        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+            headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
+        });
+        
+        if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
+        
+        const { record } = await getRes.json();
+        
+        const newCount = (record.count || 0) + 1;
+        const putRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+            method: "PUT",
+            headers: { 
+                "Content-Type": "application/json",
+                "X-Master-Key": JSONBIN_CONFIG.apiKey 
+            },
+            body: JSON.stringify({ 
+                count: newCount,
+                lastUpdate: new Date().toISOString() 
+            })
+        });
+        
+        if (!putRes.ok) throw new Error(`更新计数失败: ${putRes.status}`);
+        
+        counterElement.textContent = newCount;
+        localStorage.setItem('lastCount', newCount);
+        localStorage.setItem('localVisitCount', newCount);
+        sessionStorage.setItem('hasCounted', 'true');
+        localStorage.setItem('lastCountTime', Date.now());
+    } catch (error) {
+        console.error("统计失败:", error);
+        // 使用本地存储的回退值
+        counterElement.textContent = localCount;
+        localStorage.setItem('localVisitCount', parseInt(localCount) + 1);
+        sessionStorage.setItem('hasCounted', 'true');
+    }
+}
 
     // 初始化所有功能
     updateCountdown();
@@ -444,8 +474,51 @@ function renderContent(data) {
     
     let html = '';
 
-    // 内容渲染逻辑保持不变...
-    // ...
+    // 添加日期信息
+    if (data['2025年8月15日']) {
+        html += `
+            <div class="content-section">
+                <h2>📅 ${Object.keys(data)[0]}</h2>
+                <p>${data['2025年8月15日'].replace('9年级开始托管（上学）', '<strong>9年级开始托管（上学）</strong>')}</p>
+            </div>
+        `;
+        delete data['2025年8月15日'];
+    }
+
+    // 添加注意事项
+    if (data['注意事项']) {
+        html += `
+            <div class="content-section">
+                <h2>📌 注意事项</h2>
+                <p>${data['注意事项'].replace(/购买或借用/g, '📖 购买或借用')}</p>
+            </div>
+        `;
+        delete data['注意事项'];
+    }
+
+    // 添加其他内容
+    for (const [title, content] of Object.entries(data)) {
+        let sectionContent = content;
+
+        // 自动识别链接
+        sectionContent = sectionContent.replace(
+            /(https?:\/\/[^\s]+)/g, 
+            '<a href="$1" target="_blank">$1</a>'
+        );
+
+        // 自动识别邮箱
+        sectionContent = sectionContent.replace(
+            /(\S+@\S+\.\S+)/g,
+            '<a href="mailto:$1">$1</a>'
+        );
+
+        html += `
+            <div class="content-section">
+                <h2>${title.includes('分享') ? '🔗' : 'ℹ️'} ${title}</h2>
+                <p>${sectionContent}</p>
+            </div>
+        `;
+    }
 
     contentEl.innerHTML = html;
     updateTimeEl.textContent = `最后更新: ${new Date().toLocaleString()}`;
@@ -467,8 +540,8 @@ function renderContent(data) {
         <span style="background: #4361ee; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">DEV</span>
         <span style="background: #3a0ca3; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">v1.0.0</span>
     </div>
-    <p style="margin: 4px 0;">🛠️前端技术 <strong>HTML5</strong> • <strong>CSS3</strong> • <strong>JavaScript</strong></p>
-    <p style="margin: 4px 0;">🚀托管平台 GitHub Pages • JSONBin.io</p>
+    <p style="margin: 4px 0;">🛠️ <strong>HTML5</strong> • <strong>CSS3</strong> • <strong>JavaScript</strong></p>
+    <p style="margin: 4px 0;">🚀 GitHub Pages • JSONBin.io</p>
     <p style="margin: 4px 0;">© 2025 <strong>Hoshino</strong> • All Rights Reserved</p>
 </div>
 <div id="visit-counter" style="
