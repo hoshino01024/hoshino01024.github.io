@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>开学倒计时</title>
+    <title>开学倒计时 - 优化开发者信息</title>
     <style>
         :root {
             --primary-color: #4361ee;
@@ -32,6 +32,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
         }
         
         .container, 
@@ -51,6 +52,9 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             padding: 30px;
             text-align: center;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 60px; /* 为开发者信息栏留出空间 */
         }
 
         h1 {
@@ -80,12 +84,10 @@
         }
         
         body.dark-mode {
-            --bg-color: var(--dark-bg-color);
             --text-color: var(--dark-text-color);
             --card-bg: var(--dark-card-bg);
             background: var(--dark-bg-color) !important;
             background-image: none !important;
-            transition: background-color 0.5s ease !important;
         }
         
         .dark-mode .countdown {
@@ -168,6 +170,155 @@
             color: #aaa;
             background: rgba(79, 70, 229, 0.1);
         }
+        
+        /* 访问计数器 */
+        #visit-counter {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: #4361ee;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-family: sans-serif;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-size: 0.9rem;
+        }
+        
+        /* 可折叠开发者信息栏 */
+        .dev-info-container {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            width: 90%;
+            max-width: 500px;
+            transition: all 0.4s ease;
+        }
+        
+        .dev-info-toggle {
+            background: rgba(67, 97, 238, 0.9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+            margin: 0 auto;
+            width: fit-content;
+        }
+        
+        .dev-info-toggle:hover {
+            background: #3a0ca3;
+            transform: translateY(-2px);
+        }
+        
+        .dev-info-toggle .icon {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .dev-info-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease, opacity 0.3s ease, padding 0.3s ease;
+        }
+        
+        .dev-info-container.expanded .dev-info-content {
+            max-height: 500px;
+            opacity: 1;
+            padding: 20px;
+        }
+        
+        .dev-info-container.expanded .dev-info-toggle .icon {
+            transform: rotate(180deg);
+        }
+        
+        .dev-info-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dev-info-title::before {
+            content: "👨‍💻";
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .platform-card {
+            background: rgba(67, 97, 238, 0.08);
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        
+        .platform-card:hover {
+            background: rgba(67, 97, 238, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .platform-icon {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        
+        .platform-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .copyright {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            font-size: 0.8rem;
+            opacity: 0.9;
+            text-align: center;
+        }
+        
+        .dark-mode .dev-info-content {
+            background: rgba(30, 30, 30, 0.95);
+            color: #e0e0e0;
+        }
+        
+        .dark-mode .platform-card {
+            background: rgba(79, 70, 229, 0.15);
+        }
+        
+        .dark-mode .platform-card:hover {
+            background: rgba(79, 70, 229, 0.25);
+        }
+        
+        .dark-mode .copyright {
+            border-top: 1px dashed rgba(255,255,255,0.1);
+        }
 
         @media (max-width: 600px) {
             .theme-btn {
@@ -184,11 +335,61 @@
             .countdown-numbers {
                 font-size: 1.8rem;
             }
+            
+            .dev-info-container {
+                width: 95%;
+            }
+            
+            .platform-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* 添加背景装饰元素 */
+        .bg-decoration {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            z-index: 0;
+            opacity: 0.7;
+        }
+        
+        .decoration-1 {
+            width: 200px;
+            height: 200px;
+            background: #4361ee;
+            top: 10%;
+            left: 10%;
+        }
+        
+        .decoration-2 {
+            width: 150px;
+            height: 150px;
+            background: #f72585;
+            bottom: 20%;
+            right: 15%;
+        }
+        
+        .decoration-3 {
+            width: 120px;
+            height: 120px;
+            background: #4cc9f0;
+            top: 40%;
+            right: 20%;
+        }
+        
+        .dark-mode .bg-decoration {
+            opacity: 0.2;
         }
     </style>
 </head>
 <body>
-    <div class="theme-btn" onclick="toggleTheme()">🌙</div>
+    <!-- 背景装饰 -->
+    <div class="bg-decoration decoration-1"></div>
+    <div class="bg-decoration decoration-2"></div>
+    <div class="bg-decoration decoration-3"></div>
+    
+    <div class="theme-btn" id="themeToggle">🌙</div>
     <div class="container">
         <h1>📚 九年级开学倒计时</h1>
         
@@ -216,161 +417,191 @@
             </a>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 夜间模式初始化
-            if (localStorage.getItem('darkMode') === 'true') {
-                document.body.classList.add('dark-mode');
-            }
-
-            // 主题切换函数
-            function toggleTheme() {
-                document.body.classList.toggle('dark-mode');
-                const isDarkMode = document.body.classList.contains('dark-mode');
-                document.querySelector('.theme-btn').textContent = isDarkMode ? '☀️' : '🌙';
-                localStorage.setItem('darkMode', isDarkMode);
-            }
-
-            // 绑定主题按钮事件
-            const themeBtn = document.querySelector('.theme-btn');
-            if (themeBtn) {
-                themeBtn.addEventListener('click', toggleTheme);
-                if (localStorage.getItem('darkMode') === 'true') {
-                    themeBtn.textContent = '☀️';
-                }
-            }
-
-            // 倒计时功能
-            function updateCountdown() {
-                const daysEl = document.getElementById('days');
-                const hoursEl = document.getElementById('hours');
-                
-                if (!daysEl || !hoursEl) return;
-                
-                // 设置开学日期为2025年8月20日
-                const startDate = new Date(2025, 7, 20);
-                const now = new Date();
-                
-                if (now >= startDate) {
-                    daysEl.textContent = '已';
-                    hoursEl.textContent = '开学';
-                    return;
-                }
-
-                const diff = startDate - now;
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                
-                daysEl.textContent = days;
-                hoursEl.textContent = hours;
-            }
-
-            // 访问统计
-            const JSONBIN_CONFIG = {
-                binId: "689bf9aeae596e708fc8b020",
-                apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
-            };
-
-            async function updateCounter() {
-                const counterElement = document.getElementById("count");
-                if (!counterElement) return;
-                
-                // 先显示加载状态
-                counterElement.textContent = "加载中...";
-                
-                // 本地回退方案
-                const localCount = localStorage.getItem('localVisitCount') || 0;
-                
-                // 会话级限制
-                if (sessionStorage.getItem('hasCounted')) {
-                    counterElement.textContent = localStorage.getItem('lastCount') || localCount;
-                    return;
-                }
-                
-                try {
-                    const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
-                        headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
-                    });
-                    
-                    if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
-                    
-                    const { record } = await getRes.json();
-                    
-                    const newCount = (record.count || 0) + 1;
-                    const putRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
-                        method: "PUT",
-                        headers: { 
-                            "Content-Type": "application/json",
-                            "X-Master-Key": JSONBIN_CONFIG.apiKey 
-                        },
-                        body: JSON.stringify({ 
-                            count: newCount,
-                            lastUpdate: new Date().toISOString() 
-                        })
-                    });
-                    
-                    if (!putRes.ok) throw new Error(`更新计数失败: ${putRes.status}`);
-                    
-                    counterElement.textContent = newCount;
-                    localStorage.setItem('lastCount', newCount);
-                    localStorage.setItem('localVisitCount', newCount);
-                    sessionStorage.setItem('hasCounted', 'true');
-                    localStorage.setItem('lastCountTime', Date.now());
-                } catch (error) {
-                    console.error("统计失败:", error);
-                    // 使用本地存储的回退值
-                    counterElement.textContent = localCount;
-                    localStorage.setItem('localVisitCount', parseInt(localCount) + 1);
-                    sessionStorage.setItem('hasCounted', 'true');
-                }
-            }
-
-            // 初始化所有功能
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-            updateCounter();
-        });
-
-        // 主题切换函数需要在全局作用域
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            document.querySelector('.theme-btn').textContent = isDarkMode ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDarkMode);
-        }
-    </script>
     
     <!-- 访问计数器 -->
-    <div id="visit-counter" style="
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        background: #4361ee;
-        color: white;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-family: sans-serif;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        z-index: 1000;
-        font-size: 0.9rem;
-    ">
+    <div id="visit-counter">
         👥 总访问量: <span id="count">加载中...</span>
     </div>
     
-    <!-- 开发信息栏 -->
-    <div style="
-        position: fixed;
-        bottom: 10px;
-        right: 10px;
-        background: rgba(67, 97, 238, 0.1);
-        color: #666;
-        padding: 6px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        z-index: 1000;
-    ">
-        © 2025 Hoshino
+    <!-- 新的可折叠开发者信息栏 -->
+    <div class="dev-info-container" id="devInfoContainer">
+        <div class="dev-info-toggle" id="devInfoToggle">
+            开发信息 <span class="icon">▼</span>
+        </div>
+        <div class="dev-info-content" id="devInfoContent">
+            <div class="dev-info-title">技术支持平台</div>
+            
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <div class="platform-icon">🌐</div>
+                    <div class="platform-name">阿里云</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">🚀</div>
+                    <div class="platform-name">腾讯云开发</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">🔒</div>
+                    <div class="platform-name">Cloudflare</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">📦</div>
+                    <div class="platform-name">Vercel</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">🔄</div>
+                    <div class="platform-name">GitHub</div>
+                </div>
+                
+                <div class="platform-card">
+                    <div class="platform-icon">💻</div>
+                    <div class="platform-name">Vue.js</div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                © 2025 Hoshino Studio | 保留所有权利
+            </div>
+        </div>
     </div>
+
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // 检查本地存储中的主题设置
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+        
+        // 主题切换函数
+        function toggleTheme() {
+            body.classList.toggle('dark-mode');
+            const isDarkMode = body.classList.contains('dark-mode');
+            themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+        
+        // 绑定点击事件
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // 倒计时功能
+        function updateCountdown() {
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            
+            if (!daysEl || !hoursEl) return;
+            
+            // 设置开学日期为2025年8月20日
+            const startDate = new Date(2025, 7, 20);
+            const now = new Date();
+            
+            if (now >= startDate) {
+                daysEl.textContent = '已';
+                hoursEl.textContent = '开学';
+                return;
+            }
+
+            const diff = startDate - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            daysEl.textContent = days;
+            hoursEl.textContent = hours;
+        }
+
+        // 访问统计
+        const JSONBIN_CONFIG = {
+            binId: "689bf9aeae596e708fc8b020",
+            apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
+        };
+
+        async function updateCounter() {
+            const counterElement = document.getElementById("count");
+            if (!counterElement) return;
+            
+            // 先显示加载状态
+            counterElement.textContent = "加载中...";
+            
+            // 本地回退方案
+            const localCount = localStorage.getItem('localVisitCount') || 0;
+            
+            // 会话级限制
+            if (sessionStorage.getItem('hasCounted')) {
+                counterElement.textContent = localStorage.getItem('lastCount') || localCount;
+                return;
+            }
+            
+            try {
+                const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+                    headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
+                });
+                
+                if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
+                
+                const { record } = await getRes.json();
+                
+                const newCount = (record.count || 0) + 1;
+                const putRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+                    method: "PUT",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "X-Master-Key": JSONBIN_CONFIG.apiKey 
+                    },
+                    body: JSON.stringify({ 
+                        count: newCount,
+                        lastUpdate: new Date().toISOString() 
+                    })
+                });
+                
+                if (!putRes.ok) throw new Error(`更新计数失败: ${putRes.status}`);
+                
+                counterElement.textContent = newCount;
+                localStorage.setItem('lastCount', newCount);
+                localStorage.setItem('localVisitCount', newCount);
+                sessionStorage.setItem('hasCounted', 'true');
+                localStorage.setItem('lastCountTime', Date.now());
+            } catch (error) {
+                console.error("统计失败:", error);
+                // 使用本地存储的回退值
+                counterElement.textContent = localCount;
+                localStorage.setItem('localVisitCount', parseInt(localCount) + 1);
+                sessionStorage.setItem('hasCounted', 'true');
+            }
+        }
+        
+        // 开发者信息栏交互
+        const devInfoContainer = document.getElementById('devInfoContainer');
+        const devInfoToggle = document.getElementById('devInfoToggle');
+        
+        devInfoToggle.addEventListener('click', function() {
+            devInfoContainer.classList.toggle('expanded');
+            
+            // 添加额外的动画效果
+            if (devInfoContainer.classList.contains('expanded')) {
+                devInfoContent.style.display = 'block';
+            } else {
+                setTimeout(() => {
+                    devInfoContent.style.display = 'none';
+                }, 500);
+            }
+        });
+
+        // 初始化所有功能
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            updateCounter();
+            
+            // 初始状态下隐藏开发者信息内容
+            document.getElementById('devInfoContent').style.display = 'none';
+        });
+    </script>
 </body>
 </html>
