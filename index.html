@@ -675,4 +675,275 @@ body.dark-mode-transition {
                             <span class="platform-icon"><i class="fas fa-box"></i></span>Vercel
                         </div>
                         <div class="platform-item">
-                            <span class="platf
+                            <span class="platform-icon"><i class="fab fa-github"></i></span>GitHub
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-vuejs"></i></span>Vue.js
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-js"></i></span>JavaScript
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-server"></i></span>Node.js
+                        </div>
+                    </div>
+                    
+                    <div class="dev-contact">
+                        <h3><i class="fas fa-headset"></i> 开发者联系方式</h3>
+                        <p>如果您有任何问题或建议，请随时联系我们</p>
+                        <a href="mailto:2709923043@qq.com">
+                            <i class="fas fa-envelope"></i> 2709923043@qq.com
+                        </a>
+                    </div>
+                    
+                    <div class="copyright">
+                        © 2025 Hoshino Studio | 保留所有权利
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 访问计数器 -->
+    <div id="visit-counter">
+        <i class="fas fa-users"></i> 总访问量: <span id="count">加载中...</span>
+    </div>
+
+    <script>
+        // 性能优化：减少重绘和重排
+        let lastScrollY = 0;
+        let ticking = false;
+        
+        // 主题切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // 检查本地存储中的主题设置
+        if (localStorage.getItem('darkMode') === 'true') {
+            body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        }
+        
+        // 主题切换函数
+function toggleTheme() {
+    // 添加过渡类
+    body.classList.add('dark-mode-transition');
+    
+    // 添加按钮动画
+    themeToggle.classList.add('theme-switch-animation');
+    
+    // 切换主题
+    body.classList.toggle('dark-mode');
+    const isDarkMode = body.classList.contains('dark-mode');
+    themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    // 移除过渡类（延迟执行确保动画完成）
+    setTimeout(() => {
+        body.classList.remove('dark-mode-transition');
+        themeToggle.classList.remove('theme-switch-animation');
+    }, 800);
+}
+        
+        // 绑定点击事件
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // 倒计时功能（优化版）
+        function updateCountdown() {
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            
+            if (!daysEl || !hoursEl) return;
+            
+            // 设置开学日期为2025年8月20日
+            const startDate = new Date(2025, 7, 20);
+            const now = new Date();
+            
+            if (now >= startDate) {
+                if (daysEl.textContent !== '已') {
+                    daysEl.textContent = '已';
+                    hoursEl.textContent = '开学';
+                }
+                return;
+            }
+
+            const diff = startDate - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            // 仅当值变化时更新DOM
+            if (daysEl.textContent != days) daysEl.textContent = days;
+            if (hoursEl.textContent != hours) hoursEl.textContent = hours;
+        }
+
+        // 访问统计（优化版）
+        const JSONBIN_CONFIG = {
+            binId: "689bf9aeae596e708fc8b020",
+            apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
+        };
+
+        async function updateCounter() {
+            const counterElement = document.getElementById("count");
+            if (!counterElement) return;
+            
+            // 本地回退方案
+            const localCount = localStorage.getItem('localVisitCount') || 0;
+            
+            // 会话级限制
+            if (sessionStorage.getItem('hasCounted')) {
+                counterElement.textContent = localStorage.getItem('lastCount') || localCount;
+                return;
+            }
+            
+            try {
+                const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+                    headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
+                });
+                
+                if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
+                
+                const { record } = await getRes.json();
+                
+                const newCount = (record.count || 0) + 1;
+                counterElement.textContent = newCount;
+                localStorage.setItem('lastCount', newCount);
+                localStorage.setItem('localVisitCount', newCount);
+                sessionStorage.setItem('hasCounted', 'true');
+                localStorage.setItem('lastCountTime', Date.now());
+                
+                // 异步更新服务器计数（不阻塞UI）
+                setTimeout(async () => {
+                    try {
+                        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+                            method: "PUT",
+                            headers: { 
+                                "Content-Type": "application/json",
+                                "X-Master-Key": JSONBIN_CONFIG.apiKey 
+                            },
+                            body: JSON.stringify({ 
+                                count: newCount,
+                                lastUpdate: new Date().toISOString() 
+                            })
+                        });
+                    } catch (error) {
+                        console.error("异步更新计数失败:", error);
+                    }
+                }, 1000);
+            } catch (error) {
+                console.error("统计失败:", error);
+                // 使用本地存储的回退值
+                const newLocalCount = parseInt(localCount) + 1;
+                counterElement.textContent = newLocalCount;
+                localStorage.setItem('localVisitCount', newLocalCount);
+                sessionStorage.setItem('hasCounted', 'true');
+            }
+        }
+        
+        // 选项卡切换功能
+        function initTabs() {
+            const tabsContainer = document.getElementById('tabsContainer');
+            const activeIndicator = document.getElementById('activeIndicator');
+            const tabItems = document.querySelectorAll('.tab-item');
+            const tabPanes = document.querySelectorAll('.content-pane');
+            
+            // 初始化指示器位置
+            function updateIndicatorPosition() {
+                const activeTab = document.querySelector('.tab-item.active');
+                if (!activeTab) return;
+                
+                const tabWidth = tabsContainer.offsetWidth / tabItems.length;
+                const tabIndex = Array.from(tabItems).indexOf(activeTab);
+                
+                activeIndicator.style.width = `${tabWidth}px`;
+                activeIndicator.style.transform = `translateX(${tabIndex * tabWidth}px)`;
+            }
+            
+            // 切换选项卡
+            function switchTab(tabName) {
+                // 更新选项卡激活状态
+                tabItems.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabName);
+                });
+                
+                // 更新内容面板
+                tabPanes.forEach(pane => {
+                    pane.classList.toggle('active', pane.id === `${tabName}Pane`);
+                });
+                
+                // 更新指示器位置
+                updateIndicatorPosition();
+            }
+            
+            // 绑定选项卡点击事件
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+            
+            // 初始化指示器
+            updateIndicatorPosition();
+            
+            // 添加滑动功能
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let isSwiping = false;
+            
+            tabsContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isSwiping = true;
+            }, { passive: true });
+            
+            tabsContainer.addEventListener('touchmove', (e) => {
+                if (!isSwiping) return;
+                currentX = e.touches[0].clientX;
+            }, { passive: true });
+            
+            tabsContainer.addEventListener('touchend', () => {
+                if (!isSwiping) return;
+                
+                const diffX = startX - currentX;
+                
+                // 水平滑动距离大于50px才切换
+                if (Math.abs(diffX) > 50) {
+                    const activeTab = document.querySelector('.tab-item.active');
+                    const tabIndex = Array.from(tabItems).indexOf(activeTab);
+                    
+                    if (diffX > 0 && tabIndex < tabItems.length - 1) {
+                        // 向左滑动
+                        switchTab(tabItems[tabIndex + 1].dataset.tab);
+                    } else if (diffX < 0 && tabIndex > 0) {
+                        // 向右滑动
+                        switchTab(tabItems[tabIndex - 1].dataset.tab);
+                    }
+                }
+                
+                isSwiping = false;
+            }, { passive: true });
+        }
+
+        // 初始化所有功能
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCountdown();
+            // 降低倒计时的更新频率
+            setInterval(updateCountdown, 5000);
+            updateCounter();
+            initTabs();
+        });
+        
+        // 添加性能优化：减少滚动事件处理
+        window.addEventListener('scroll', function() {
+            lastScrollY = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    // 这里可以添加滚动相关的处理
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    </script>
+</body>
+</html>
