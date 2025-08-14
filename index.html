@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>学习资料通知</title>
+    <title>开学倒计时</title>
     <style>
         :root {
             --primary-color: #4361ee;
@@ -11,7 +11,6 @@
             --text-color: #333;
             --bg-color: #f8f9fa;
             --card-bg: #ffffff;
-            --error-color: #e63946;
             --dark-bg-color: #121212;
             --dark-card-bg: #1e1e1e;
             --dark-text-color: #e0e0e0;
@@ -30,24 +29,28 @@
             margin: 0 auto;
             min-height: 100vh;
             transition: background-color 0.5s ease, color 0.3s ease;
-}
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
         .container, 
-.content-section,
-.btn,
-.countdown,
-.update-time {
-    transition: all 0.3s ease;
-}
+        .btn,
+        .countdown,
+        .update-time {
+            transition: all 0.3s ease;
+        }
 
-.dark-mode .container {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
+        .dark-mode .container {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        
         .container {
             background: var(--card-bg);
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 25px;
-            margin-top: 20px;
+            padding: 30px;
+            text-align: center;
         }
 
         h1 {
@@ -59,43 +62,41 @@
             padding-bottom: 10px;
         }
 
-        .content-section {
-            margin-bottom: 20px;
-            padding: 15px;
-            background: #f5f7ff;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary-color);
-        }
-
-        .content-section h2 {
-            color: var(--secondary-color);
-            margin-top: 0;
-            font-size: 1.3rem;
-        }
-
-        .loading {
+        .countdown {
             text-align: center;
-            padding: 30px;
+            margin: 20px 0 30px;
+            color: var(--secondary-color);
+            font-weight: bold;
+            background: rgba(67, 97, 238, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 1.5rem;
         }
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            margin: 0 auto;
-            border: 4px solid rgba(0,0,0,0.1);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
+        .countdown-numbers {
+            font-size: 2.2rem;
+            margin: 0 5px;
+            color: var(--primary-color);
         }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        
+        body.dark-mode {
+            --bg-color: var(--dark-bg-color);
+            --text-color: var(--dark-text-color);
+            --card-bg: var(--dark-card-bg);
+            background: var(--dark-bg-color) !important;
+            background-image: none !important;
+            transition: background-color 0.5s ease !important;
         }
-
+        
+        .dark-mode .countdown {
+            background: rgba(79, 70, 229, 0.2);
+        }
+        
         .action-buttons {
             display: flex;
             gap: 10px;
             margin-top: 20px;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
@@ -108,6 +109,7 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            min-width: 140px;
         }
 
         .btn-primary {
@@ -124,450 +126,251 @@
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-
-        .error-message {
-            color: var(--error-color);
-            background: #fee;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .update-time {
-            text-align: right;
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 20px;
-        }
-        
-        .countdown {
-        text-align: center;
-        margin: -15px 0 20px;
-        color: var(--secondary-color);
-        font-weight: bold;
-        background: rgba(67, 97, 238, 0.1);
-        padding: 8px;
-        border-radius: 20px;
-        display: inline-block;
-        width: calc(100% - 60px);
-        }
-        
-body.dark-mode {
-    --bg-color: var(--dark-bg-color);
-    --text-color: var(--dark-text-color);
-    --card-bg: var(--dark-card-bg);
-    background: var(--dark-bg-color) !important;  /* 强制覆盖背景图 */
-    background-image: none !important;  /* 移除渐变和背景图 */
-    transition: background-color 0.5s ease !important; /* 强制过渡 */
-}
         
         .dark-mode .btn-secondary {
-    background: #374151;
-    color: #f3f4f6;
-    transition: background-color 0.3s ease;
-}
-        .dark-mode .content-section {
-            background: #2d3748;
-           border-left-color: #4f46e5;
+            background: #374151;
+            color: #f3f4f6;
+        }
+
+        .theme-btn {
+            position: fixed;
+            bottom: 90px;  
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: #4361ee;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .placeholder {
+            margin: 30px 0;
+            padding: 20px;
+            font-style: italic;
+            color: #666;
+            background: rgba(67, 97, 238, 0.05);
+            border-radius: 8px;
         }
         
-        .dark-mode .countdown {
-            background: rgba(79, 70, 229, 0.2);
+        .dark-mode .placeholder {
+            color: #aaa;
+            background: rgba(79, 70, 229, 0.1);
         }
-        .dark-mode .dev-info {
-    background: rgba(79, 70, 229, 0.2);
-    color: #d1d5db;
-    border-top: 1px solid #374151;
-}
-.refresh-btn-custom {
-    width: 40px;
-    height: 40px;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-    border-radius: 6px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(67, 97, 238, 0.1);
-    border: 1px solid rgba(67, 97, 238, 0.2);
-}
 
-.refresh-btn-custom img {
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
-    transition: all 0.3s;
-}
-
-.refresh-btn-custom:hover {
-    transform: rotate(30deg);
-    background: rgba(67, 97, 238, 0.2);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-/* 暗黑模式适配 */
-.dark-mode .refresh-btn-custom {
-    background: rgba(79, 70, 229, 0.1);
-    border-color: rgba(79, 70, 229, 0.2);
-}
-
-.dark-mode .refresh-btn-custom:hover {
-    background: rgba(79, 70, 229, 0.2);
-}
-    
-    .theme-btn {
-        position: fixed;
-        bottom: 90px;  
-        right: 20px;
-        width: 56px;
-        height: 56px;
-        background: #4361ee;
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        cursor: pointer;
-        z-index: 100;
-        transition: all 0.3s;
-    }
-
-    .theme-btn:hover {
-        transform: scale(1.1);
-    }
-
-    @media (max-width: 600px) {
-        .theme-btn {
-            width: 48px;
-            height: 48px;
-            bottom: 80px;
-            font-size: 20px;
+        @media (max-width: 600px) {
+            .theme-btn {
+                width: 48px;
+                height: 48px;
+                bottom: 80px;
+                font-size: 20px;
+            }
+            
+            .countdown {
+                font-size: 1.2rem;
+            }
+            
+            .countdown-numbers {
+                font-size: 1.8rem;
+            }
         }
-    }
-</style>
+    </style>
 </head>
 <body>
     <div class="theme-btn" onclick="toggleTheme()">🌙</div>
-    <div id="updateTime" class="update-time"></div>
     <div class="container">
-        <h1>📚 九年级学习资料通知</h1>
+        <h1>📚 九年级开学倒计时</h1>
+        
         <div class="countdown">
-        距离九年级开学还有：<span id="days">--</span>天 <span id="hours">--</span>小时
-        </div>
-        <div id="content">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>正在加载最新内容...</p>
+            <div>距离九年级开学还有：</div>
+            <div>
+                <span class="countdown-numbers" id="days">--</span>天 
+                <span class="countdown-numbers" id="hours">--</span>小时
+            </div>
+            <div style="font-size: 1rem; margin-top: 10px; color: #666;">
+                2025年8月20日正式开学
             </div>
         </div>
+        
+        <div class="placeholder">
+            <p>课程表功能开发中，敬请期待...</p>
+        </div>
 
-<div class="action-buttons">
-    <a href="mailto:2709923043@qq.com" class="btn btn-primary">
-        ✉️ 联系开发者
-    </a>
-    <a href="https://u7t.cn/902app" class="btn btn-secondary">
-        📲 下载安卓软件
-    </a>
-    <div class="refresh-btn-custom" onclick="window.location.reload()" title="刷新内容">
-        <img src="https://img.kanxizai.cn/v2/IcDiOCv.jpeg" alt="刷新">
+        <div class="action-buttons">
+            <a href="mailto:2709923043@qq.com" class="btn btn-primary">
+                ✉️ 联系开发者
+            </a>
+            <a href="https://u7t.cn/902app" class="btn btn-secondary">
+                📲 下载应用
+            </a>
+        </div>
     </div>
-</div>
 
-<script>
-// 将所有JavaScript代码封装在DOMContentLoaded事件中
-document.addEventListener('DOMContentLoaded', () => {
-    // 配置信息
-    const config = {
-        username: "hoshino01024",
-        repository: "hoshino01024.github.io",
-        filePath: "content.txt"
-    };
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 夜间模式初始化
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+            }
 
-    // 夜间模式初始化
-    if (localStorage.getItem('darkMode') === 'true') {
-        document.body.classList.add('dark-mode');
-    }
+            // 主题切换函数
+            function toggleTheme() {
+                document.body.classList.toggle('dark-mode');
+                const isDarkMode = document.body.classList.contains('dark-mode');
+                document.querySelector('.theme-btn').textContent = isDarkMode ? '☀️' : '🌙';
+                localStorage.setItem('darkMode', isDarkMode);
+            }
 
-    // 主题切换函数
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        const isDarkMode = document.body.classList.contains('dark-mode');
-        document.querySelector('.theme-btn').textContent = isDarkMode ? '☀️' : '🌙';
-        localStorage.setItem('darkMode', isDarkMode);
-    }
+            // 绑定主题按钮事件
+            const themeBtn = document.querySelector('.theme-btn');
+            if (themeBtn) {
+                themeBtn.addEventListener('click', toggleTheme);
+                if (localStorage.getItem('darkMode') === 'true') {
+                    themeBtn.textContent = '☀️';
+                }
+            }
 
-    // 绑定主题按钮事件
-    const themeBtn = document.querySelector('.theme-btn');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', toggleTheme);
-        if (localStorage.getItem('darkMode') === 'true') {
-            themeBtn.textContent = '☀️';
-        }
-    }
+            // 倒计时功能
+            function updateCountdown() {
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                
+                if (!daysEl || !hoursEl) return;
+                
+                // 设置开学日期为2025年8月20日
+                const startDate = new Date(2025, 7, 20);
+                const now = new Date();
+                
+                if (now >= startDate) {
+                    daysEl.textContent = '已';
+                    hoursEl.textContent = '开学';
+                    return;
+                }
 
-    // 倒计时功能
-    function updateCountdown() {
-        const daysEl = document.getElementById('days');
-        const hoursEl = document.getElementById('hours');
-        
-        if (!daysEl || !hoursEl) return;
-        
-        const startDate = new Date(2025, 7, 20);
-        const now = new Date();
-        
-        if (now >= startDate) {
-            daysEl.textContent = '已开学';
-            hoursEl.textContent = '';
-            return;
-        }
+                const diff = startDate - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                daysEl.textContent = days;
+                hoursEl.textContent = hours;
+            }
 
-        const diff = startDate - now;
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        
-        daysEl.textContent = days;
-        hoursEl.textContent = hours;
-    }
+            // 访问统计
+            const JSONBIN_CONFIG = {
+                binId: "689bf9aeae596e708fc8b020",
+                apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
+            };
 
-    // 内容加载
-function loadContent() {
-    const contentEl = document.getElementById('content');
-    if (!contentEl) return;
+            async function updateCounter() {
+                const counterElement = document.getElementById("count");
+                if (!counterElement) return;
+                
+                // 先显示加载状态
+                counterElement.textContent = "加载中...";
+                
+                // 本地回退方案
+                const localCount = localStorage.getItem('localVisitCount') || 0;
+                
+                // 会话级限制
+                if (sessionStorage.getItem('hasCounted')) {
+                    counterElement.textContent = localStorage.getItem('lastCount') || localCount;
+                    return;
+                }
+                
+                try {
+                    const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+                        headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
+                    });
+                    
+                    if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
+                    
+                    const { record } = await getRes.json();
+                    
+                    const newCount = (record.count || 0) + 1;
+                    const putRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+                        method: "PUT",
+                        headers: { 
+                            "Content-Type": "application/json",
+                            "X-Master-Key": JSONBIN_CONFIG.apiKey 
+                        },
+                        body: JSON.stringify({ 
+                            count: newCount,
+                            lastUpdate: new Date().toISOString() 
+                        })
+                    });
+                    
+                    if (!putRes.ok) throw new Error(`更新计数失败: ${putRes.status}`);
+                    
+                    counterElement.textContent = newCount;
+                    localStorage.setItem('lastCount', newCount);
+                    localStorage.setItem('localVisitCount', newCount);
+                    sessionStorage.setItem('hasCounted', 'true');
+                    localStorage.setItem('lastCountTime', Date.now());
+                } catch (error) {
+                    console.error("统计失败:", error);
+                    // 使用本地存储的回退值
+                    counterElement.textContent = localCount;
+                    localStorage.setItem('localVisitCount', parseInt(localCount) + 1);
+                    sessionStorage.setItem('hasCounted', 'true');
+                }
+            }
 
-    const cdnUrl = `https://cdn.jsdelivr.net/gh/${config.username}/${config.repository}/${config.filePath}`;
-    const githubUrl = `https://raw.githubusercontent.com/${config.username}/${config.repository}/main/${config.filePath}`;
-
-    console.log("尝试从 CDN 加载:", cdnUrl); // 调试
-    console.log("备用 GitHub 地址:", githubUrl); // 调试
-
-    contentEl.innerHTML = `
-        <div class="loading">
-            <div class="spinner"></div>
-            <p>正在加载最新内容...</p>
-        </div>
-    `;
-
-    fetch(cdnUrl + '?t=' + new Date().getTime())
-        .then(response => {
-            console.log("CDN 响应状态:", response.status); // 调试
-            if (!response.ok) throw new Error(`CDN加载失败: ${response.status}`);
-            return response.text();
-        })
-        .then(text => {
-            console.log("成功获取内容:", text.slice(0, 50) + "..."); // 只打印前50字符
-            if (!text.trim()) throw new Error("内容为空");
-            const structuredData = parseContent(text);
-            renderContent(structuredData);
-        })
-        .catch(error => {
-            console.error("CDN 加载失败，尝试 GitHub:", error); // 调试
-            return fetch(githubUrl + '?t=' + new Date().getTime())
-                .then(response => {
-                    console.log("GitHub 响应状态:", response.status); // 调试
-                    if (!response.ok) throw new Error(`GitHub加载失败: ${response.status}`);
-                    return response.text();
-                })
-                .then(text => {
-                    console.log("成功获取 GitHub 内容:", text.slice(0, 50) + "...");
-                    if (!text.trim()) throw new Error("内容为空");
-                    const structuredData = parseContent(text);
-                    renderContent(structuredData);
-                })
-                .catch(error => {
-                    console.error("GitHub 也加载失败:", error); // 调试
-                    contentEl.innerHTML = `
-                        <div class="error-message">
-                            <h2>⚠️ 加载失败</h2>
-                            <p>${error.message}</p>
-                            <p>尝试直接访问：</p>
-                            <p><a href="${cdnUrl}" target="_blank">CDN链接</a></p>
-                            <p><a href="${githubUrl}" target="_blank">GitHub链接</a></p>
-                            <button onclick="window.location.reload()">🔄 重新加载</button>
-                        </div>
-                    `;
-                });
+            // 初始化所有功能
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            updateCounter();
         });
-}
 
-    // 访问统计
-    const JSONBIN_CONFIG = {
-        binId: "689bf9aeae596e708fc8b020",
-        apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
-    };
-
-async function updateCounter() {
-    const counterElement = document.getElementById("count");
-    if (!counterElement) return;
-    
-    // 先显示加载状态
-    counterElement.textContent = "加载中...";
-    
-    // 本地回退方案
-    const localCount = localStorage.getItem('localVisitCount') || 0;
-    
-    // 会话级限制
-    if (sessionStorage.getItem('hasCounted')) {
-        counterElement.textContent = localStorage.getItem('lastCount') || localCount;
-        return;
-    }
-    
-    try {
-        const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
-            headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
-        });
-        
-        if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
-        
-        const { record } = await getRes.json();
-        
-        const newCount = (record.count || 0) + 1;
-        const putRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
-            method: "PUT",
-            headers: { 
-                "Content-Type": "application/json",
-                "X-Master-Key": JSONBIN_CONFIG.apiKey 
-            },
-            body: JSON.stringify({ 
-                count: newCount,
-                lastUpdate: new Date().toISOString() 
-            })
-        });
-        
-        if (!putRes.ok) throw new Error(`更新计数失败: ${putRes.status}`);
-        
-        counterElement.textContent = newCount;
-        localStorage.setItem('lastCount', newCount);
-        localStorage.setItem('localVisitCount', newCount);
-        sessionStorage.setItem('hasCounted', 'true');
-        localStorage.setItem('lastCountTime', Date.now());
-    } catch (error) {
-        console.error("统计失败:", error);
-        // 使用本地存储的回退值
-        counterElement.textContent = localCount;
-        localStorage.setItem('localVisitCount', parseInt(localCount) + 1);
-        sessionStorage.setItem('hasCounted', 'true');
-    }
-}
-
-    // 初始化所有功能
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-    loadContent();
-    updateCounter();
-});
-
-// 这些函数需要在DOMContentLoaded外部定义
-function parseContent(text) {
-    const sections = text.split('\n\n').filter(section => section.trim() !== '');
-    let structuredData = {};
-
-    sections.forEach(section => {
-        const lines = section.split('\n');
-        const title = lines[0].replace(':', '').trim();
-        const content = lines.slice(1).join('<br>').trim();
-
-        if (title && content) {
-            structuredData[title] = content;
+        // 主题切换函数需要在全局作用域
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            document.querySelector('.theme-btn').textContent = isDarkMode ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDarkMode);
         }
-    });
-
-    return structuredData;
-}
-
-function renderContent(data) {
-    const contentEl = document.getElementById('content');
-    const updateTimeEl = document.getElementById('updateTime');
-    if (!contentEl || !updateTimeEl) return;
+    </script>
     
-    let html = '';
-
-    // 修改后的日期信息部分
-    if (data['2025年8月20日']) {
-        html += `
-            <div class="content-section">
-                <h2>📅 2025年8月20日</h2>
-                <p>${data['2025年8月20日'].replace('9年级开始托管（上学）', '<strong>9年级开始托管（上学）</strong>')}</p>
-            </div>
-        `;
-        delete data['2025年8月20日'];
-    }
-
-    // 添加注意事项
-    if (data['注意事项']) {
-        html += `
-            <div class="content-section">
-                <h2>📌 注意事项</h2>
-                <p>${data['注意事项'].replace(/购买或借用/g, '📖 购买或借用')}</p>
-            </div>
-        `;
-        delete data['注意事项'];
-    }
-
-    // 添加其他内容
-    for (const [title, content] of Object.entries(data)) {
-        let sectionContent = content;
-
-        // 自动识别链接
-        sectionContent = sectionContent.replace(
-            /(https?:\/\/[^\s]+)/g, 
-            '<a href="$1" target="_blank">$1</a>'
-        );
-
-        // 自动识别邮箱
-        sectionContent = sectionContent.replace(
-            /(\S+@\S+\.\S+)/g,
-            '<a href="mailto:$1">$1</a>'
-        );
-
-        html += `
-            <div class="content-section">
-                <h2>${title.includes('分享') ? '🔗' : 'ℹ️'} ${title}</h2>
-                <p>${sectionContent}</p>
-            </div>
-        `;
-    }
-
-    contentEl.innerHTML = html;
-    updateTimeEl.textContent = `最后更新: ${new Date().toLocaleString()}`;
-}
-</script>
     <!-- 访问计数器 -->
-<!-- 紧凑型开发信息栏 -->
-<div class="dev-info" style="
-    margin: 20px 0 10px;
-    padding: 12px 15px;
-    background: rgba(67, 97, 238, 0.1);
-    border-radius: 8px;
-    font-size: 0.8rem;
-    color: #666;
-    text-align: center;
-    line-height: 1.4;
-">
-    <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 6px;">
-        <span style="background: #4361ee; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">DEV</span>
-        <span style="background: #3a0ca3; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">v1.0.0</span>
+    <div id="visit-counter" style="
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        background: #4361ee;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-family: sans-serif;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        z-index: 1000;
+        font-size: 0.9rem;
+    ">
+        👥 总访问量: <span id="count">加载中...</span>
     </div>
-    <p style="margin: 4px 0;">🛠️ <strong>HTML5</strong> • <strong>CSS3</strong> • <strong>JavaScript</strong></p>
-    <p style="margin: 4px 0;">🚀 GitHub Pages • JSONBin.io</p>
-    <p style="margin: 4px 0;">© 2025 <strong>Hoshino</strong> • All Rights Reserved</p>
-</div>
-<div id="visit-counter" style="
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    background: #4361ee;
-    color: white;
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-family: sans-serif;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    z-index: 1000;
-">
-    👥 总访问量: <span id="count">加载中...</span>
-</div>
+    
+    <!-- 开发信息栏 -->
+    <div style="
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(67, 97, 238, 0.1);
+        color: #666;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        z-index: 1000;
+    ">
+        © 2025 Hoshino
+    </div>
 </body>
 </html>
