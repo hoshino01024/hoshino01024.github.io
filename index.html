@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>卧中九年级重要通知 - iOS风格优化版</title>
+    <title>卧中九年级重要通知 - 选项卡优化版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -14,6 +14,8 @@
             --dark-bg-color: #121212;
             --dark-card-bg: rgba(30, 30, 30, 0.92);
             --dark-text-color: #e0e0e0;
+            --tab-active-color: #4361ee;
+            --tab-inactive-color: #999;
             
             /* iOS风格变量 */
             --ios-radius: 16px;
@@ -55,7 +57,7 @@
             background: var(--card-bg);
             border-radius: var(--ios-card-radius);
             box-shadow: var(--ios-shadow);
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             position: relative;
             z-index: 10;
@@ -63,12 +65,86 @@
             border: 1px solid rgba(0,0,0,0.05);
             transform: translateZ(0);
             will-change: transform;
+            overflow: hidden;
         }
 
         .dark-mode .container {
             background: var(--dark-card-bg);
             border: 1px solid rgba(255,255,255,0.08);
             box-shadow: var(--ios-dark-shadow);
+        }
+        
+        /* 选项卡样式 */
+        .tabs-container {
+            display: flex;
+            position: relative;
+            margin-bottom: 25px;
+            border-radius: var(--ios-radius);
+            background: rgba(0,0,0,0.03);
+            padding: 6px;
+        }
+        
+        .dark-mode .tabs-container {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .tab-item {
+            flex: 1;
+            padding: 14px 0;
+            border-radius: var(--ios-radius);
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: color 0.3s ease;
+            color: var(--tab-inactive-color);
+        }
+        
+        .tab-item.active {
+            color: var(--tab-active-color);
+        }
+        
+        .active-indicator {
+            position: absolute;
+            top: 6px;
+            height: calc(100% - 12px);
+            border-radius: var(--ios-radius);
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1;
+            transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        .dark-mode .active-indicator {
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        /* 内容区域 */
+        .tab-content {
+            position: relative;
+            overflow: hidden;
+            height: 450px;
+        }
+        
+        .content-pane {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            visibility: hidden;
+            overflow-y: auto;
+            padding: 0 5px;
+        }
+        
+        .content-pane.active {
+            opacity: 1;
+            transform: translateX(0);
+            visibility: visible;
         }
 
         h1 {
@@ -219,133 +295,6 @@
             transform: translateZ(0);
         }
         
-        /* 简洁开发者信息栏 */
-        .dev-info-container {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            transform: translateZ(0);
-        }
-        
-        .dev-info-summary {
-            background: linear-gradient(135deg, #4361ee, #3a0ca3);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: var(--ios-shadow);
-            border: 1px solid rgba(255,255,255,0.1);
-            transform: translateZ(0);
-            will-change: transform;
-        }
-        
-        .dev-info-summary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-        }
-        
-        .dev-info-summary .icon {
-            margin-left: 8px;
-            font-size: 0.9rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .dev-info-content {
-            background: var(--card-bg);
-            border-radius: var(--ios-radius);
-            padding: 20px;
-            margin-top: 10px;
-            box-shadow: var(--ios-shadow);
-            max-height: 0;
-            overflow: hidden;
-            opacity: 0;
-            transition: max-height 0.4s ease, opacity 0.3s ease;
-            width: 280px;
-            font-size: 0.85rem;
-            border: 1px solid rgba(0,0,0,0.05);
-            transform: translateZ(0);
-        }
-        
-        .dev-info-container.expanded .dev-info-content {
-            max-height: 300px;
-            opacity: 1;
-            padding: 20px;
-        }
-        
-        .dev-info-container.expanded .dev-info-summary .icon {
-            transform: rotate(180deg);
-        }
-        
-        .dev-info-title {
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            font-size: 1rem;
-        }
-        
-        .dev-info-title::before {
-            content: "👨‍💻";
-            margin-right: 8px;
-            font-size: 1.2rem;
-        }
-        
-        .platform-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 15px 0;
-        }
-        
-        .platform-item {
-            display: flex;
-            align-items: center;
-            background: rgba(67, 97, 238, 0.08);
-            padding: 8px 14px;
-            border-radius: var(--ios-radius);
-            font-size: 0.8rem;
-            border: 1px solid rgba(0,0,0,0.03);
-            transform: translateZ(0);
-        }
-        
-        .platform-icon {
-            margin-right: 8px;
-            font-size: 1rem;
-        }
-        
-        .copyright {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px dashed rgba(0,0,0,0.1);
-            font-size: 0.75rem;
-            opacity: 0.8;
-            text-align: center;
-        }
-        
-        .dark-mode .dev-info-content {
-            background: var(--dark-card-bg);
-            color: #e0e0e0;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .dark-mode .platform-item {
-            background: rgba(79, 70, 229, 0.15);
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        
-        .dark-mode .copyright {
-            border-top: 1px dashed rgba(255,255,255,0.1);
-        }
-
         /* iOS风格通知元素 */
         .ios-notification {
             background: white;
@@ -383,46 +332,106 @@
             border-left: 5px solid #5e72e4;
         }
 
+        /* 开发信息面板样式 */
+        .dev-info-panel {
+            text-align: left;
+            padding: 20px 15px;
+        }
+        
+        .dev-info-title {
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .dev-info-title::before {
+            content: "👨‍💻";
+            margin-right: 8px;
+            font-size: 1.5rem;
+        }
+        
+        .platform-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 25px 0;
+            justify-content: center;
+        }
+        
+        .platform-item {
+            display: flex;
+            align-items: center;
+            background: rgba(67, 97, 238, 0.08);
+            padding: 12px 18px;
+            border-radius: var(--ios-radius);
+            font-size: 0.95rem;
+            border: 1px solid rgba(0,0,0,0.03);
+            transform: translateZ(0);
+            min-width: 150px;
+            justify-content: center;
+        }
+        
+        .platform-icon {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px dashed rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+            opacity: 0.8;
+            text-align: center;
+            color: #666;
+        }
+        
+        .dark-mode .platform-item {
+            background: rgba(79, 70, 229, 0.15);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .dark-mode .copyright {
+            color: #aaa;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+        }
+        
+        .dev-contact {
+            background: rgba(67, 97, 238, 0.05);
+            border-radius: var(--ios-radius);
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+            border: 1px dashed rgba(67, 97, 238, 0.2);
+        }
+        
+        .dark-mode .dev-contact {
+            background: rgba(79, 70, 229, 0.1);
+            border: 1px dashed rgba(79, 70, 229, 0.3);
+        }
+        
+        .dev-contact a {
+            color: var(--primary-color);
+            font-weight: 500;
+            text-decoration: none;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        
+        .dev-contact a:hover {
+            text-decoration: underline;
+        }
+
         /* 性能优化 */
         .performance-optimized {
             will-change: transform;
             transform: translateZ(0);
-        }
-
-        @media (max-width: 600px) {
-            .theme-btn {
-                width: 48px;
-                height: 48px;
-                bottom: 80px;
-                font-size: 20px;
-            }
-            
-            .countdown {
-                font-size: 1.2rem;
-            }
-            
-            .countdown-numbers {
-                font-size: 1.8rem;
-            }
-            
-            .dev-info-summary {
-                padding: 10px 16px;
-                font-size: 0.8rem;
-            }
-            
-            .dev-info-content {
-                width: 240px;
-                padding: 15px;
-            }
-            
-            .btn {
-                min-width: 140px;
-                padding: 12px 16px;
-            }
-            
-            .container {
-                padding: 20px;
-            }
         }
         
         /* 装饰元素（简化版） */
@@ -458,6 +467,47 @@
                 animation: none !important;
             }
         }
+        
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .theme-btn {
+                width: 48px;
+                height: 48px;
+                bottom: 80px;
+                font-size: 20px;
+            }
+            
+            .countdown {
+                font-size: 1.2rem;
+            }
+            
+            .countdown-numbers {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                min-width: 140px;
+                padding: 12px 16px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .tab-content {
+                height: 400px;
+            }
+            
+            .platform-item {
+                min-width: 120px;
+                padding: 10px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .dev-info-title {
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -465,77 +515,102 @@
     <div class="simple-decoration decoration-2"></div>
     
     <div class="theme-btn" id="themeToggle">🌙</div>
+    
     <div class="container">
-        <h1><i class="fas fa-bell"></i> 九年级重要通知</h1>
-        
-        <div class="countdown">
-            <div>距离九年级托管开始还有：</div>
-            <div>
-                <span class="countdown-numbers" id="days">--</span>天 
-                <span class="countdown-numbers" id="hours">--</span>小时
-            </div>
-            <div style="font-size: 1rem; margin-top: 10px; color: #666;">
-                2025年8月20日正式开始托管
-            </div>
+        <!-- 选项卡导航 -->
+        <div class="tabs-container" id="tabsContainer">
+            <div class="active-indicator" id="activeIndicator"></div>
+            <div class="tab-item active" data-tab="notice">九年级通知</div>
+            <div class="tab-item" data-tab="dev">开发信息</div>
         </div>
         
-        <div class="placeholder">
-            <p><i class="fas fa-tools"></i> 其他功能开发中，敬请期待...</p>
-        </div>
-        
-        <div class="ios-notification">
-            <h3><i class="fas fa-info-circle"></i> 性能优化说明</h3>
-            <p>本次更新优化动画效果与图标显示，并确保页面在各种设备上流畅运行。</p>
-        </div>
+        <!-- 选项卡内容 -->
+        <div class="tab-content" id="tabContent">
+            <!-- 通知页面 -->
+            <div class="content-pane active" id="noticePane">
+                <h1><i class="fas fa-bell"></i> 九年级重要通知</h1>
+                
+                <div class="countdown">
+                    <div>距离九年级托管开始还有：</div>
+                    <div>
+                        <span class="countdown-numbers" id="days">--</span>天 
+                        <span class="countdown-numbers" id="hours">--</span>小时
+                    </div>
+                    <div style="font-size: 1rem; margin-top: 10px; color: #666;">
+                        2025年8月20日正式开始托管
+                    </div>
+                </div>
+                
+                <div class="placeholder">
+                    <p><i class="fas fa-tools"></i> 其他功能开发中，敬请期待...</p>
+                </div>
+                
+                <div class="ios-notification">
+                    <h3><i class="fas fa-info-circle"></i> 性能优化说明</h3>
+                    <p>本次更新已移除可能导致卡顿的毛玻璃效果，优化了动画性能，确保页面在各种设备上流畅运行。</p>
+                </div>
 
-        <div class="action-buttons">
-            <a href="mailto:2709923043@qq.com" class="btn btn-primary">
-                <i class="fas fa-envelope"></i> 联系开发者
-            </a>
-            <a href="https://u7t.cn/902app" class="btn btn-secondary">
-                <i class="fas fa-download"></i> 下载应用
-            </a>
+                <div class="action-buttons">
+                    <a href="mailto:2709923043@qq.com" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> 联系开发者
+                    </a>
+                    <a href="https://u7t.cn/902app" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> 下载应用
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 开发信息页面 -->
+            <div class="content-pane" id="devPane">
+                <div class="dev-info-panel">
+                    <div class="dev-info-title">技术支持平台</div>
+                    
+                    <div class="platform-list">
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-globe"></i></span>阿里云
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-rocket"></i></span>腾讯云
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-lock"></i></span>Cloudflare
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-box"></i></span>Vercel
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-github"></i></span>GitHub
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-vuejs"></i></span>Vue.js
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-js"></i></span>JavaScript
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-server"></i></span>Node.js
+                        </div>
+                    </div>
+                    
+                    <div class="dev-contact">
+                        <h3><i class="fas fa-headset"></i> 开发者联系方式</h3>
+                        <p>如果您有任何问题或建议，请随时联系我们</p>
+                        <a href="mailto:2709923043@qq.com">
+                            <i class="fas fa-envelope"></i> 2709923043@qq.com
+                        </a>
+                    </div>
+                    
+                    <div class="copyright">
+                        © 2025 Hoshino Studio | 保留所有权利
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     
     <!-- 访问计数器 -->
     <div id="visit-counter">
         <i class="fas fa-users"></i> 总访问量: <span id="count">加载中...</span>
-    </div>
-    
-    <!-- 简洁开发者信息栏 -->
-    <div class="dev-info-container" id="devInfoContainer">
-        <div class="dev-info-summary" id="devInfoToggle">
-            <i class="fas fa-code"></i> 开发信息 <span class="icon">▼</span>
-        </div>
-        <div class="dev-info-content" id="devInfoContent">
-            <div class="dev-info-title">技术支持平台</div>
-            
-            <div class="platform-list">
-                <div class="platform-item">
-                    <span class="platform-icon"><i class="fas fa-globe"></i></span>阿里云
-                </div>
-                <div class="platform-item">
-                    <span class="platform-icon"><i class="fas fa-rocket"></i></span>腾讯云
-                </div>
-                <div class="platform-item">
-                    <span class="platform-icon"><i class="fas fa-lock"></i></span>Cloudflare
-                </div>
-                <div class="platform-item">
-                    <span class="platform-icon"><i class="fas fa-box"></i></span>Vercel
-                </div>
-                <div class="platform-item">
-                    <span class="platform-icon"><i class="fab fa-github"></i></span>GitHub
-                </div>
-                <div class="platform-item">
-                    <span class="platform-icon"><i class="fab fa-vuejs"></i></span>Vue.js
-                </div>
-            </div>
-            
-            <div class="copyright">
-                © 2025 Hoshino Studio | 保留所有权利
-            </div>
-        </div>
     </div>
 
     <script>
@@ -655,21 +730,90 @@
             }
         }
         
-        // 开发者信息栏交互
-        const devInfoContainer = document.getElementById('devInfoContainer');
-        const devInfoToggle = document.getElementById('devInfoToggle');
-        
-        devInfoToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            devInfoContainer.classList.toggle('expanded');
-        });
-
-        // 点击页面其他地方关闭开发者信息
-        document.addEventListener('click', function(event) {
-            if (!devInfoContainer.contains(event.target)) {
-                devInfoContainer.classList.remove('expanded');
+        // 选项卡切换功能
+        function initTabs() {
+            const tabsContainer = document.getElementById('tabsContainer');
+            const activeIndicator = document.getElementById('activeIndicator');
+            const tabItems = document.querySelectorAll('.tab-item');
+            const tabPanes = document.querySelectorAll('.content-pane');
+            
+            // 初始化指示器位置
+            function updateIndicatorPosition() {
+                const activeTab = document.querySelector('.tab-item.active');
+                if (!activeTab) return;
+                
+                const tabWidth = tabsContainer.offsetWidth / tabItems.length;
+                const tabIndex = Array.from(tabItems).indexOf(activeTab);
+                
+                activeIndicator.style.width = `${tabWidth}px`;
+                activeIndicator.style.transform = `translateX(${tabIndex * tabWidth}px)`;
             }
-        });
+            
+            // 切换选项卡
+            function switchTab(tabName) {
+                // 更新选项卡激活状态
+                tabItems.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabName);
+                });
+                
+                // 更新内容面板
+                tabPanes.forEach(pane => {
+                    pane.classList.toggle('active', pane.id === `${tabName}Pane`);
+                });
+                
+                // 更新指示器位置
+                updateIndicatorPosition();
+            }
+            
+            // 绑定选项卡点击事件
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+            
+            // 初始化指示器
+            updateIndicatorPosition();
+            
+            // 添加滑动功能
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let isSwiping = false;
+            
+            tabsContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isSwiping = true;
+            }, { passive: true });
+            
+            tabsContainer.addEventListener('touchmove', (e) => {
+                if (!isSwiping) return;
+                currentX = e.touches[0].clientX;
+            }, { passive: true });
+            
+            tabsContainer.addEventListener('touchend', () => {
+                if (!isSwiping) return;
+                
+                const diffX = startX - currentX;
+                
+                // 水平滑动距离大于50px才切换
+                if (Math.abs(diffX) > 50) {
+                    const activeTab = document.querySelector('.tab-item.active');
+                    const tabIndex = Array.from(tabItems).indexOf(activeTab);
+                    
+                    if (diffX > 0 && tabIndex < tabItems.length - 1) {
+                        // 向左滑动
+                        switchTab(tabItems[tabIndex + 1].dataset.tab);
+                    } else if (diffX < 0 && tabIndex > 0) {
+                        // 向右滑动
+                        switchTab(tabItems[tabIndex - 1].dataset.tab);
+                    }
+                }
+                
+                isSwiping = false;
+            }, { passive: true });
+        }
 
         // 初始化所有功能
         document.addEventListener('DOMContentLoaded', () => {
@@ -677,6 +821,7 @@
             // 降低倒计时的更新频率
             setInterval(updateCountdown, 5000);
             updateCounter();
+            initTabs();
         });
         
         // 添加性能优化：减少滚动事件处理
