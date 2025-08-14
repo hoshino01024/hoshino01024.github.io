@@ -3,58 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>卧中九年级重要通知</title>
+    <title>卧中九年级重要通知 - iOS风格优化版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #4361ee;
             --secondary-color: #3a0ca3;
             --text-color: #333;
-            --bg-color: #f8f9fa;
-            --card-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.92);
             --dark-bg-color: #121212;
-            --dark-card-bg: #1e1e1e;
+            --dark-card-bg: rgba(30, 30, 30, 0.92);
             --dark-text-color: #e0e0e0;
+            
+            /* iOS风格变量 */
+            --ios-radius: 16px;
+            --ios-card-radius: 24px;
+            --ios-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --ios-dark-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', 'PingFang SC', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
             line-height: 1.6;
             color: var(--text-color);
-            background: 
-            linear-gradient(rgba(255,255,255,0.88), rgba(255,255,255,0.88)),
-            url('https://img.kanxizai.cn/v2/SjpbBHM.png') no-repeat center center/cover fixed;
+            background: linear-gradient(135deg, #f5f7fa, #e4e7f1);
             margin: 0;
             padding: 20px;
             max-width: 800px;
             margin: 0 auto;
             min-height: 100vh;
-            transition: background-color 0.5s ease, color 0.3s ease;
             display: flex;
             flex-direction: column;
             justify-content: center;
             position: relative;
+            overflow-x: hidden;
+            will-change: transform;
         }
         
-        .container, 
-        .btn,
-        .countdown,
-        .update-time {
-            transition: all 0.3s ease;
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: var(--dark-text-color);
         }
 
-        .dark-mode .container {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        
         .container {
             background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: var(--ios-card-radius);
+            box-shadow: var(--ios-shadow);
             padding: 30px;
             text-align: center;
             position: relative;
             z-index: 10;
             margin-bottom: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transform: translateZ(0);
+            will-change: transform;
+        }
+
+        .dark-mode .container {
+            background: var(--dark-card-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: var(--ios-dark-shadow);
         }
 
         h1 {
@@ -62,8 +76,10 @@
             text-align: center;
             margin-bottom: 25px;
             font-size: 1.8rem;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(0,0,0,0.05);
+            padding-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         .countdown {
@@ -72,66 +88,73 @@
             color: var(--secondary-color);
             font-weight: bold;
             background: rgba(67, 97, 238, 0.1);
-            padding: 15px;
-            border-radius: 12px;
+            padding: 25px 15px;
+            border-radius: var(--ios-radius);
             font-size: 1.5rem;
+            border: 1px solid rgba(67, 97, 238, 0.15);
+            transform: translateZ(0);
+        }
+
+        .dark-mode .countdown {
+            background: rgba(79, 70, 229, 0.15);
+            border: 1px solid rgba(79, 70, 229, 0.2);
         }
 
         .countdown-numbers {
             font-size: 2.2rem;
             margin: 0 5px;
             color: var(--primary-color);
-        }
-        
-        body.dark-mode {
-            --text-color: var(--dark-text-color);
-            --card-bg: var(--dark-card-bg);
-            background: var(--dark-bg-color) !important;
-            background-image: none !important;
-        }
-        
-        .dark-mode .countdown {
-            background: rgba(79, 70, 229, 0.2);
+            font-weight: 700;
+            display: inline-block;
+            padding: 0 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .action-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 30px;
             justify-content: center;
             flex-wrap: wrap;
         }
 
         .btn {
-            padding: 10px 15px;
-            border-radius: 6px;
+            padding: 14px 20px;
+            border-radius: var(--ios-radius);
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 140px;
+            min-width: 160px;
+            border: none;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .btn-primary {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
             color: white;
         }
 
         .btn-secondary {
-            background: #e9ecef;
+            background: rgba(245,245,245,0.8);
             color: var(--text-color);
+            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
         
         .dark-mode .btn-secondary {
-            background: #374151;
+            background: rgba(30,30,30,0.6);
             color: #f3f4f6;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .theme-btn {
@@ -140,35 +163,43 @@
             right: 20px;
             width: 56px;
             height: 56px;
-            background: #4361ee;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
             cursor: pointer;
             z-index: 100;
-            transition: all 0.3s;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: none;
+            transform: translateZ(0);
+            will-change: transform;
         }
 
         .theme-btn:hover {
             transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
         }
 
         .placeholder {
             margin: 30px 0;
-            padding: 20px;
+            padding: 25px;
             font-style: italic;
             color: #666;
             background: rgba(67, 97, 238, 0.05);
-            border-radius: 8px;
+            border-radius: var(--ios-radius);
+            border: 1px solid rgba(67, 97, 238, 0.08);
+            font-size: 1.1rem;
+            transform: translateZ(0);
         }
         
         .dark-mode .placeholder {
             color: #aaa;
             background: rgba(79, 70, 229, 0.1);
+            border: 1px solid rgba(79, 70, 229, 0.15);
         }
         
         /* 访问计数器 */
@@ -176,14 +207,16 @@
             position: fixed;
             bottom: 10px;
             left: 10px;
-            background: #4361ee;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 50px;
             font-family: sans-serif;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: var(--ios-shadow);
             z-index: 1000;
             font-size: 0.9rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transform: translateZ(0);
         }
         
         /* 简洁开发者信息栏 */
@@ -195,51 +228,56 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            transform: translateZ(0);
         }
         
         .dev-info-summary {
-            background: rgba(67, 97, 238, 0.8);
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
             color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
             cursor: pointer;
             display: flex;
             align-items: center;
-            transition: all 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            box-shadow: var(--ios-shadow);
+            border: 1px solid rgba(255,255,255,0.1);
+            transform: translateZ(0);
+            will-change: transform;
         }
         
         .dev-info-summary:hover {
-            background: #3a0ca3;
             transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
         }
         
         .dev-info-summary .icon {
-            margin-left: 5px;
+            margin-left: 8px;
             font-size: 0.9rem;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
         }
         
         .dev-info-content {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(5px);
-            border-radius: 10px;
-            padding: 15px;
-            margin-top: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            border-radius: var(--ios-radius);
+            padding: 20px;
+            margin-top: 10px;
+            box-shadow: var(--ios-shadow);
             max-height: 0;
             overflow: hidden;
             opacity: 0;
-            transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
-            width: 260px;
-            font-size: 0.8rem;
+            transition: max-height 0.4s ease, opacity 0.3s ease;
+            width: 280px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(0,0,0,0.05);
+            transform: translateZ(0);
         }
         
         .dev-info-container.expanded .dev-info-content {
             max-height: 300px;
             opacity: 1;
-            padding: 15px;
+            padding: 20px;
         }
         
         .dev-info-container.expanded .dev-info-summary .icon {
@@ -247,60 +285,108 @@
         }
         
         .dev-info-title {
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-weight: 700;
+            margin-bottom: 12px;
             color: var(--primary-color);
             display: flex;
             align-items: center;
-            font-size: 0.9rem;
+            font-size: 1rem;
         }
         
         .dev-info-title::before {
             content: "👨‍💻";
-            margin-right: 6px;
+            margin-right: 8px;
+            font-size: 1.2rem;
         }
         
         .platform-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin: 10px 0;
+            gap: 10px;
+            margin: 15px 0;
         }
         
         .platform-item {
             display: flex;
             align-items: center;
             background: rgba(67, 97, 238, 0.08);
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 0.75rem;
+            padding: 8px 14px;
+            border-radius: var(--ios-radius);
+            font-size: 0.8rem;
+            border: 1px solid rgba(0,0,0,0.03);
+            transform: translateZ(0);
         }
         
         .platform-icon {
-            margin-right: 5px;
-            font-size: 0.9rem;
+            margin-right: 8px;
+            font-size: 1rem;
         }
         
         .copyright {
-            margin-top: 8px;
-            padding-top: 8px;
+            margin-top: 12px;
+            padding-top: 12px;
             border-top: 1px dashed rgba(0,0,0,0.1);
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             opacity: 0.8;
             text-align: center;
         }
         
         .dark-mode .dev-info-content {
-            background: rgba(30, 30, 30, 0.95);
+            background: var(--dark-card-bg);
             color: #e0e0e0;
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .dark-mode .platform-item {
             background: rgba(79, 70, 229, 0.15);
+            border: 1px solid rgba(255,255,255,0.05);
         }
         
         .dark-mode .copyright {
             border-top: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        /* iOS风格通知元素 */
+        .ios-notification {
+            background: white;
+            border-radius: var(--ios-radius);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--ios-shadow);
+            border-left: 5px solid var(--primary-color);
+            text-align: left;
+            transform: translateZ(0);
+            will-change: transform;
+        }
+        
+        .ios-notification h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .ios-notification h3 i {
+            margin-right: 10px;
+            background: rgba(67, 97, 238, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+        }
+        
+        .dark-mode .ios-notification {
+            background: var(--dark-card-bg);
+            border-left: 5px solid #5e72e4;
+        }
+
+        /* 性能优化 */
+        .performance-optimized {
+            will-change: transform;
+            transform: translateZ(0);
         }
 
         @media (max-width: 600px) {
@@ -320,21 +406,67 @@
             }
             
             .dev-info-summary {
-                padding: 6px 12px;
-                font-size: 0.75rem;
+                padding: 10px 16px;
+                font-size: 0.8rem;
             }
             
             .dev-info-content {
-                width: 220px;
-                padding: 10px;
+                width: 240px;
+                padding: 15px;
+            }
+            
+            .btn {
+                min-width: 140px;
+                padding: 12px 16px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+        }
+        
+        /* 装饰元素（简化版） */
+        .simple-decoration {
+            position: fixed;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(67,97,238,0.1) 0%, rgba(67,97,238,0) 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .decoration-1 {
+            top: -30px;
+            right: -30px;
+        }
+        
+        .decoration-2 {
+            bottom: -50px;
+            left: -30px;
+            background: radial-gradient(circle, rgba(58,12,163,0.08) 0%, rgba(58,12,163,0) 70%);
+        }
+        
+        .dark-mode .simple-decoration {
+            opacity: 0.3;
+        }
+        
+        /* 动画优化 */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                transition: none !important;
+                animation: none !important;
             }
         }
     </style>
 </head>
 <body>
+    <div class="simple-decoration decoration-1"></div>
+    <div class="simple-decoration decoration-2"></div>
+    
     <div class="theme-btn" id="themeToggle">🌙</div>
     <div class="container">
-        <h1>📚 九年级通知</h1>
+        <h1><i class="fas fa-bell"></i> 九年级重要通知</h1>
         
         <div class="countdown">
             <div>距离九年级托管开始还有：</div>
@@ -348,50 +480,55 @@
         </div>
         
         <div class="placeholder">
-            <p>其他功能开发中，敬请期待...</p>
+            <p><i class="fas fa-tools"></i> 其他功能开发中，敬请期待...</p>
+        </div>
+        
+        <div class="ios-notification">
+            <h3><i class="fas fa-info-circle"></i> 性能优化说明</h3>
+            <p>本次更新优化动画效果与图标显示，并确保页面在各种设备上流畅运行。</p>
         </div>
 
         <div class="action-buttons">
             <a href="mailto:2709923043@qq.com" class="btn btn-primary">
-                ✉️ 联系开发者
+                <i class="fas fa-envelope"></i> 联系开发者
             </a>
             <a href="https://u7t.cn/902app" class="btn btn-secondary">
-                📲 下载应用
+                <i class="fas fa-download"></i> 下载应用
             </a>
         </div>
     </div>
     
     <!-- 访问计数器 -->
     <div id="visit-counter">
-        👥 总访问量: <span id="count">加载中...</span>
+        <i class="fas fa-users"></i> 总访问量: <span id="count">加载中...</span>
     </div>
     
     <!-- 简洁开发者信息栏 -->
     <div class="dev-info-container" id="devInfoContainer">
         <div class="dev-info-summary" id="devInfoToggle">
-            开发信息 <span class="icon">▼</span>
+            <i class="fas fa-code"></i> 开发信息 <span class="icon">▼</span>
         </div>
         <div class="dev-info-content" id="devInfoContent">
             <div class="dev-info-title">技术支持平台</div>
             
             <div class="platform-list">
                 <div class="platform-item">
-                    <span class="platform-icon">🌐</span>阿里云
+                    <span class="platform-icon"><i class="fas fa-globe"></i></span>阿里云
                 </div>
                 <div class="platform-item">
-                    <span class="platform-icon">🚀</span>腾讯云
+                    <span class="platform-icon"><i class="fas fa-rocket"></i></span>腾讯云
                 </div>
                 <div class="platform-item">
-                    <span class="platform-icon">🔒</span>Cloudflare
+                    <span class="platform-icon"><i class="fas fa-lock"></i></span>Cloudflare
                 </div>
                 <div class="platform-item">
-                    <span class="platform-icon">📦</span>Vercel
+                    <span class="platform-icon"><i class="fas fa-box"></i></span>Vercel
                 </div>
                 <div class="platform-item">
-                    <span class="platform-icon">🔄</span>GitHub
+                    <span class="platform-icon"><i class="fab fa-github"></i></span>GitHub
                 </div>
                 <div class="platform-item">
-                    <span class="platform-icon">💻</span>Vue.js
+                    <span class="platform-icon"><i class="fab fa-vuejs"></i></span>Vue.js
                 </div>
             </div>
             
@@ -402,6 +539,10 @@
     </div>
 
     <script>
+        // 性能优化：减少重绘和重排
+        let lastScrollY = 0;
+        let ticking = false;
+        
         // 主题切换功能
         const themeToggle = document.getElementById('themeToggle');
         const body = document.body;
@@ -423,7 +564,7 @@
         // 绑定点击事件
         themeToggle.addEventListener('click', toggleTheme);
 
-        // 倒计时功能
+        // 倒计时功能（优化版）
         function updateCountdown() {
             const daysEl = document.getElementById('days');
             const hoursEl = document.getElementById('hours');
@@ -435,8 +576,10 @@
             const now = new Date();
             
             if (now >= startDate) {
-                daysEl.textContent = '已';
-                hoursEl.textContent = '开学';
+                if (daysEl.textContent !== '已') {
+                    daysEl.textContent = '已';
+                    hoursEl.textContent = '开学';
+                }
                 return;
             }
 
@@ -444,11 +587,12 @@
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             
-            daysEl.textContent = days;
-            hoursEl.textContent = hours;
+            // 仅当值变化时更新DOM
+            if (daysEl.textContent != days) daysEl.textContent = days;
+            if (hoursEl.textContent != hours) hoursEl.textContent = hours;
         }
 
-        // 访问统计
+        // 访问统计（优化版）
         const JSONBIN_CONFIG = {
             binId: "689bf9aeae596e708fc8b020",
             apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
@@ -457,9 +601,6 @@
         async function updateCounter() {
             const counterElement = document.getElementById("count");
             if (!counterElement) return;
-            
-            // 先显示加载状态
-            counterElement.textContent = "加载中...";
             
             // 本地回退方案
             const localCount = localStorage.getItem('localVisitCount') || 0;
@@ -480,30 +621,36 @@
                 const { record } = await getRes.json();
                 
                 const newCount = (record.count || 0) + 1;
-                const putRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
-                    method: "PUT",
-                    headers: { 
-                        "Content-Type": "application/json",
-                        "X-Master-Key": JSONBIN_CONFIG.apiKey 
-                    },
-                    body: JSON.stringify({ 
-                        count: newCount,
-                        lastUpdate: new Date().toISOString() 
-                    })
-                });
-                
-                if (!putRes.ok) throw new Error(`更新计数失败: ${putRes.status}`);
-                
                 counterElement.textContent = newCount;
                 localStorage.setItem('lastCount', newCount);
                 localStorage.setItem('localVisitCount', newCount);
                 sessionStorage.setItem('hasCounted', 'true');
                 localStorage.setItem('lastCountTime', Date.now());
+                
+                // 异步更新服务器计数（不阻塞UI）
+                setTimeout(async () => {
+                    try {
+                        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+                            method: "PUT",
+                            headers: { 
+                                "Content-Type": "application/json",
+                                "X-Master-Key": JSONBIN_CONFIG.apiKey 
+                            },
+                            body: JSON.stringify({ 
+                                count: newCount,
+                                lastUpdate: new Date().toISOString() 
+                            })
+                        });
+                    } catch (error) {
+                        console.error("异步更新计数失败:", error);
+                    }
+                }, 1000);
             } catch (error) {
                 console.error("统计失败:", error);
                 // 使用本地存储的回退值
-                counterElement.textContent = localCount;
-                localStorage.setItem('localVisitCount', parseInt(localCount) + 1);
+                const newLocalCount = parseInt(localCount) + 1;
+                counterElement.textContent = newLocalCount;
+                localStorage.setItem('localVisitCount', newLocalCount);
                 sessionStorage.setItem('hasCounted', 'true');
             }
         }
@@ -512,7 +659,8 @@
         const devInfoContainer = document.getElementById('devInfoContainer');
         const devInfoToggle = document.getElementById('devInfoToggle');
         
-        devInfoToggle.addEventListener('click', function() {
+        devInfoToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
             devInfoContainer.classList.toggle('expanded');
         });
 
@@ -526,9 +674,22 @@
         // 初始化所有功能
         document.addEventListener('DOMContentLoaded', () => {
             updateCountdown();
-            setInterval(updateCountdown, 1000);
+            // 降低倒计时的更新频率
+            setInterval(updateCountdown, 5000);
             updateCounter();
         });
+        
+        // 添加性能优化：减少滚动事件处理
+        window.addEventListener('scroll', function() {
+            lastScrollY = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    // 这里可以添加滚动相关的处理
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
     </script>
 </body>
 </html>
