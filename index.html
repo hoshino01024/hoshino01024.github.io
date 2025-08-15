@@ -70,20 +70,20 @@
             background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
             opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
-        .container {
-            background: var(--card-bg);
-            border-radius: var(--ios-card-radius);
-            box-shadow: var(--ios-shadow);
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            margin-bottom: 20px;
-            border: 1px solid rgba(0,0,0,0.05);
-            transform: translateZ(0);
-            will-change: transform;
-            overflow: hidden;
-        }
+.container {
+    background: var(--card-bg);
+    border-radius: var(--ios-card-radius);
+    box-shadow: var(--ios-shadow);
+    padding: 20px 20px 20px 25px; /* 修改这一行 */
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    transform: translateZ(0);
+    will-change: transform;
+    overflow: hidden;
+}
 
         .dark-mode .container {
             background: var(--dark-card-bg);
@@ -92,14 +92,16 @@
         }
         
         /* 选项卡样式 */
-        .tabs-container {
-            display: flex;
-            position: relative;
-            margin-bottom: 25px;
-            border-radius: var(--ios-radius);
-            background: rgba(0,0,0,0.03);
-            padding: 6px;
-        }
+.tabs-container {
+    display: flex;
+    position: relative;
+    margin-bottom: 25px;
+    border-radius: var(--ios-radius);
+    background: rgba(0,0,0,0.03);
+    padding: 6px;
+    margin-left: -5px; 
+    margin-right: 0; 
+}
         
         .dark-mode .tabs-container {
             background: rgba(255,255,255,0.05);
@@ -121,16 +123,21 @@
             color: var(--tab-active-color);
         }
         
-        .active-indicator {
-            position: absolute;
-            top: 6px;
-            height: calc(100% - 12px);
-            border-radius: var(--ios-radius);
-            background: white;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            z-index: 1;
-            transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
-        }
+.active-indicator {
+    position: absolute;
+    top: 6px;
+    left: 5px; /* 添加这一行 */
+    height: calc(100% - 12px);
+    border-radius: var(--ios-radius);
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    z-index: 1;
+    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+    position: absolute;
+    transition: 
+        transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+        width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
         
         .dark-mode .active-indicator {
             background: rgba(255,255,255,0.1);
@@ -936,6 +943,19 @@ input:checked + .slider:before {
         box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+.tab-item {
+    flex: 1;
+    min-width: 0; /* 添加这一行防止内容溢出 */
+    padding: 14px 0;
+    border-radius: var(--ios-radius);
+    font-weight: 600;
+    cursor: pointer;
+    z-index: 2;
+    position: relative;
+    transition: color 0.3s ease;
+    color: var(--tab-inactive-color);
+}
+
 /* 优化夜间模式过渡 */
 body.dark-mode-transition {
     transition: 
@@ -1045,7 +1065,7 @@ body.dark-mode-transition {
                 
                 <div class="ios-notification">
                     <h3><i class="fas fa-info-circle"></i> 性能优化说明</h3>
-                    <p>本次更新已移除可能导致卡顿的毛玻璃效果，优化了动画性能，确保页面在各种设备上流畅运行。</p>
+                    <p>已移除可能导致卡顿的毛玻璃效果，优化了动画性能，确保页面在各种设备上流畅运行。</p>
                 </div>
 
                 <div class="action-buttons">
@@ -1071,6 +1091,8 @@ body.dark-mode-transition {
                     <ul>
                         <li>新增更新日志功能</li>
                         <li>修复了夜间模式切换的问题</li>
+                        <li>优化了设置面板的展示效果</li>
+                        <li>添加了部分过渡动画</li>
                     </ul>
                 </div>
             </div>
@@ -1317,18 +1339,20 @@ function isAutoNightTime() {
             const activeIndicator = document.getElementById('activeIndicator');
             const tabItems = document.querySelectorAll('.tab-item');
             const tabPanes = document.querySelectorAll('.content-pane');
-            
+            window.addEventListener('resize', updateIndicatorPosition);
             // 初始化指示器位置
-            function updateIndicatorPosition() {
-                const activeTab = document.querySelector('.tab-item.active');
-                if (!activeTab) return;
-                
-                const tabWidth = tabsContainer.offsetWidth / tabItems.length;
-                const tabIndex = Array.from(tabItems).indexOf(activeTab);
-                
-                activeIndicator.style.width = `${tabWidth}px`;
-                activeIndicator.style.transform = `translateX(${tabIndex * tabWidth}px)`;
-            }
+function updateIndicatorPosition() {
+    const activeTab = document.querySelector('.tab-item.active');
+    if (!activeTab) return;
+    
+    const tabRect = activeTab.getBoundingClientRect();
+    const containerRect = tabsContainer.getBoundingClientRect();
+    
+    // 添加5px的偏移量来补偿整体移动
+    const offsetLeft = 5;
+    activeIndicator.style.width = `${tabRect.width}px`;
+    activeIndicator.style.transform = `translateX(${tabRect.left - containerRect.left - offsetLeft}px)`;
+}
             
             // 切换选项卡
             function switchTab(tabName) {
