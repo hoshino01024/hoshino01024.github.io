@@ -1207,32 +1207,20 @@ settingsToggle.addEventListener('click', toggleSettings);
 settingsClose.addEventListener('click', closeSettings);
 
 // 自动夜间模式功能
-function checkAutoDarkMode() {
-    if (isAutoNightTime()) {
+function checkAutoDarkMode(initialCheck = false) {
+    const isNightTime = isAutoNightTime();
+    
+    if (isNightTime) {
         if (!body.classList.contains('dark-mode')) {
             enableDarkMode();
         }
     } else {
-        // 不在自动夜间时间段时不强制关闭夜间模式
-        // 仅当自动模式开启时才保持状态
-        if (autoDarkMode.checked && body.classList.contains('dark-mode')) {
+        // 只有在非初始检查时才可能切换回日间模式
+        // 这样可以避免刚开启自动模式时强制切换
+        if (!initialCheck && autoDarkMode.checked && body.classList.contains('dark-mode')) {
             disableDarkMode();
         }
     }
-}
-
-// 启用夜间模式
-function enableDarkMode() {
-    body.classList.add('dark-mode');
-    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    localStorage.setItem('darkMode', 'true');
-}
-
-// 禁用夜间模式
-function disableDarkMode() {
-    body.classList.remove('dark-mode');
-    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-    localStorage.setItem('darkMode', 'false');
 }
 
 // 自动夜间模式开关事件
@@ -1240,12 +1228,20 @@ autoDarkMode.addEventListener('change', function() {
     localStorage.setItem('autoDarkMode', this.checked);
     
     if (this.checked) {
-        checkAutoDarkMode();
+        // 开启时传入initialCheck=true，避免立即切换
+        checkAutoDarkMode(true);
     } else if (isAutoNightTime() && body.classList.contains('dark-mode')) {
         // 如果在夜间时间段且关闭自动模式，则切换回日间模式
         disableDarkMode();
     }
 });
+
+// 初始化自动夜间模式设置
+if (localStorage.getItem('autoDarkMode') === 'true') {
+    autoDarkMode.checked = true;
+    // 初始化时也传入initialCheck=true
+    checkAutoDarkMode(true);
+}
 
 // 初始化自动夜间模式设置
 if (localStorage.getItem('autoDarkMode') === 'true') {
