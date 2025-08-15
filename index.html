@@ -83,7 +83,11 @@
     transform: translateZ(0);
     will-change: transform;
     overflow: hidden;
-}
+    
+    @media (min-width: 768px) {
+        margin: 60px auto 30px;
+    }
+    }
 
         .dark-mode .container {
             background: var(--dark-card-bg);
@@ -99,7 +103,7 @@
     border-radius: var(--ios-radius);
     background: rgba(0,0,0,0.03);
     padding: 6px;
-    margin-left: -5px; 
+    margin-left: 0; 
     margin-right: 0; 
 }
         
@@ -126,7 +130,7 @@
 .active-indicator {
     position: absolute;
     top: 6px;
-    left: 5px; /* 添加这一行 */
+    left: 5px; 
     height: calc(100% - 12px);
     border-radius: var(--ios-radius);
     background: white;
@@ -137,11 +141,16 @@
     transition: 
         transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
         width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
         
         .dark-mode .active-indicator {
             background: rgba(255,255,255,0.1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: 
+        transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+        width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
         }
 
         /* 内容区域 */
@@ -312,7 +321,7 @@ transform: translateY(1px);
 .theme-btn {
     position: fixed;
     bottom: 90px;  
-    right: 120px;
+    right: 20px;
     width: 44px;
     height: 44px;
     background: var(--card-bg);
@@ -387,8 +396,16 @@ transform: rotate(30deg) scale(1.1);
             font-size: 0.9rem;
             border: 1px solid rgba(255,255,255,0.1);
             transform: translateZ(0);
+            
+            @media (min-width: 768px) {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        min-width: 200px;
+        text-align: center;
+    }
         }
-        
+
         /* iOS风格通知元素 */
         .ios-notification {
             background: white;
@@ -585,12 +602,11 @@ transform: rotate(30deg) scale(1.1);
             left: -30px;
             background: radial-gradient(circle, rgba(58,12,163,0.08) 0%, rgba(58,12,163,0) 70%);
         }
-        
-        /* 设置按钮样式 */
+
 .settings-btn {
     position: fixed;
-    top: 25px;
-    right: 25px;
+    top: 15px;
+    right: 15px;
     width: 44px;
     height: 44px;
     background: var(--card-bg);
@@ -634,6 +650,11 @@ transform: rotate(30deg) scale(1.1);
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
     border: 1px solid rgba(0,0,0,0.05);
+    
+    @media (min-width: 768px) {
+        top: 80px;
+        right: 25px;
+    }
 }
 
 .dark-mode .settings-panel {
@@ -1065,7 +1086,20 @@ body.dark-mode-transition {
                 animation: none !important;
             }
         }
-        
+
+/* 添加电脑端适配 */
+@media (min-width: 768px) {
+    .theme-btn {
+        top: 25px;
+        right: 80px; 
+        bottom: auto;
+    }
+    
+    .settings-btn {
+        top: 25px;
+        right: 25px;
+    }
+}
         /* 响应式设计 */
         @media (max-width: 600px) {
         .theme-btn {
@@ -1175,6 +1209,18 @@ body.dark-mode-transition {
     <h1><i class="fas fa-history"></i> 更新日志</h1>
     <div class="update-timeline">
         <!-- 新更新条目 -->
+        <div class="update-item">
+            <div class="update-date">
+                <i class="fas fa-calendar-day"></i> 2025-08-15 19:20
+            </div>
+            <div class="update-content">
+                <ul>
+                    <li>·更新了选项栏指示器的过渡动画</li>
+                    <li>·优化了电脑端体验和显示效果</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 之前的更新条目 -->
         <div class="update-item">
             <div class="update-date">
                 <i class="fas fa-calendar-day"></i> 2025-08-15 18:02
