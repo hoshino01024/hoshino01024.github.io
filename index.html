@@ -765,4 +765,500 @@ input:checked + .slider:before {
             }
             
             .countdown {
-                fo
+                font-size: 1.2rem;
+            }
+            
+            .countdown-numbers {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                min-width: 140px;
+                padding: 12px 16px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .tab-content {
+                height: 400px;
+            }
+            
+            .platform-item {
+                min-width: 120px;
+                padding: 10px 15px;
+                font-size: 0.85rem;
+            }
+            
+            .dev-info-title {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="simple-decoration decoration-1"></div>
+    <div class="simple-decoration decoration-2"></div>
+    
+    <div class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></div>
+    
+    <div class="container">
+        <!-- 选项卡导航 -->
+        <div class="tabs-container" id="tabsContainer">
+            <div class="active-indicator" id="activeIndicator"></div>
+            <div class="tab-item active" data-tab="notice">九年级通知</div>
+            <div class="tab-item" data-tab="dev">开发信息</div>
+        </div>
+        
+        <!-- 选项卡内容 -->
+        <div class="tab-content" id="tabContent">
+            <!-- 通知页面 -->
+            <div class="content-pane active" id="noticePane">
+                <h1><i class="fas fa-bell"></i> 九年级重要通知</h1>
+                
+                <div class="countdown">
+                    <div>距离九年级托管开始还有：</div>
+                    <div>
+                        <span class="countdown-numbers" id="days">--</span>天 
+                        <span class="countdown-numbers" id="hours">--</span>小时
+                    </div>
+                    <div style="font-size: 1rem; margin-top: 10px; color: #666;">
+                        2025年8月20日正式开始托管
+                    </div>
+                </div>
+                
+                <div class="placeholder">
+                    <p><i class="fas fa-tools"></i> 其他功能开发中，敬请期待...</p>
+                </div>
+                
+                <div class="ios-notification">
+                    <h3><i class="fas fa-info-circle"></i> 性能优化说明</h3>
+                    <p>本次更新已移除可能导致卡顿的毛玻璃效果，优化了动画性能，确保页面在各种设备上流畅运行。</p>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="mailto:2709923043@qq.com" class="btn btn-primary">
+                        <i class="fas fa-envelope"></i> 联系开发者
+                    </a>
+                    <a href="https://u7t.cn/902app" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> 下载应用
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 开发信息页面 -->
+            <div class="content-pane" id="devPane">
+                <div class="dev-info-panel">
+                    <div class="dev-info-title">技术支持平台</div>
+                    
+                    <div class="platform-list">
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-globe"></i></span>阿里云
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-rocket"></i></span>腾讯云
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-lock"></i></span>Cloudflare
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-box"></i></span>Vercel
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-github"></i></span>GitHub
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-vuejs"></i></span>Vue.js
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fab fa-js"></i></span>JavaScript
+                        </div>
+                        <div class="platform-item">
+                            <span class="platform-icon"><i class="fas fa-server"></i></span>Node.js
+                        </div>
+                    </div>
+                    
+                    <div class="dev-contact">
+                        <h3><i class="fas fa-headset"></i> 开发者联系方式</h3>
+                        <p>如果您有任何问题或建议，请随时联系我们</p>
+                        <a href="mailto:2709923043@qq.com">
+                            <i class="fas fa-envelope"></i> 2709923043@qq.com
+                        </a>
+                    </div>
+                    
+                    <div class="copyright">
+                        © 2025 Hoshino Studio | 保留所有权利
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 访问计数器 -->
+    <div id="visit-counter">
+        <i class="fas fa-users"></i> 总访问量: <span id="count">加载中...</span>
+    </div>
+    
+    <!-- 设置按钮（右上角） -->
+<div class="settings-btn" id="settingsToggle">
+    <i class="fas fa-cog"></i>
+</div>
+
+<!-- 设置面板 -->
+<div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">
+        <h3><i class="fas fa-sliders-h"></i> 设置</h3>
+        <button class="settings-close" id="settingsClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="setting-item">
+        <div class="setting-label">
+            <i class="fas fa-moon"></i>
+            <span>自动夜间模式</span>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="autoDarkMode">
+            <span class="slider"></span>
+        </label>
+    </div>
+    
+    <div class="setting-desc">
+        <p><i class="fas fa-info-circle"></i> 晚上 20:00 至次日 05:00 自动开启</p>
+    </div>
+</div>
+    <script>
+        // 性能优化：减少重绘和重排
+        let lastScrollY = 0;
+        let ticking = false;
+        
+const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+
+    // 检查本地存储中的主题设置
+    if (localStorage.getItem('darkMode') === 'true') {
+        body.classList.add('dark-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+
+    // 主题切换函数
+function toggleTheme() {
+    // 添加过渡类
+    body.classList.add('dark-mode-transition');
+    
+    // 添加按钮动画
+    themeToggle.classList.add('theme-switch-animation');
+    
+    // 检查当前时间是否在自动夜间模式时间段内
+    const now = new Date();
+    const hours = now.getHours();
+    const isAutoNightTime = hours >= 20 || hours < 5;
+    
+    // 如果在自动夜间模式时间段内，则关闭自动模式
+    if (isAutoNightTime && autoDarkMode.checked) {
+        autoDarkMode.checked = false;
+        localStorage.setItem('autoDarkMode', 'false');
+    }
+    
+    // 切换主题
+    body.classList.toggle('dark-mode');
+    const isDarkMode = body.classList.contains('dark-mode');
+    
+    // 切换 Font Awesome 图标
+    themeToggle.innerHTML = isDarkMode
+        ? '<i class="fas fa-sun"></i>'
+        : '<i class="fas fa-moon"></i>';
+    
+    // 存储当前模式
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    // 移除过渡类（延迟执行确保动画完成）
+    setTimeout(() => {
+        body.classList.remove('dark-mode-transition');
+        themeToggle.classList.remove('theme-switch-animation');
+    }, 800);
+}
+
+function isAutoNightTime() {
+    const now = new Date();
+    const hours = now.getHours();
+    return hours >= 20 || hours < 5; // 20:00-5:00
+}
+
+    // 绑定点击事件
+    themeToggle.addEventListener('click', toggleTheme);
+
+        // 倒计时功能（优化版）
+        function updateCountdown() {
+            const daysEl = document.getElementById('days');
+            const hoursEl = document.getElementById('hours');
+            
+            if (!daysEl || !hoursEl) return;
+            
+            // 设置开学日期为2025年8月20日
+            const startDate = new Date(2025, 7, 20);
+            const now = new Date();
+            
+            if (now >= startDate) {
+                if (daysEl.textContent !== '已') {
+                    daysEl.textContent = '已';
+                    hoursEl.textContent = '开学';
+                }
+                return;
+            }
+
+            const diff = startDate - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            // 仅当值变化时更新DOM
+            if (daysEl.textContent != days) daysEl.textContent = days;
+            if (hoursEl.textContent != hours) hoursEl.textContent = hours;
+        }
+
+        // 访问统计（优化版）
+        const JSONBIN_CONFIG = {
+            binId: "689bf9aeae596e708fc8b020",
+            apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
+        };
+
+        async function updateCounter() {
+            const counterElement = document.getElementById("count");
+            if (!counterElement) return;
+            
+            // 本地回退方案
+            const localCount = localStorage.getItem('localVisitCount') || 0;
+            
+            // 会话级限制
+            if (sessionStorage.getItem('hasCounted')) {
+                counterElement.textContent = localStorage.getItem('lastCount') || localCount;
+                return;
+            }
+            
+            try {
+                const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
+                    headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
+                });
+                
+                if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
+                
+                const { record } = await getRes.json();
+                
+                const newCount = (record.count || 0) + 1;
+                counterElement.textContent = newCount;
+                localStorage.setItem('lastCount', newCount);
+                localStorage.setItem('localVisitCount', newCount);
+                sessionStorage.setItem('hasCounted', 'true');
+                localStorage.setItem('lastCountTime', Date.now());
+                
+                // 异步更新服务器计数（不阻塞UI）
+                setTimeout(async () => {
+                    try {
+                        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
+                            method: "PUT",
+                            headers: { 
+                                "Content-Type": "application/json",
+                                "X-Master-Key": JSONBIN_CONFIG.apiKey 
+                            },
+                            body: JSON.stringify({ 
+                                count: newCount,
+                                lastUpdate: new Date().toISOString() 
+                            })
+                        });
+                    } catch (error) {
+                        console.error("异步更新计数失败:", error);
+                    }
+                }, 1000);
+            } catch (error) {
+                console.error("统计失败:", error);
+                // 使用本地存储的回退值
+                const newLocalCount = parseInt(localCount) + 1;
+                counterElement.textContent = newLocalCount;
+                localStorage.setItem('localVisitCount', newLocalCount);
+                sessionStorage.setItem('hasCounted', 'true');
+            }
+        }
+        
+        // 选项卡切换功能
+        function initTabs() {
+            const tabsContainer = document.getElementById('tabsContainer');
+            const activeIndicator = document.getElementById('activeIndicator');
+            const tabItems = document.querySelectorAll('.tab-item');
+            const tabPanes = document.querySelectorAll('.content-pane');
+            
+            // 初始化指示器位置
+            function updateIndicatorPosition() {
+                const activeTab = document.querySelector('.tab-item.active');
+                if (!activeTab) return;
+                
+                const tabWidth = tabsContainer.offsetWidth / tabItems.length;
+                const tabIndex = Array.from(tabItems).indexOf(activeTab);
+                
+                activeIndicator.style.width = `${tabWidth}px`;
+                activeIndicator.style.transform = `translateX(${tabIndex * tabWidth}px)`;
+            }
+            
+            // 切换选项卡
+            function switchTab(tabName) {
+                // 更新选项卡激活状态
+                tabItems.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.tab === tabName);
+                });
+                
+                // 更新内容面板
+                tabPanes.forEach(pane => {
+                    pane.classList.toggle('active', pane.id === `${tabName}Pane`);
+                });
+                
+                // 更新指示器位置
+                updateIndicatorPosition();
+            }
+            
+            // 绑定选项卡点击事件
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+            
+            // 初始化指示器
+            updateIndicatorPosition();
+            
+            // 添加滑动功能
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let isSwiping = false;
+            
+            tabsContainer.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                isSwiping = true;
+            }, { passive: true });
+            
+            tabsContainer.addEventListener('touchmove', (e) => {
+                if (!isSwiping) return;
+                currentX = e.touches[0].clientX;
+            }, { passive: true });
+            
+            tabsContainer.addEventListener('touchend', () => {
+                if (!isSwiping) return;
+                
+                const diffX = startX - currentX;
+                
+                // 水平滑动距离大于50px才切换
+                if (Math.abs(diffX) > 50) {
+                    const activeTab = document.querySelector('.tab-item.active');
+                    const tabIndex = Array.from(tabItems).indexOf(activeTab);
+                    
+                    if (diffX > 0 && tabIndex < tabItems.length - 1) {
+                        // 向左滑动
+                        switchTab(tabItems[tabIndex + 1].dataset.tab);
+                    } else if (diffX < 0 && tabIndex > 0) {
+                        // 向右滑动
+                        switchTab(tabItems[tabIndex - 1].dataset.tab);
+                    }
+                }
+                
+                isSwiping = false;
+            }, { passive: true });
+        }
+
+        // 初始化所有功能
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCountdown();
+            // 降低倒计时的更新频率
+            setInterval(updateCountdown, 5000);
+            updateCounter();
+            initTabs();
+        });
+        
+        // 添加性能优化：减少滚动事件处理
+        window.addEventListener('scroll', function() {
+            lastScrollY = window.scrollY;
+            if (!ticking) {
+                window.requestAnimationFrame(function() {
+                    // 这里可以添加滚动相关的处理
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+        
+        // 设置面板功能
+const settingsToggle = document.getElementById('settingsToggle');
+const settingsPanel = document.getElementById('settingsPanel');
+const settingsClose = document.getElementById('settingsClose');
+const autoDarkMode = document.getElementById('autoDarkMode');
+
+// 切换设置面板
+function toggleSettings() {
+    settingsPanel.classList.toggle('active');
+}
+
+// 关闭设置面板
+function closeSettings() {
+    settingsPanel.classList.remove('active');
+}
+
+settingsToggle.addEventListener('click', toggleSettings);
+settingsClose.addEventListener('click', closeSettings);
+
+// 自动夜间模式功能
+function checkAutoDarkMode() {
+    if (isAutoNightTime()) {
+        if (!body.classList.contains('dark-mode')) {
+            enableDarkMode();
+        }
+    } else {
+        // 不在自动夜间时间段时不强制关闭夜间模式
+        // 仅当自动模式开启时才保持状态
+        if (autoDarkMode.checked && body.classList.contains('dark-mode')) {
+            disableDarkMode();
+        }
+    }
+}
+
+// 启用夜间模式
+function enableDarkMode() {
+    body.classList.add('dark-mode');
+    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    localStorage.setItem('darkMode', 'true');
+}
+
+// 禁用夜间模式
+function disableDarkMode() {
+    body.classList.remove('dark-mode');
+    themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+    localStorage.setItem('darkMode', 'false');
+}
+
+// 自动夜间模式开关事件
+autoDarkMode.addEventListener('change', function() {
+    localStorage.setItem('autoDarkMode', this.checked);
+    
+    if (this.checked) {
+        checkAutoDarkMode();
+    } else if (isAutoNightTime() && body.classList.contains('dark-mode')) {
+        // 如果在夜间时间段且关闭自动模式，则切换回日间模式
+        disableDarkMode();
+    }
+});
+
+// 初始化自动夜间模式设置
+if (localStorage.getItem('autoDarkMode') === 'true') {
+    autoDarkMode.checked = true;
+    checkAutoDarkMode();
+}
+
+// 每分钟检查一次时间
+setInterval(() => {
+    if (autoDarkMode.checked) {
+        checkAutoDarkMode();
+    }
+}, 60000);
+    </script>
+</body>
+</html>
