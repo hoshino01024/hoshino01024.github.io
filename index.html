@@ -49,13 +49,27 @@
             position: relative;
             overflow-x: hidden;
             will-change: transform;
+            transition: 
+            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+            color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+            transition: 
+            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+            color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
         
         body.dark-mode {
             background: linear-gradient(135deg, #0f172a, #1e293b);
             color: var(--dark-text-color);
+            transition: 
+            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+            color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
 
+        .simple-decoration {
+            transition: 
+            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+            opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
         .container {
             background: var(--card-bg);
             border-radius: var(--ios-card-radius);
@@ -288,33 +302,51 @@ transform: translateY(1px);
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .theme-btn {
-            position: fixed;
-            bottom: 90px;  
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #4361ee, #3a0ca3);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
-            cursor: pointer;
-            z-index: 100;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: none;
-            transform: translateZ(0);
-            will-change: transform;
-        }
+.theme-btn {
+    position: fixed;
+    bottom: 90px;  
+    right: 120px;
+    width: 44px;
+    height: 44px;
+    background: var(--card-bg);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: var(--ios-shadow);
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+    transform: none !important;
+}
 
-        .theme-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
-        }
+.theme-btn:hover {
+transform: rotate(30deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
 
+.dark-mode .theme-btn {
+    background: var(--dark-card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #5e72e4;
+}
+
+.settings-btn, 
+.theme-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+    line-height: 44px; 
+    text-align: center; 
+}
+
+.theme-btn i {
+    transform: scale(0.95); 
+    display: inline-block; 
+}
         .placeholder {
             margin: 30px 0;
             padding: 25px;
@@ -501,7 +533,7 @@ transform: translateY(1px);
 }
 
 /* 为深色模式切换添加动画效果 */
-body.dark-mode-transition {
+        body.dark-mode-transition {
     transition: 
         background 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
         color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -573,6 +605,7 @@ body.dark-mode-transition {
     z-index: 100;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 1px solid rgba(0,0,0,0.05);
+    transform: none !important;
 }
 
 .dark-mode .settings-btn {
@@ -743,6 +776,172 @@ input:focus + .slider {
 input:checked + .slider:before {
     transform: translateX(26px);
 }
+
+/* 更新日志时间线样式 */
+.update-timeline {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-top: 20px;
+}
+
+.update-item {
+    background: var(--card-bg);
+    border-radius: var(--ios-radius);
+    padding: 18px;
+    margin-bottom: 15px;
+    box-shadow: var(--ios-shadow);
+    border-left: 4px solid var(--primary-color);
+    position: relative;
+}
+
+.dark-mode .update-item {
+    background: var(--dark-card-bg);
+    box-shadow: var(--ios-dark-shadow);
+}
+
+.update-date {
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.update-date i {
+    margin-right: 10px;
+}
+
+.update-content {
+    line-height: 1.6;
+}
+
+.update-content ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+/* 滚动条样式 */
+.update-timeline::-webkit-scrollbar {
+    width: 6px;
+}
+
+.update-timeline::-webkit-scrollbar-thumb {
+    background: rgba(67, 97, 238, 0.3);
+    border-radius: 3px;
+}
+
+.dark-mode .update-timeline::-webkit-scrollbar-thumb {
+    background: rgba(124, 139, 255, 0.4);
+}
+
+/* 更新日志时间线增强样式 */
+.update-timeline {
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 8px;
+    margin: 15px 0;
+}
+
+.update-item {
+    background: var(--card-bg);
+    border-radius: var(--ios-radius);
+    padding: 18px;
+    margin-bottom: 15px;
+    box-shadow: var(--ios-shadow);
+    border-left: 4px solid var(--primary-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.update-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.update-date {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+}
+
+.update-date i {
+    margin-right: 10px;
+    background: rgba(67, 97, 238, 0.1);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.update-content {
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.update-content ul {
+    padding-left: 20px;
+    margin: 10px 0 0;
+}
+
+.update-content li {
+    margin-bottom: 6px;
+}
+
+.dark-mode .update-content {
+    color: var(--dark-text-color);
+}
+
+.settings-btn:hover:not(.active) {
+    transform: rotate(30deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.settings-btn.active {
+    transform: rotate(30deg) scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+}
+
+/* 激活状态样式 */
+.settings-btn.active, 
+.theme-btn.active {
+    transform: rotate(30deg) scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+}
+
+/* 悬停状态样式 */
+.settings-btn:hover:not(.active),
+.theme-btn:hover:not(.active) {
+    transform: rotate(30deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.container,
+.countdown,
+.placeholder,
+.ios-notification,
+.platform-item,
+.dev-contact,
+.tabs-container,
+.tab-item,
+.btn {
+    transition: 
+        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* 优化夜间模式过渡 */
+body.dark-mode-transition {
+    transition: 
+        background 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+        color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
         .dark-mode .simple-decoration {
             opacity: 0.3;
         }
@@ -757,13 +956,11 @@ input:checked + .slider:before {
         
         /* 响应式设计 */
         @media (max-width: 600px) {
-            .theme-btn {
-                width: 48px;
-                height: 48px;
-                bottom: 80px;
-                font-size: 20px;
-            }
-            
+        .theme-btn {
+        top: 15px;
+        right: 70px;
+        bottom: auto; /* 移除原来的bottom定位 */
+        }
             .countdown {
                 font-size: 1.2rem;
             }
@@ -794,6 +991,19 @@ input:checked + .slider:before {
             .dev-info-title {
                 font-size: 1.1rem;
             }
+            
+            .settings-btn {
+            top: 15px;
+            right: 15px;
+            }
+            
+            .settings-btn, 
+            .theme-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            line-height: 40px;
+            }
         }
     </style>
 </head>
@@ -805,11 +1015,12 @@ input:checked + .slider:before {
     
     <div class="container">
         <!-- 选项卡导航 -->
-        <div class="tabs-container" id="tabsContainer">
-            <div class="active-indicator" id="activeIndicator"></div>
-            <div class="tab-item active" data-tab="notice">九年级通知</div>
-            <div class="tab-item" data-tab="dev">开发信息</div>
-        </div>
+<div class="tabs-container" id="tabsContainer">
+    <div class="active-indicator" id="activeIndicator"></div>
+    <div class="tab-item active" data-tab="notice">九年级通知</div>
+    <div class="tab-item" data-tab="updates">更新日志</div> <!-- 新增 -->
+    <div class="tab-item" data-tab="dev">开发信息</div>
+</div>
         
         <!-- 选项卡内容 -->
         <div class="tab-content" id="tabContent">
@@ -846,7 +1057,26 @@ input:checked + .slider:before {
                     </a>
                 </div>
             </div>
-            
+    <!-- 原有面板保持不变... -->
+<!-- 更新日志面板 -->
+    <div class="content-pane" id="updatesPane">
+        <h1><i class="fas fa-history"></i> 更新日志</h1>
+        <div class="update-timeline">
+            <div class="update-item">
+                <div class="update-date">
+                    <i class="fas fa-calendar-day"></i> 2025-08-15
+                </div>
+                <div class="update-content">
+                    <p>本次更新内容：</p>
+                    <ul>
+                        <li>新增更新日志功能</li>
+                        <li>修复了夜间模式切换的问题</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- 可以继续添加更多更新项 -->
+        </div>
+    </div>
             <!-- 开发信息页面 -->
             <div class="content-pane" id="devPane">
                 <div class="dev-info-panel">
@@ -949,7 +1179,7 @@ function toggleTheme() {
     body.classList.add('dark-mode-transition');
     
     // 添加按钮动画
-    themeToggle.classList.add('theme-switch-animation');
+    themeToggle.classList.add('active');
     
     // 检查当前时间是否在自动夜间模式时间段内
     const now = new Date();
@@ -966,18 +1196,18 @@ function toggleTheme() {
     body.classList.toggle('dark-mode');
     const isDarkMode = body.classList.contains('dark-mode');
     
-    // 切换 Font Awesome 图标
-    themeToggle.innerHTML = isDarkMode
-        ? '<i class="fas fa-sun"></i>'
+    // 切换图标
+    themeToggle.innerHTML = isDarkMode 
+        ? '<i class="fas fa-sun"></i>' 
         : '<i class="fas fa-moon"></i>';
     
     // 存储当前模式
     localStorage.setItem('darkMode', isDarkMode);
     
-    // 移除过渡类（延迟执行确保动画完成）
+    // 延迟移除状态
     setTimeout(() => {
+        themeToggle.classList.remove('active');
         body.classList.remove('dark-mode-transition');
-        themeToggle.classList.remove('theme-switch-animation');
     }, 800);
 }
 
@@ -1166,95 +1396,141 @@ function isAutoNightTime() {
             }, { passive: true });
         }
 
-        // 初始化所有功能
-        document.addEventListener('DOMContentLoaded', () => {
-            updateCountdown();
-            // 降低倒计时的更新频率
-            setInterval(updateCountdown, 5000);
-            updateCounter();
-            initTabs();
-        });
-        
-        // 添加性能优化：减少滚动事件处理
-        window.addEventListener('scroll', function() {
-            lastScrollY = window.scrollY;
-            if (!ticking) {
-                window.requestAnimationFrame(function() {
-                    // 这里可以添加滚动相关的处理
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        }, { passive: true });
-        
-        // 设置面板功能
+// 初始化所有功能
+document.addEventListener('DOMContentLoaded', () => {
+    updateCountdown();
+    setInterval(updateCountdown, 5000);
+    updateCounter();
+    initTabs();
+    
+// 设置面板功能
 const settingsToggle = document.getElementById('settingsToggle');
 const settingsPanel = document.getElementById('settingsPanel');
 const settingsClose = document.getElementById('settingsClose');
 const autoDarkMode = document.getElementById('autoDarkMode');
 
-// 切换设置面板
-function toggleSettings() {
-    settingsPanel.classList.toggle('active');
-}
+// 夜间模式按钮
+const themeToggle = document.getElementById('themeToggle');
 
 // 关闭设置面板
 function closeSettings() {
     settingsPanel.classList.remove('active');
+    // 延迟移除active类，确保动画完成
+    setTimeout(() => {
+        settingsToggle.classList.remove('active');
+    }, 300);
 }
 
-settingsToggle.addEventListener('click', toggleSettings);
-settingsClose.addEventListener('click', closeSettings);
+// 打开设置面板
+function openSettings() {
+    settingsPanel.classList.add('active');
+    settingsToggle.classList.add('active');
+}
 
-// 自动夜间模式功能
-function checkAutoDarkMode(initialCheck = false) {
-    const isNightTime = isAutoNightTime();
-    
-    if (isNightTime) {
-        if (!body.classList.contains('dark-mode')) {
-            enableDarkMode();
-        }
+// 切换设置面板状态
+function toggleSettings() {
+    if (settingsPanel.classList.contains('active')) {
+        closeSettings();
     } else {
-        // 只有在非初始检查时才可能切换回日间模式
-        // 这样可以避免刚开启自动模式时强制切换
-        if (!initialCheck && autoDarkMode.checked && body.classList.contains('dark-mode')) {
-            disableDarkMode();
-        }
+        openSettings();
     }
 }
 
-// 自动夜间模式开关事件
-autoDarkMode.addEventListener('change', function() {
-    localStorage.setItem('autoDarkMode', this.checked);
+// 绑定设置按钮事件
+settingsToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    e.preventDefault();
     
-    if (this.checked) {
-        // 开启时传入initialCheck=true，避免立即切换
-        checkAutoDarkMode(true);
-    } else if (isAutoNightTime() && body.classList.contains('dark-mode')) {
-        // 如果在夜间时间段且关闭自动模式，则切换回日间模式
-        disableDarkMode();
+    // 立即切换active状态
+    if (settingsPanel.classList.contains('active')) {
+        settingsToggle.classList.remove('active');
+    } else {
+        settingsToggle.classList.add('active');
+    }
+    
+    toggleSettings();
+});
+
+// 绑定关闭按钮事件
+settingsClose.addEventListener('click', function(e) {
+    e.stopPropagation();
+    closeSettings();
+});
+
+// 点击外部关闭面板
+document.addEventListener('click', function(e) {
+    if (settingsPanel.classList.contains('active') && 
+        !settingsPanel.contains(e.target) && 
+        e.target !== settingsToggle) {
+        closeSettings();
     }
 });
 
-// 初始化自动夜间模式设置
-if (localStorage.getItem('autoDarkMode') === 'true') {
-    autoDarkMode.checked = true;
-    // 初始化时也传入initialCheck=true
-    checkAutoDarkMode(true);
+// 修改夜间模式切换函数
+function toggleTheme() {
+    // 添加按钮动画
+    themeToggle.classList.add('active');
+    
+    // 切换主题
+    body.classList.toggle('dark-mode');
+    const isDarkMode = body.classList.contains('dark-mode');
+    
+    // 切换图标
+    themeToggle.innerHTML = isDarkMode 
+        ? '<i class="fas fa-sun"></i>' 
+        : '<i class="fas fa-moon"></i>';
+    
+    // 存储状态
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    // 延迟移除active状态
+    setTimeout(() => {
+        themeToggle.classList.remove('active');
+    }, 300);
 }
 
-// 初始化自动夜间模式设置
-if (localStorage.getItem('autoDarkMode') === 'true') {
-    autoDarkMode.checked = true;
-    checkAutoDarkMode();
-}
+// 阻止面板内部点击冒泡
+settingsPanel.addEventListener('click', function(e) {
+    e.stopPropagation();
+});
 
-// 每分钟检查一次时间
-setInterval(() => {
-    if (autoDarkMode.checked) {
-        checkAutoDarkMode();
+    // 自动夜间模式功能
+    function checkAutoDarkMode(initialCheck = false) {
+        const isNightTime = isAutoNightTime();
+        
+        if (isNightTime) {
+            if (!body.classList.contains('dark-mode')) {
+                enableDarkMode();
+            }
+        } else {
+            if (!initialCheck && autoDarkMode.checked && body.classList.contains('dark-mode')) {
+                disableDarkMode();
+            }
+        }
     }
-}, 60000);
+
+    // 初始化自动夜间模式设置
+    if (localStorage.getItem('autoDarkMode') === 'true') {
+        autoDarkMode.checked = true;
+        checkAutoDarkMode(true);
+    }
+
+    autoDarkMode.addEventListener('change', function() {
+        localStorage.setItem('autoDarkMode', this.checked);
+        if (this.checked) {
+            checkAutoDarkMode(true);
+        } else if (isAutoNightTime() && body.classList.contains('dark-mode')) {
+            disableDarkMode();
+        }
+    });
+
+    // 每分钟检查一次时间
+    setInterval(() => {
+        if (autoDarkMode.checked) {
+            checkAutoDarkMode();
+        }
+    }, 60000);
+});
     </script>
 </body>
 </html>
