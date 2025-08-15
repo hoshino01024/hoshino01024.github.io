@@ -539,13 +539,6 @@ transform: rotate(30deg) scale(1.1);
         box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* 为深色模式切换添加动画效果 */
-        body.dark-mode-transition {
-    transition: 
-        background 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
-        color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
 /* 添加主题切换动画 */
 @keyframes themeSwitch {
     0% {
@@ -800,32 +793,61 @@ input:checked + .slider:before {
     box-shadow: var(--ios-shadow);
     border-left: 4px solid var(--primary-color);
     position: relative;
+    transition: 
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .dark-mode .update-item {
     background: var(--dark-card-bg);
     box-shadow: var(--ios-dark-shadow);
+    border-left-color: #5e72e4;
 }
 
 .update-date {
-    font-weight: bold;
+    font-weight: 600;
     color: var(--primary-color);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
+    font-size: 1.1rem;
 }
 
 .update-date i {
     margin-right: 10px;
+    background: rgba(67, 97, 238, 0.1);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 
+        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.dark-mode .update-date i {
+    background: rgba(79, 70, 229, 0.15);
+    color: #5e72e4;
 }
 
 .update-content {
-    line-height: 1.6;
+    line-height: 1.5;
+    color: var(--text-color);
+    transition: color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    font-size: 0.95rem;
+}
+
+.dark-mode .update-content {
+    color: var(--dark-text-color);
 }
 
 .update-content ul {
-    padding-left: 20px;
-    margin-top: 10px;
+    padding-left: 18px;
+    margin-top: 8px;
 }
 
 /* 滚动条样式 */
@@ -853,7 +875,7 @@ input:checked + .slider:before {
 .update-item {
     background: var(--card-bg);
     border-radius: var(--ios-radius);
-    padding: 18px;
+    padding: 14px 16px;
     margin-bottom: 15px;
     box-shadow: var(--ios-shadow);
     border-left: 4px solid var(--primary-color);
@@ -861,8 +883,25 @@ input:checked + .slider:before {
 }
 
 .update-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: 
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.dark-mode .update-item:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.update-date,
+.update-content {
+    transition: color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.dark-mode .update-date,
+.dark-mode .update-content {
+    color: var(--dark-text-color);
 }
 
 .update-date {
@@ -871,7 +910,7 @@ input:checked + .slider:before {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    font-size: 1.1rem;
+    font-size: 1.0rem;
 }
 
 .update-date i {
@@ -888,15 +927,50 @@ input:checked + .slider:before {
 .update-content {
     line-height: 1.6;
     color: var(--text-color);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    overflow-x: auto; 
+    white-space: nowrap; 
+    padding-bottom: 8px; 
+    -webkit-overflow-scrolling: touch; 
+}
+
+.update-content::-webkit-scrollbar {
+    height: 4px;
+}
+
+.dark-mode .update-content::-webkit-scrollbar-thumb {
+    background: rgba(124, 139, 255, 0.4);
+}
+
+.update-content::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+}
+
+.dark-mode .update-content::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+}
+
+.update-content::-webkit-scrollbar-thumb {
+    background: rgba(67, 97, 238, 0.3);
+    border-radius: 2px;
 }
 
 .update-content ul {
-    padding-left: 20px;
     margin: 10px 0 0;
+    margin-top: 8px;
+    padding-left: 20px;
+    display: inline-block;
+    min-width: 100%;
 }
 
 .update-content li {
     margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    
 }
 
 .dark-mode .update-content {
@@ -943,9 +1017,27 @@ input:checked + .slider:before {
         box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
+.update-item,
+.update-date,
+.update-content,
+.update-content ul,
+.update-content li {
+    transition: 
+        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.update-date i {
+    transition: 
+        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
 .tab-item {
     flex: 1;
-    min-width: 0; /* 添加这一行防止内容溢出 */
+    min-width: 0; 
     padding: 14px 0;
     border-radius: var(--ios-radius);
     font-weight: 600;
@@ -1079,27 +1171,41 @@ body.dark-mode-transition {
             </div>
     <!-- 原有面板保持不变... -->
 <!-- 更新日志面板 -->
-    <div class="content-pane" id="updatesPane">
-        <h1><i class="fas fa-history"></i> 更新日志</h1>
-        <div class="update-timeline">
-            <div class="update-item">
-                <div class="update-date">
-                    <i class="fas fa-calendar-day"></i> 2025-08-15 17:02
-                </div>
-                <div class="update-content">
-                    <p>本次更新内容：</p>
-                    <ul>
-                        <li>新增更新日志功能</li>
-                        <li>修复了夜间模式切换的问题</li>
-                        <li>优化了设置面板的展示效果</li>
-                        <li>修复了选项指示器偏右的问题</li>
-                        <li>添加了部分过渡动画</li>
-                    </ul>
-                </div>
+<div class="content-pane" id="updatesPane">
+    <h1><i class="fas fa-history"></i> 更新日志</h1>
+    <div class="update-timeline">
+        <!-- 新更新条目 -->
+        <div class="update-item">
+            <div class="update-date">
+                <i class="fas fa-calendar-day"></i> 2025-08-15 17:25
             </div>
-            <!-- 可以继续添加更多更新项 -->
+            <div class="update-content">
+                <ul>
+                    <li>·新增了更新日志的左右滑动功能</li>
+                    <li>·添加了大多数界面的过渡动画</li>
+                    <li>·优化了夜间模式切换的过渡效果</li>
+                    <li>·改进了选项卡切换的动画流畅度</li>
+                    <li>·增强了文本框的过渡动画一致性</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 原更新条目 -->
+        <div class="update-item">
+            <div class="update-date">
+                <i class="fas fa-calendar-day"></i> 2025-08-15 17:02
+            </div>
+            <div class="update-content">
+                <ul>
+                    <li>·新增更新日志功能</li>
+                    <li>·修复了夜间模式切换的问题</li>
+                    <li>·优化了设置面板的展示效果</li>
+                    <li>·修复了选项指示器偏右的问题</li>
+                    <li>·添加了部分过渡动画</li>
+                </ul>
+            </div>
         </div>
     </div>
+</div>
             <!-- 开发信息页面 -->
             <div class="content-pane" id="devPane">
                 <div class="dev-info-panel">
@@ -1200,6 +1306,7 @@ const body = document.body;
 function toggleTheme() {
     // 添加过渡类
     body.classList.add('dark-mode-transition');
+    document.body.classList.add('dark-mode-transition');
     
     // 添加按钮动画
     themeToggle.classList.add('active');
