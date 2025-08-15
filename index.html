@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>卧中九年级重要通知 - 选项卡优化版</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <style>
         :root {
             --primary-color: #4361ee;
@@ -610,7 +612,7 @@ body.dark-mode-transition {
     <div class="simple-decoration decoration-1"></div>
     <div class="simple-decoration decoration-2"></div>
     
-    <div class="theme-btn" id="themeToggle">🌙</div>
+    <div class="theme-btn" id="themeToggle"><i class="fas fa-moon"></i></div>
     
     <div class="container">
         <!-- 选项卡导航 -->
@@ -714,39 +716,44 @@ body.dark-mode-transition {
         let lastScrollY = 0;
         let ticking = false;
         
-        // 主题切换功能
-        const themeToggle = document.getElementById('themeToggle');
-        const body = document.body;
-        
-        // 检查本地存储中的主题设置
-        if (localStorage.getItem('darkMode') === 'true') {
-            body.classList.add('dark-mode');
-            themeToggle.textContent = '☀️';
-        }
-        
-        // 主题切换函数
-function toggleTheme() {
-    // 添加过渡类
-    body.classList.add('dark-mode-transition');
-    
-    // 添加按钮动画
-    themeToggle.classList.add('theme-switch-animation');
-    
-    // 切换主题
-    body.classList.toggle('dark-mode');
-    const isDarkMode = body.classList.contains('dark-mode');
-    themeToggle.textContent = isDarkMode ? '☀️' : '🌙';
-    localStorage.setItem('darkMode', isDarkMode);
-    
-    // 移除过渡类（延迟执行确保动画完成）
-    setTimeout(() => {
-        body.classList.remove('dark-mode-transition');
-        themeToggle.classList.remove('theme-switch-animation');
-    }, 800);
-}
-        
-        // 绑定点击事件
-        themeToggle.addEventListener('click', toggleTheme);
+const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+
+    // 检查本地存储中的主题设置
+    if (localStorage.getItem('darkMode') === 'true') {
+        body.classList.add('dark-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+
+    // 主题切换函数
+    function toggleTheme() {
+        // 添加过渡类
+        body.classList.add('dark-mode-transition');
+
+        // 添加按钮动画
+        themeToggle.classList.add('theme-switch-animation');
+
+        // 切换主题
+        body.classList.toggle('dark-mode');
+        const isDarkMode = body.classList.contains('dark-mode');
+
+        // 切换 Font Awesome 图标
+        themeToggle.innerHTML = isDarkMode
+            ? '<i class="fas fa-sun"></i>'
+            : '<i class="fas fa-moon"></i>';
+
+        // 存储当前模式
+        localStorage.setItem('darkMode', isDarkMode);
+
+        // 移除过渡类（延迟执行确保动画完成）
+        setTimeout(() => {
+            body.classList.remove('dark-mode-transition');
+            themeToggle.classList.remove('theme-switch-animation');
+        }, 800);
+    }
+
+    // 绑定点击事件
+    themeToggle.addEventListener('click', toggleTheme);
 
         // 倒计时功能（优化版）
         function updateCountdown() {
