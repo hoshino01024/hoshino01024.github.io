@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>卧中九年级重要通知 - 选项卡优化版</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
     <style>
         :root {
             --primary-color: #4361ee;
@@ -50,44 +48,38 @@
             overflow-x: hidden;
             will-change: transform;
             transition: 
-            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-            color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-            transition: 
-            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-            color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+                background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
         
         body.dark-mode {
             background: linear-gradient(135deg, #0f172a, #1e293b);
             color: var(--dark-text-color);
             transition: 
-            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-            color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+                background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
 
         .simple-decoration {
             transition: 
-            background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-            opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+                background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
-.container {
-    background: var(--card-bg);
-    border-radius: var(--ios-card-radius);
-    box-shadow: var(--ios-shadow);
-    padding: 20px 20px 20px 25px; /* 修改这一行 */
-    text-align: center;
-    position: relative;
-    z-index: 10;
-    margin-bottom: 20px;
-    border: 1px solid rgba(0,0,0,0.05);
-    transform: translateZ(0);
-    will-change: transform;
-    overflow: hidden;
-    
-    @media (min-width: 768px) {
-        margin: 60px auto 30px;
-    }
-    }
+
+        .container {
+            background: var(--card-bg);
+            border-radius: var(--ios-card-radius);
+            box-shadow: var(--ios-shadow);
+            padding: 20px 20px 20px 25px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0,0,0,0.05);
+            transform: translateZ(0);
+            will-change: transform;
+            overflow: hidden;
+        }
 
         .dark-mode .container {
             background: var(--dark-card-bg);
@@ -96,16 +88,16 @@
         }
         
         /* 选项卡样式 */
-.tabs-container {
-    display: flex;
-    position: relative;
-    margin-bottom: 25px;
-    border-radius: var(--ios-radius);
-    background: rgba(0,0,0,0.03);
-    padding: 6px;
-    margin-left: 0; 
-    margin-right: 0; 
-}
+        .tabs-container {
+            display: flex;
+            position: relative;
+            margin-bottom: 25px;
+            border-radius: var(--ios-radius);
+            background: rgba(0,0,0,0.03);
+            padding: 6px;
+            margin-left: 0; 
+            margin-right: 0; 
+        }
         
         .dark-mode .tabs-container {
             background: rgba(255,255,255,0.05);
@@ -127,30 +119,24 @@
             color: var(--tab-active-color);
         }
         
-.active-indicator {
-    position: absolute;
-    top: 6px;
-    left: 5px; 
-    height: calc(100% - 12px);
-    border-radius: var(--ios-radius);
-    background: white;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    z-index: 1;
-    transition: transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
-    position: absolute;
-    transition: 
-        transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-        width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
-        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .active-indicator {
+            position: absolute;
+            top: 6px;
+            height: calc(100% - 12px);
+            border-radius: var(--ios-radius);
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1;
+            transition: 
+                transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
+                background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
         
         .dark-mode .active-indicator {
             background: rgba(255,255,255,0.1);
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            transition: 
-        transform 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
-        width 0.4s cubic-bezier(0.22, 0.61, 0.36, 1),
         }
 
         /* 内容区域 */
@@ -274,95 +260,97 @@
         }
         
         .btn:active {
-transform: translateY(1px);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
         }
         
         .tab-item:active {
-    opacity: 0.9;
-    transition: opacity 0.2s ease;
-    background-color: rgba(67, 97, 238, 0.1);
-    transition: background-color 0.2s ease;
-}
+            opacity: 0.9;
+            transition: opacity 0.2s ease;
+            background-color: rgba(67, 97, 238, 0.1);
+            transition: background-color 0.2s ease;
+        }
 
-    .dark-mode .tab-item:active {
-        opacity: 0.85;
-        background-color: rgba(124, 139, 255, 0.15);
-}
+        .dark-mode .tab-item:active {
+            opacity: 0.85;
+            background-color: rgba(124, 139, 255, 0.15);
+        }
 
-.theme-btn:active {
-    transform: scale(0.98);
-    box-shadow: 0 2px 12px rgba(67, 97, 238, 0.25);
-}
+        .theme-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 12px rgba(67, 97, 238, 0.25);
+        }
 
-.btn,
-.tab-item,
-.theme-btn {
-    transition: 
-        transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
-        box-shadow 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
-        opacity 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .btn,
+        .tab-item,
+        .theme-btn {
+            transition: 
+                transform 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+                box-shadow 0.25s cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
 
-*:focus {
-    outline: none !important;
-}
+        *:focus {
+            outline: none !important;
+        }
 
-*:focus-visible {
-    box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.4) !important;
-}
+        *:focus-visible {
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.4) !important;
+        }
+        
         .dark-mode .btn-secondary {
             background: rgba(30,30,30,0.6);
             color: #f3f4f6;
             border: 1px solid rgba(255,255,255,0.1);
         }
 
-.theme-btn {
-    position: fixed;
-    bottom: 90px;  
-    right: 20px;
-    width: 44px;
-    height: 44px;
-    background: var(--card-bg);
-    color: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    box-shadow: var(--ios-shadow);
-    cursor: pointer;
-    z-index: 100;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.05);
-    transform: none !important;
-}
+        .theme-btn {
+            position: fixed;
+            bottom: 90px;  
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            background: var(--card-bg);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--ios-shadow);
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            transform: none !important;
+        }
 
-.theme-btn:hover {
-transform: rotate(30deg) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
+        .theme-btn:hover {
+            transform: rotate(30deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
 
-.dark-mode .theme-btn {
-    background: var(--dark-card-bg);
-    border: 1px solid rgba(255,255,255,0.08);
-    color: #5e72e4;
-}
+        .dark-mode .theme-btn {
+            background: var(--dark-card-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: #5e72e4;
+        }
 
-.settings-btn, 
-.theme-btn {
-    width: 44px;
-    height: 44px;
-    font-size: 20px;
-    line-height: 44px; 
-    text-align: center; 
-}
+        .settings-btn, 
+        .theme-btn {
+            width: 44px;
+            height: 44px;
+            font-size: 20px;
+            line-height: 44px; 
+            text-align: center; 
+        }
 
-.theme-btn i {
-    transform: scale(0.95); 
-    display: inline-block; 
-}
+        .theme-btn i {
+            transform: scale(0.95); 
+            display: inline-block; 
+        }
+        
         .placeholder {
             margin: 30px 0;
             padding: 25px;
@@ -396,14 +384,6 @@ transform: rotate(30deg) scale(1.1);
             font-size: 0.9rem;
             border: 1px solid rgba(255,255,255,0.1);
             transform: translateZ(0);
-            
-            @media (min-width: 768px) {
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        min-width: 200px;
-        text-align: center;
-    }
         }
 
         /* iOS风格通知元素 */
@@ -540,41 +520,42 @@ transform: rotate(30deg) scale(1.1);
         }
         
         body, 
-.container, 
-.countdown, 
-.placeholder, 
-.ios-notification, 
-.platform-item, 
-.dev-contact,
-.tabs-container,
-.tab-item,
-.btn {
-    transition: 
-        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .container, 
+        .countdown, 
+        .placeholder, 
+        .ios-notification, 
+        .platform-item, 
+        .dev-contact,
+        .tabs-container,
+        .tab-item,
+        .btn {
+            transition: 
+                background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
 
-/* 添加主题切换动画 */
-@keyframes themeSwitch {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
+        /* 添加主题切换动画 */
+        @keyframes themeSwitch {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
 
-.theme-switch-animation {
-    animation: themeSwitch 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .theme-switch-animation {
+            animation: themeSwitch 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
         /* 性能优化 */
         .performance-optimized {
             will-change: transform;
@@ -603,510 +584,672 @@ transform: rotate(30deg) scale(1.1);
             background: radial-gradient(circle, rgba(58,12,163,0.08) 0%, rgba(58,12,163,0) 70%);
         }
 
-.settings-btn {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    width: 44px;
-    height: 44px;
-    background: var(--card-bg);
-    color: var(--primary-color);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    box-shadow: var(--ios-shadow);
-    cursor: pointer;
-    z-index: 100;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(0,0,0,0.05);
-    transform: none !important;
-}
+        .settings-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 44px;
+            height: 44px;
+            background: var(--card-bg);
+            color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--ios-shadow);
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            transform: none !important;
+        }
 
-.dark-mode .settings-btn {
-    background: var(--dark-card-bg);
-    border: 1px solid rgba(255,255,255,0.08);
-}
+        .dark-mode .settings-btn {
+            background: var(--dark-card-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
 
-.settings-btn:hover {
-    transform: rotate(30deg) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
+        .settings-btn:hover {
+            transform: rotate(30deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
 
-/* 设置面板样式 */
-.settings-panel {
-    position: fixed;
-    top: 80px;
-    right: 25px;
-    width: 300px;
-    background: var(--card-bg);
-    border-radius: var(--ios-card-radius);
-    box-shadow: var(--ios-shadow);
-    padding: 20px;
-    z-index: 1000;
-    transform: translateY(-20px);
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-    border: 1px solid rgba(0,0,0,0.05);
-    
-    @media (min-width: 768px) {
-        top: 80px;
-        right: 25px;
-    }
-}
+        .settings-panel {
+            position: fixed;
+            top: 80px;
+            right: 25px;
+            width: 300px;
+            background: var(--card-bg);
+            border-radius: var(--ios-card-radius);
+            box-shadow: var(--ios-shadow);
+            padding: 15px;
+            z-index: 1000;
+            transform: translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+            border: 1px solid rgba(0,0,0,0.05);
+            font-size: 0.85rem;
+        }
 
-.dark-mode .settings-panel {
-    background: var(--dark-card-bg);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow: var(--ios-dark-shadow);
-}
+        .settings-category {
+            margin-bottom: 12px;
+        }
 
-.settings-panel.active {
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-}
+        .category-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin: 10px 0 8px;
+            padding-left: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-color);
+        }
 
-.settings-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
-}
+        .dark-mode .category-title {
+            color: #5e72e4;
+        }
 
-.dark-mode .settings-header {
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-}
+        .category-title i {
+            font-size: 0.95rem;
+            width: 20px;
+            text-align: center;
+        }
 
-.settings-header h3 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.3rem;
-}
+        /* 分类内容区域 */
+        .category-content {
+            margin-left: 22px; 
+        }
 
-.settings-close {
-    background: transparent;
-    border: none;
-    font-size: 1.2rem;
-    color: var(--text-color);
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 0.2s ease;
-}
+        .dark-mode .settings-panel {
+            background: var(--dark-card-bg);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: var(--ios-dark-shadow);
+        }
 
-.dark-mode .settings-close {
-    color: var(--dark-text-color);
-}
+        .settings-panel.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
 
-.settings-close:hover {
-    background: rgba(0,0,0,0.05);
-}
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
 
-.dark-mode .settings-close:hover {
-    background: rgba(255,255,255,0.05);
-}
+        .dark-mode .settings-header {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
 
-/* 设置项样式 */
-.setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 0;
-}
+        .settings-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+        }
 
-.setting-label {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.1rem;
-    font-weight: 500;
-}
+        .settings-close {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s ease;
+        }
 
-.setting-desc {
-    background: rgba(67, 97, 238, 0.05);
-    border-radius: var(--ios-radius);
-    padding: 15px;
-    margin-top: 10px;
-    font-size: 0.9rem;
-    color: #666;
-    border: 1px solid rgba(67, 97, 238, 0.08);
-}
+        .dark-mode .settings-close {
+            color: var(--dark-text-color);
+        }
 
-.dark-mode .setting-desc {
-    background: rgba(79, 70, 229, 0.1);
-    color: #aaa;
-    border: 1px solid rgba(79, 70, 229, 0.15);
-}
+        .settings-close:hover {
+            background: rgba(0,0,0,0.05);
+        }
 
-/* 开关样式 */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
+        .dark-mode .settings-close:hover {
+            background: rgba(255,255,255,0.05);
+        }
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0 !important; 
+            min-height: 20px !important; 
+            margin: 0 !important; 
+        }
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px;
-}
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
+        .setting-desc {
+            background: rgba(67, 97, 238, 0.05);
+            border-radius: var(--ios-radius);
+            margin-top: 3px;
+            color: #666;
+            border: 1px solid rgba(67, 97, 238, 0.08);
+            margin-left: 0;
+            padding: 8px;
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
 
-input:checked + .slider {
-    background-color: var(--primary-color);
-}
+        .dark-mode .setting-desc {
+            background: rgba(79, 70, 229, 0.1);
+            color: #aaa;
+            border: 1px solid rgba(79, 70, 229, 0.15);
+        }
 
-input:focus + .slider {
-    box-shadow: 0 0 1px var(--primary-color);
-}
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px;
+            height: 22px;
+            transform: scale(0.9);
+            transform-origin: right center;
+        }
 
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-/* 更新日志时间线样式 */
-.update-timeline {
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 10px;
-    margin-top: 20px;
-}
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
 
-.update-item {
-    background: var(--card-bg);
-    border-radius: var(--ios-radius);
-    padding: 18px;
-    margin-bottom: 15px;
-    box-shadow: var(--ios-shadow);
-    border-left: 4px solid var(--primary-color);
-    position: relative;
-    transition: 
-        transform 0.3s ease,
-        box-shadow 0.3s ease,
-        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
 
-.dark-mode .update-item {
-    background: var(--dark-card-bg);
-    box-shadow: var(--ios-dark-shadow);
-    border-left-color: #5e72e4;
-}
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
 
-.update-date {
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    font-size: 1.1rem;
-}
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-color);
+        }
 
-.update-date i {
-    margin-right: 10px;
-    background: rgba(67, 97, 238, 0.1);
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 
-        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
 
-.dark-mode .update-date i {
-    background: rgba(79, 70, 229, 0.15);
-    color: #5e72e4;
-}
+        /* 更新日志时间线样式 */
+        .update-timeline {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-top: 20px;
+        }
 
-.update-content {
-    line-height: 1.5;
-    color: var(--text-color);
-    transition: color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-    font-size: 0.95rem;
-}
+        .update-item {
+            background: var(--card-bg);
+            border-radius: var(--ios-radius);
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: var(--ios-shadow);
+            border-left: 4px solid var(--primary-color);
+            position: relative;
+            transition: 
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
 
-.dark-mode .update-content {
-    color: var(--dark-text-color);
-}
+        .dark-mode .update-item {
+            background: var(--dark-card-bg);
+            box-shadow: var(--ios-dark-shadow);
+            border-left-color: #5e72e4;
+        }
 
-.update-content ul {
-    padding-left: 18px;
-    margin-top: 8px;
-}
+        .update-date {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
 
-/* 滚动条样式 */
-.update-timeline::-webkit-scrollbar {
-    width: 6px;
-}
+        .update-date i {
+            margin-right: 10px;
+            background: rgba(67, 97, 238, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 
+                background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
 
-.update-timeline::-webkit-scrollbar-thumb {
-    background: rgba(67, 97, 238, 0.3);
-    border-radius: 3px;
-}
+        .dark-mode .update-date i {
+            background: rgba(79, 70, 229, 0.15);
+            color: #5e72e4;
+        }
 
-.dark-mode .update-timeline::-webkit-scrollbar-thumb {
-    background: rgba(124, 139, 255, 0.4);
-}
+        .update-content {
+            line-height: 1.5;
+            color: var(--text-color);
+            transition: color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+            font-size: 0.95rem;
+        }
 
-/* 更新日志时间线增强样式 */
-.update-timeline {
-    max-height: 380px;
-    overflow-y: auto;
-    padding-right: 8px;
-    margin: 15px 0;
-}
+        .dark-mode .update-content {
+            color: var(--dark-text-color);
+        }
 
-.update-item {
-    background: var(--card-bg);
-    border-radius: var(--ios-radius);
-    padding: 14px 16px;
-    margin-bottom: 15px;
-    box-shadow: var(--ios-shadow);
-    border-left: 4px solid var(--primary-color);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .update-content ul {
+            padding-left: 18px;
+            margin-top: 8px;
+        }
 
-.update-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    transition: 
-        transform 0.3s ease,
-        box-shadow 0.3s ease;
-}
+        /* 滚动条样式 */
+        .update-timeline::-webkit-scrollbar {
+            width: 6px;
+        }
 
-.dark-mode .update-item:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
+        .update-timeline::-webkit-scrollbar-thumb {
+            background: rgba(67, 97, 238, 0.3);
+            border-radius: 3px;
+        }
 
-.update-date,
-.update-content {
-    transition: color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .dark-mode .update-timeline::-webkit-scrollbar-thumb {
+            background: rgba(124, 139, 255, 0.4);
+        }
 
-.dark-mode .update-date,
-.dark-mode .update-content {
-    color: var(--dark-text-color);
-}
+        /* 更新日志时间线增强样式 */
+        .update-timeline {
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 8px;
+            margin: 15px 0;
+        }
 
-.update-date {
-    font-weight: 600;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    font-size: 1.0rem;
-}
+        .update-item {
+            background: var(--card-bg);
+            border-radius: var(--ios-radius);
+            padding: 14px 16px;
+            margin-bottom: 15px;
+            box-shadow: var(--ios-shadow);
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.update-date i {
-    margin-right: 10px;
-    background: rgba(67, 97, 238, 0.1);
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        .update-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: 
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
 
-.update-content {
-    line-height: 1.6;
-    color: var(--text-color);
-    font-size: 0.95rem;
-    line-height: 1.5;
-    overflow-x: auto; 
-    white-space: nowrap; 
-    padding-bottom: 8px; 
-    -webkit-overflow-scrolling: touch; 
-}
+        .dark-mode .update-item:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
 
-.update-content::-webkit-scrollbar {
-    height: 4px;
-}
+        .update-date,
+        .update-content {
+            transition: color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
 
-.dark-mode .update-content::-webkit-scrollbar-thumb {
-    background: rgba(124, 139, 255, 0.4);
-}
+        .dark-mode .update-date,
+        .dark-mode .update-content {
+            color: var(--dark-text-color);
+        }
 
-.update-content::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.05);
-}
+        .update-date {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            font-size: 1.0rem;
+        }
 
-.dark-mode .update-content::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.05);
-}
+        .update-date i {
+            margin-right: 10px;
+            background: rgba(67, 97, 238, 0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-.update-content::-webkit-scrollbar-thumb {
-    background: rgba(67, 97, 238, 0.3);
-    border-radius: 2px;
-}
+        .update-content {
+            line-height: 1.6;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            overflow-x: auto; 
+            white-space: nowrap; 
+            padding-bottom: 8px; 
+            -webkit-overflow-scrolling: touch; 
+        }
 
-.update-content ul {
-    margin: 10px 0 0;
-    margin-top: 8px;
-    padding-left: 20px;
-    display: inline-block;
-    min-width: 100%;
-}
+        .update-content::-webkit-scrollbar {
+            height: 4px;
+        }
 
-.update-content li {
-    margin-bottom: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-    
-}
+        .dark-mode .update-content::-webkit-scrollbar-thumb {
+            background: rgba(124, 139, 255, 0.4);
+        }
 
-.dark-mode .update-content {
-    color: var(--dark-text-color);
-}
+        .update-content::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
+        }
 
-.settings-btn:hover:not(.active) {
-    transform: rotate(30deg) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
+        .dark-mode .update-content::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+        }
 
-.settings-btn.active {
-    transform: rotate(30deg) scale(1.1) !important;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
-}
+        .update-content::-webkit-scrollbar-thumb {
+            background: rgba(67, 97, 238, 0.3);
+            border-radius: 2px;
+        }
 
-/* 激活状态样式 */
-.settings-btn.active, 
-.theme-btn.active {
-    transform: rotate(30deg) scale(1.1) !important;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
-}
+        .update-content ul {
+            margin: 10px 0 0;
+            margin-top: 8px;
+            padding-left: 20px;
+            display: inline-block;
+            min-width: 100%;
+        }
 
-/* 悬停状态样式 */
-.settings-btn:hover:not(.active),
-.theme-btn:hover:not(.active) {
-    transform: rotate(30deg) scale(1.1);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-}
+        .update-content li {
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
 
-.container,
-.countdown,
-.placeholder,
-.ios-notification,
-.platform-item,
-.dev-contact,
-.tabs-container,
-.tab-item,
-.btn {
-    transition: 
-        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .dark-mode .update-content {
+            color: var(--dark-text-color);
+        }
 
-.update-item,
-.update-date,
-.update-content,
-.update-content ul,
-.update-content li {
-    transition: 
-        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .settings-btn:hover:not(.active) {
+            transform: rotate(30deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
 
-.update-date i {
-    transition: 
-        background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
-        color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        .settings-btn.active {
+            transform: rotate(30deg) scale(1.1) !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+        }
 
-.tab-item {
-    flex: 1;
-    min-width: 0; 
-    padding: 14px 0;
-    border-radius: var(--ios-radius);
-    font-weight: 600;
-    cursor: pointer;
-    z-index: 2;
-    position: relative;
-    transition: color 0.3s ease;
-    color: var(--tab-inactive-color);
-}
+        /* 激活状态样式 */
+        .settings-btn.active, 
+        .theme-btn.active {
+            transform: rotate(30deg) scale(1.1) !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+        }
 
-/* 优化夜间模式过渡 */
-body.dark-mode-transition {
-    transition: 
-        background 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
-        color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
+        /* 悬停状态样式 */
+        .settings-btn:hover:not(.active),
+        .theme-btn:hover:not(.active) {
+            transform: rotate(30deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+
+        .container,
+        .countdown,
+        .placeholder,
+        .ios-notification,
+        .platform-item,
+        .dev-contact,
+        .tabs-container,
+        .tab-item,
+        .btn {
+            transition: 
+                background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .update-item,
+        .update-date,
+        .update-content,
+        .update-content ul,
+        .update-content li {
+            transition: 
+                background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                border-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                box-shadow 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .update-date i {
+            transition: 
+                background-color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        .tab-item {
+            flex: 1;
+            min-width: 0; 
+            padding: 14px 0;
+            border-radius: var(--ios-radius);
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 2;
+            position: relative;
+            transition: color 0.3s ease;
+            color: var(--tab-inactive-color);
+        }
+
+        /* 新增的设置面板标题样式 */
+        .settings-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 15px 0 20px;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+        }
+
+        .dark-mode .settings-title {
+            color: #5e72e4;
+        }
+
+        /* 调整描述文本样式 */
+        .setting-desc {
+            margin-left: 0;
+            margin-top: 5px;
+            padding: 12px;
+            font-size: 0.85rem;
+        }
+
+        /* 优化夜间模式过渡 */
+        body.dark-mode-transition {
+            transition: 
+                background 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+                color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
         .dark-mode .simple-decoration {
             opacity: 0.3;
         }
-        
-        /* 动画优化 */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                transition: none !important;
-                animation: none !important;
+
+        /* 添加电脑端适配 */
+        @media (min-width: 768px) {
+            .theme-btn {
+                top: 25px;
+                right: 80px; 
+                bottom: auto;
+            }
+            
+            .settings-btn {
+                top: 25px;
+                right: 25px;
+            }
+            
+            .settings-panel {
+                top: 80px;
+                right: 25px;
+            }
+            
+            .container {
+                margin: 60px auto 30px;
+            }
+            
+            #visit-counter {
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                min-width: 200px;
+                text-align: center;
             }
         }
 
-/* 添加电脑端适配 */
-@media (min-width: 768px) {
-    .theme-btn {
-        top: 25px;
-        right: 80px; 
-        bottom: auto;
-    }
-    
-    .settings-btn {
-        top: 25px;
-        right: 25px;
-    }
-}
+        /* 设置面板列布局 */
+        .settings-columns {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .settings-column {
+            flex: 1;
+        }
+
+        /* 功能项样式 */
+        .function-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            margin: 0;
+        }
+
+        .function-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .function-desc {
+            font-size: 0.8rem;
+            color: #666;
+            padding: 5px 0 10px 5px;
+            margin-bottom: 5px;
+            border-bottom: 1px dashed rgba(0,0,0,0.1);
+        }
+
+        .dark-mode .function-desc {
+            color: #aaa;
+            border-bottom: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        /* 输入组样式 */
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: var(--ios-radius);
+            border: 1px solid rgba(0,0,0,0.1);
+            background: rgba(255,255,255,0.8);
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .input-group input {
+            background: rgba(30,30,30,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--dark-text-color);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+        }
+
+        .input-btn {
+            padding: 10px 15px;
+            border-radius: var(--ios-radius);
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .input-btn:hover {
+            background: #3a0ca3;
+            transform: translateY(-2px);
+        }
+
         /* 响应式设计 */
         @media (max-width: 600px) {
-        .theme-btn {
-        top: 15px;
-        right: 70px;
-        bottom: auto; /* 移除原来的bottom定位 */
-        }
+            .theme-btn {
+                top: 15px;
+                right: 70px;
+                bottom: auto; /* 移除原来的bottom定位 */
+            }
             .countdown {
                 font-size: 1.2rem;
             }
@@ -1139,16 +1282,16 @@ body.dark-mode-transition {
             }
             
             .settings-btn {
-            top: 15px;
-            right: 15px;
+                top: 15px;
+                right: 15px;
             }
             
             .settings-btn, 
             .theme-btn {
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            line-height: 40px;
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+                line-height: 40px;
             }
         }
     </style>
@@ -1161,12 +1304,12 @@ body.dark-mode-transition {
     
     <div class="container">
         <!-- 选项卡导航 -->
-<div class="tabs-container" id="tabsContainer">
-    <div class="active-indicator" id="activeIndicator"></div>
-    <div class="tab-item active" data-tab="notice">九年级通知</div>
-    <div class="tab-item" data-tab="updates">更新日志</div> <!-- 新增 -->
-    <div class="tab-item" data-tab="dev">开发信息</div>
-</div>
+        <div class="tabs-container" id="tabsContainer">
+            <div class="active-indicator" id="activeIndicator"></div>
+            <div class="tab-item active" data-tab="notice">九年级通知</div>
+            <div class="tab-item" data-tab="updates">更新日志</div> <!-- 新增 -->
+            <div class="tab-item" data-tab="dev">开发信息</div>
+        </div>
         
         <!-- 选项卡内容 -->
         <div class="tab-content" id="tabContent">
@@ -1203,55 +1346,56 @@ body.dark-mode-transition {
                     </a>
                 </div>
             </div>
-    <!-- 原有面板保持不变... -->
-<!-- 更新日志面板 -->
-<div class="content-pane" id="updatesPane">
-    <h1><i class="fas fa-history"></i> 更新日志</h1>
-    <div class="update-timeline">
-        <!-- 新更新条目 -->
-        <div class="update-item">
-            <div class="update-date">
-                <i class="fas fa-calendar-day"></i> 2025-08-15 19:20
+            
+            <!-- 更新日志面板 -->
+            <div class="content-pane" id="updatesPane">
+                <h1><i class="fas fa-history"></i> 更新日志</h1>
+                <div class="update-timeline">
+                    <!-- 新更新条目 -->
+                    <div class="update-item">
+                        <div class="update-date">
+                            <i class="fas fa-calendar-day"></i> 2025-08-15 19:20
+                        </div>
+                        <div class="update-content">
+                            <ul>
+                                <li>·更新了选项栏指示器的过渡动画</li>
+                                <li>·优化了电脑端体验和显示效果</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 之前的更新条目 -->
+                    <div class="update-item">
+                        <div class="update-date">
+                            <i class="fas fa-calendar-day"></i> 2025-08-15 18:02
+                        </div>
+                        <div class="update-content">
+                            <ul>
+                                <li>·新增了更新日志的左右滑动功能</li>
+                                <li>·添加了大多数界面的过渡动画</li>
+                                <li>·优化了夜间模式切换的过渡效果</li>
+                                <li>·改进了选项卡切换的动画流畅度</li>
+                                <li>·增强了文本框的过渡动画一致性</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 原更新条目 -->
+                    <div class="update-item">
+                        <div class="update-date">
+                            <i class="fas fa-calendar-day"></i> 2025-08-15 17:02
+                        </div>
+                        <div class="update-content">
+                            <ul>
+                                <li>·新增更新日志功能</li>
+                                <li>·修复了夜间模式切换的问题</li>
+                                <li>·优化了设置面板的展示效果</li>
+                                <li>·修复了选项指示器偏右的问题</li>
+                                <li>·添加了部分过渡动画</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="update-content">
-                <ul>
-                    <li>·更新了选项栏指示器的过渡动画</li>
-                    <li>·优化了电脑端体验和显示效果</li>
-                </ul>
-            </div>
-        </div>
-        <!-- 之前的更新条目 -->
-        <div class="update-item">
-            <div class="update-date">
-                <i class="fas fa-calendar-day"></i> 2025-08-15 18:02
-            </div>
-            <div class="update-content">
-                <ul>
-                    <li>·新增了更新日志的左右滑动功能</li>
-                    <li>·添加了大多数界面的过渡动画</li>
-                    <li>·优化了夜间模式切换的过渡效果</li>
-                    <li>·改进了选项卡切换的动画流畅度</li>
-                    <li>·增强了文本框的过渡动画一致性</li>
-                </ul>
-            </div>
-        </div>
-        <!-- 原更新条目 -->
-        <div class="update-item">
-            <div class="update-date">
-                <i class="fas fa-calendar-day"></i> 2025-08-15 17:02
-            </div>
-            <div class="update-content">
-                <ul>
-                    <li>·新增更新日志功能</li>
-                    <li>·修复了夜间模式切换的问题</li>
-                    <li>·优化了设置面板的展示效果</li>
-                    <li>·修复了选项指示器偏右的问题</li>
-                    <li>·添加了部分过渡动画</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+            
             <!-- 开发信息页面 -->
             <div class="content-pane" id="devPane">
                 <div class="dev-info-panel">
@@ -1306,209 +1450,185 @@ body.dark-mode-transition {
     </div>
     
     <!-- 设置按钮（右上角） -->
-<div class="settings-btn" id="settingsToggle">
-    <i class="fas fa-cog"></i>
-</div>
-
-<!-- 设置面板 -->
-<div class="settings-panel" id="settingsPanel">
-    <div class="settings-header">
-        <h3><i class="fas fa-sliders-h"></i> 设置</h3>
-        <button class="settings-close" id="settingsClose">
-            <i class="fas fa-times"></i>
-        </button>
+    <div class="settings-btn" id="settingsToggle">
+        <i class="fas fa-cog"></i>
     </div>
-    
-    <div class="setting-item">
-        <div class="setting-label">
-            <i class="fas fa-moon"></i>
-            <span>自动夜间模式</span>
+
+    <!-- 设置面板 -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="settings-header">
+            <h3><i class="fas fa-sliders-h"></i> 设置</h3>
+            <button class="settings-close" id="settingsClose">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
-        <label class="switch">
-            <input type="checkbox" id="autoDarkMode">
-            <span class="slider"></span>
-        </label>
+        
+        <div class="settings-columns">
+            <div class="settings-column functions-column">
+                <div class="settings-category">
+                    <div class="category-title">
+                        <i class="fas fa-image"></i> 背景设置
+                    </div>
+                    
+                    <!-- 添加自动夜间模式开关 -->
+                    <div class="function-item">
+                        <div class="function-label">
+                            <span>自动夜间模式</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="autoDarkMode">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="function-desc">
+                        <p>根据时间自动切换夜间模式 (20:00-5:00)</p>
+                    </div>
+                    
+                    <div class="function-item">
+                        <div class="function-label">
+                            <span>雪花飘落背景</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="snowEffect">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="function-desc">
+                        <p>开启后页面会显示动态雪花飘落效果</p>
+                    </div>
+                
+                    <div class="function-item">
+                        <div class="function-label">
+                            <span>图床图片背景</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="urlBackground">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="function-desc">
+                        <p>使用在线图片URL设置背景</p>
+                    </div>
+                    
+                    <div class="function-item">
+                        <div class="function-label">
+                            <span>本地图片背景</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="localBackground">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="function-desc">
+                        <p>使用设备中的图片设置背景</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧输入栏 -->
+            <div class="settings-column inputs-column">
+                <div class="settings-category">
+                    <div class="category-title">
+                        <i class="fas fa-cog"></i> 背景设置
+                    </div>
+                    
+                    <div class="input-group" id="urlInputGroup">
+                        <label for="bgUrlInput"><i class="fas fa-link"></i> 请输入图片URL</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="bgUrlInput" placeholder="https://example.com/image.jpg">
+                            <button class="input-btn" id="applyUrlBtn">应用</button>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group" id="localInputGroup">
+                        <label for="bgLocalInput"><i class="fas fa-folder-open"></i> 本地图片路径</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="bgLocalInput" placeholder="未选择图片" readonly>
+                            <button class="input-btn" id="selectLocalBtn">选择图片</button>
+                            <input type="file" id="bgFileInput" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     
-    <div class="setting-desc">
-        <p><i class="fas fa-info-circle"></i> 晚上 20:00 至次日 05:00 自动开启</p>
-    </div>
-</div>
+    <!-- 雪花效果Canvas -->
+    <canvas id="snowCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;display:none;"></canvas>
+
     <script>
-        // 性能优化：减少重绘和重排
-        let lastScrollY = 0;
-        let ticking = false;
-        
-const body = document.body;
-    const themeToggle = document.getElementById('themeToggle');
-
-    // 检查本地存储中的主题设置
-    if (localStorage.getItem('darkMode') === 'true') {
-        body.classList.add('dark-mode');
-        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-    }
-
-    // 主题切换函数
-function toggleTheme() {
-    // 添加过渡类
-    body.classList.add('dark-mode-transition');
-    document.body.classList.add('dark-mode-transition');
-    
-    // 添加按钮动画
-    themeToggle.classList.add('active');
-    
-    // 检查当前时间是否在自动夜间模式时间段内
-    const now = new Date();
-    const hours = now.getHours();
-    const isAutoNightTime = hours >= 20 || hours < 5;
-    
-    // 如果在自动夜间模式时间段内，则关闭自动模式
-    if (isAutoNightTime && autoDarkMode.checked) {
-        autoDarkMode.checked = false;
-        localStorage.setItem('autoDarkMode', 'false');
-    }
-    
-    // 切换主题
-    body.classList.toggle('dark-mode');
-    const isDarkMode = body.classList.contains('dark-mode');
-    
-    // 切换图标
-    themeToggle.innerHTML = isDarkMode 
-        ? '<i class="fas fa-sun"></i>' 
-        : '<i class="fas fa-moon"></i>';
-    
-    // 存储当前模式
-    localStorage.setItem('darkMode', isDarkMode);
-    
-    // 延迟移除状态
-    setTimeout(() => {
-        themeToggle.classList.remove('active');
-        body.classList.remove('dark-mode-transition');
-    }, 800);
-}
-
-function isAutoNightTime() {
-    const now = new Date();
-    const hours = now.getHours();
-    return hours >= 20 || hours < 5; // 20:00-5:00
-}
-
-    // 绑定点击事件
-    themeToggle.addEventListener('click', toggleTheme);
-
-        // 倒计时功能（优化版）
-        function updateCountdown() {
-            const daysEl = document.getElementById('days');
-            const hoursEl = document.getElementById('hours');
-            
-            if (!daysEl || !hoursEl) return;
-            
-            // 设置开学日期为2025年8月20日
-            const startDate = new Date(2025, 7, 20);
-            const now = new Date();
-            
-            if (now >= startDate) {
-                if (daysEl.textContent !== '已') {
-                    daysEl.textContent = '已';
-                    hoursEl.textContent = '开学';
-                }
-                return;
-            }
-
-            const diff = startDate - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            
-            // 仅当值变化时更新DOM
-            if (daysEl.textContent != days) daysEl.textContent = days;
-            if (hoursEl.textContent != hours) hoursEl.textContent = hours;
-        }
-
-        // 访问统计（优化版）
-        const JSONBIN_CONFIG = {
-            binId: "689bf9aeae596e708fc8b020",
-            apiKey: "$2a$10$LcjkKbBXqgiBKOAvP3NmXuHcOgpXXsfzEGCrREm9RG0qSyzjiw9nq"
-        };
-
-        async function updateCounter() {
-            const counterElement = document.getElementById("count");
-            if (!counterElement) return;
-            
-            // 本地回退方案
-            const localCount = localStorage.getItem('localVisitCount') || 0;
-            
-            // 会话级限制
-            if (sessionStorage.getItem('hasCounted')) {
-                counterElement.textContent = localStorage.getItem('lastCount') || localCount;
-                return;
-            }
-            
-            try {
-                const getRes = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}/latest`, {
-                    headers: { "X-Master-Key": JSONBIN_CONFIG.apiKey }
-                });
-                
-                if (!getRes.ok) throw new Error(`API请求失败: ${getRes.status}`);
-                
-                const { record } = await getRes.json();
-                
-                const newCount = (record.count || 0) + 1;
-                counterElement.textContent = newCount;
-                localStorage.setItem('lastCount', newCount);
-                localStorage.setItem('localVisitCount', newCount);
-                sessionStorage.setItem('hasCounted', 'true');
-                localStorage.setItem('lastCountTime', Date.now());
-                
-                // 异步更新服务器计数（不阻塞UI）
-                setTimeout(async () => {
-                    try {
-                        await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_CONFIG.binId}`, {
-                            method: "PUT",
-                            headers: { 
-                                "Content-Type": "application/json",
-                                "X-Master-Key": JSONBIN_CONFIG.apiKey 
-                            },
-                            body: JSON.stringify({ 
-                                count: newCount,
-                                lastUpdate: new Date().toISOString() 
-                            })
-                        });
-                    } catch (error) {
-                        console.error("异步更新计数失败:", error);
-                    }
-                }, 1000);
-            } catch (error) {
-                console.error("统计失败:", error);
-                // 使用本地存储的回退值
-                const newLocalCount = parseInt(localCount) + 1;
-                counterElement.textContent = newLocalCount;
-                localStorage.setItem('localVisitCount', newLocalCount);
-                sessionStorage.setItem('hasCounted', 'true');
-            }
-        }
-        
-        // 选项卡切换功能
-        function initTabs() {
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const settingsToggle = document.getElementById('settingsToggle');
+            const settingsPanel = document.getElementById('settingsPanel');
+            const settingsClose = document.getElementById('settingsClose');
             const tabsContainer = document.getElementById('tabsContainer');
             const activeIndicator = document.getElementById('activeIndicator');
             const tabItems = document.querySelectorAll('.tab-item');
             const tabPanes = document.querySelectorAll('.content-pane');
-            window.addEventListener('resize', updateIndicatorPosition);
-            // 初始化指示器位置
-function updateIndicatorPosition() {
-    const activeTab = document.querySelector('.tab-item.active');
-    if (!activeTab) return;
-    
-    const tabRect = activeTab.getBoundingClientRect();
-    const containerRect = tabsContainer.getBoundingClientRect();
-    
-    // 添加5px的偏移量来补偿整体移动
-    const offsetLeft = 5;
-    activeIndicator.style.width = `${tabRect.width}px`;
-    activeIndicator.style.transform = `translateX(${tabRect.left - containerRect.left - offsetLeft}px)`;
-}
+            const autoDarkMode = document.getElementById('autoDarkMode');
+            const snowEffect = document.getElementById('snowEffect');
+            const urlBackground = document.getElementById('urlBackground');
+            const localBackground = document.getElementById('localBackground');
+            const bgUrlInput = document.getElementById('bgUrlInput');
+            const applyUrlBtn = document.getElementById('applyUrlBtn');
+            const bgLocalInput = document.getElementById('bgLocalInput');
+            const selectLocalBtn = document.getElementById('selectLocalBtn');
+            const bgFileInput = document.getElementById('bgFileInput');
+            const snowCanvas = document.getElementById('snowCanvas');
             
-            // 切换选项卡
+            // 初始化变量
+            let snowflakes = [];
+            let snowAnimationId = null;
+            
+            // 主题切换功能
+            function toggleTheme() {
+                // 添加过渡类
+                body.classList.add('dark-mode-transition');
+                
+                // 添加按钮动画
+                themeToggle.classList.add('active');
+                
+                // 切换主题
+                body.classList.toggle('dark-mode');
+                const isDarkMode = body.classList.contains('dark-mode');
+                
+                // 切换图标
+                themeToggle.innerHTML = isDarkMode 
+                    ? '<i class="fas fa-sun"></i>' 
+                    : '<i class="fas fa-moon"></i>';
+                
+                // 存储当前模式
+                localStorage.setItem('darkMode', isDarkMode);
+                
+                // 延迟移除状态
+                setTimeout(() => {
+                    themeToggle.classList.remove('active');
+                    body.classList.remove('dark-mode-transition');
+                }, 800);
+            }
+            
+            // 设置面板功能
+            function toggleSettingsPanel() {
+                settingsPanel.classList.toggle('active');
+                settingsToggle.classList.toggle('active');
+            }
+            
+            // 选项卡功能
+            function updateIndicatorPosition() {
+                const activeTab = document.querySelector('.tab-item.active');
+                if (!activeTab) return;
+                
+                const tabRect = activeTab.getBoundingClientRect();
+                const containerRect = tabsContainer.getBoundingClientRect();
+                
+                activeIndicator.style.width = `${tabRect.width}px`;
+                activeIndicator.style.transform = `translateX(${tabRect.left - containerRect.left}px)`;
+            }
+            
             function switchTab(tabName) {
                 // 更新选项卡激活状态
                 tabItems.forEach(tab => {
@@ -1524,191 +1644,349 @@ function updateIndicatorPosition() {
                 updateIndicatorPosition();
             }
             
-            // 绑定选项卡点击事件
+            // 倒计时功能
+            function updateCountdown() {
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                
+                if (!daysEl || !hoursEl) return;
+                
+                // 设置开学日期为2025年8月20日
+                const startDate = new Date(2025, 7, 20);
+                const now = new Date();
+                
+                if (now >= startDate) {
+                    if (daysEl.textContent !== '已') {
+                        daysEl.textContent = '已';
+                        hoursEl.textContent = '开学';
+                    }
+                    return;
+                }
+
+                const diff = startDate - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                
+                // 更新DOM
+                daysEl.textContent = days;
+                hoursEl.textContent = hours;
+            }
+            
+            // 自动夜间模式功能
+            function isAutoNightTime() {
+                const now = new Date();
+                const hours = now.getHours();
+                return hours >= 20 || hours < 5; // 20:00-5:00
+            }
+            
+            function checkAutoDarkMode() {
+                if (!autoDarkMode.checked) return;
+                
+                const isNightTime = isAutoNightTime();
+                
+                if (isNightTime && !body.classList.contains('dark-mode')) {
+                    toggleTheme();
+                } else if (!isNightTime && body.classList.contains('dark-mode')) {
+                    toggleTheme();
+                }
+            }
+            
+            // 雪花效果
+            function enableSnowEffect() {
+                // 显示canvas
+                snowCanvas.style.display = 'block';
+                
+                const ctx = snowCanvas.getContext('2d');
+                
+                // 设置canvas尺寸
+                snowCanvas.width = window.innerWidth;
+                snowCanvas.height = window.innerHeight;
+                
+                // 创建雪花
+                snowflakes = [];
+                const snowflakeCount = 150;
+                
+                for (let i = 0; i < snowflakeCount; i++) {
+                    snowflakes.push({
+                        x: Math.random() * snowCanvas.width,
+                        y: Math.random() * snowCanvas.height,
+                        radius: Math.random() * 3 + 1,
+                        speed: Math.random() * 1 + 0.5,
+                        opacity: Math.random() * 0.5 + 0.5
+                    });
+                }
+                
+                // 绘制雪花
+                function drawSnowflakes() {
+                    ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                    
+                    snowflakes.forEach(flake => {
+                        ctx.beginPath();
+                        ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+                        ctx.closePath();
+                        ctx.fill();
+                        
+                        // 更新雪花位置
+                        flake.y += flake.speed;
+                        if (flake.y > snowCanvas.height) {
+                            flake.y = 0;
+                            flake.x = Math.random() * snowCanvas.width;
+                        }
+                    });
+                    
+                    snowAnimationId = requestAnimationFrame(drawSnowflakes);
+                }
+                
+                // 开始动画
+                drawSnowflakes();
+            }
+            
+            function disableSnowEffect() {
+                if (snowAnimationId) {
+                    cancelAnimationFrame(snowAnimationId);
+                    snowAnimationId = null;
+                }
+                snowCanvas.style.display = 'none';
+            }
+            
+            // 背景设置功能
+            function toggleBackgroundFunctions(activeId) {
+                [snowEffect, urlBackground, localBackground].forEach(el => {
+                    if (el.id !== activeId) el.checked = false;
+                });
+                
+                // 应用效果
+                if (snowEffect.checked) {
+                    enableSnowEffect();
+                } else {
+                    disableSnowEffect();
+                }
+                
+                if (urlBackground.checked && bgUrlInput.value) {
+                    body.style.backgroundImage = `url('${bgUrlInput.value}')`;
+                    body.style.backgroundSize = 'cover';
+                    body.style.backgroundAttachment = 'fixed';
+                } else if (localBackground.checked && bgLocalInput.value) {
+                    body.style.backgroundImage = `url('${bgLocalInput.value}')`;
+                    body.style.backgroundSize = 'cover';
+                    body.style.backgroundAttachment = 'fixed';
+                } else {
+                    resetBackground();
+                }
+                
+                saveBackgroundSettings();
+            }
+            
+            function resetBackground() {
+                if (body.classList.contains('dark-mode')) {
+                    body.style.background = 'linear-gradient(135deg, #0f172a, #1e293b)';
+                } else {
+                    body.style.background = 'linear-gradient(135deg, #f5f7fa, #e4e7f1)';
+                }
+                body.style.backgroundImage = 'none';
+            }
+            
+            function saveBackgroundSettings() {
+                const settings = {
+                    snowEffect: snowEffect.checked,
+                    urlBackground: urlBackground.checked,
+                    localBackground: localBackground.checked,
+                    bgUrl: bgUrlInput.value,
+                    localPath: bgLocalInput.value
+                };
+                localStorage.setItem('backgroundSettings', JSON.stringify(settings));
+            }
+            
+            function loadBackgroundSettings() {
+                const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
+                
+                if (settings.snowEffect) snowEffect.checked = true;
+                if (settings.urlBackground) urlBackground.checked = true;
+                if (settings.localBackground) localBackground.checked = true;
+                if (settings.bgUrl) bgUrlInput.value = settings.bgUrl;
+                if (settings.localPath) bgLocalInput.value = settings.localPath;
+                
+                // 应用已保存的背景
+                applySavedBackground();
+            }
+            
+            function applySavedBackground() {
+                const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
+                
+                if (settings.snowEffect) {
+                    enableSnowEffect();
+                } else if (settings.urlBackground && settings.bgUrl) {
+                    body.style.backgroundImage = `url('${settings.bgUrl}')`;
+                    body.style.backgroundSize = 'cover';
+                    body.style.backgroundAttachment = 'fixed';
+                } else if (settings.localBackground && settings.localPath) {
+                    body.style.backgroundImage = `url('${settings.localPath}')`;
+                    body.style.backgroundSize = 'cover';
+                    body.style.backgroundAttachment = 'fixed';
+                } else {
+                    resetBackground();
+                }
+            }
+            
+            // 访问计数器
+            async function updateCounter() {
+                const counterElement = document.getElementById("count");
+                if (!counterElement) return;
+                
+                // 本地回退方案
+                const localCount = localStorage.getItem('localVisitCount') || 0;
+                
+                // 会话级限制
+                if (sessionStorage.getItem('hasCounted')) {
+                    counterElement.textContent = localStorage.getItem('lastCount') || localCount;
+                    return;
+                }
+                
+                try {
+                    // 模拟API调用
+                    const newCount = parseInt(localCount) + 1;
+                    counterElement.textContent = newCount;
+                    localStorage.setItem('lastCount', newCount);
+                    localStorage.setItem('localVisitCount', newCount);
+                    sessionStorage.setItem('hasCounted', 'true');
+                    localStorage.setItem('lastCountTime', Date.now());
+                } catch (error) {
+                    console.error("统计失败:", error);
+                    // 使用本地存储的回退值
+                    const newLocalCount = parseInt(localCount) + 1;
+                    counterElement.textContent = newLocalCount;
+                    localStorage.setItem('localVisitCount', newLocalCount);
+                    sessionStorage.setItem('hasCounted', 'true');
+                }
+            }
+            
+            // 初始化页面
+            function initPage() {
+                // 初始化主题
+                if (localStorage.getItem('darkMode') === 'true') {
+                    body.classList.add('dark-mode');
+                    themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                }
+                
+                // 初始化选项卡
+                updateIndicatorPosition();
+                
+                // 初始化倒计时
+                updateCountdown();
+                setInterval(updateCountdown, 60000); // 每分钟更新一次
+                
+                // 初始化访问计数器
+                updateCounter();
+                
+                // 加载背景设置
+                loadBackgroundSettings();
+                
+                // 初始化自动夜间模式
+                if (localStorage.getItem('autoDarkMode') === 'true') {
+                    autoDarkMode.checked = true;
+                    checkAutoDarkMode();
+                }
+                
+                // 每分钟检查一次自动夜间模式
+                setInterval(checkAutoDarkMode, 60000);
+            }
+            
+            // 事件绑定
+            themeToggle.addEventListener('click', toggleTheme);
+            settingsToggle.addEventListener('click', toggleSettingsPanel);
+            settingsClose.addEventListener('click', toggleSettingsPanel);
+            
+            // 关闭设置面板当点击外部区域
+            document.addEventListener('click', (e) => {
+                if (settingsPanel.classList.contains('active') && 
+                    !settingsPanel.contains(e.target) && 
+                    !settingsToggle.contains(e.target)) {
+                    toggleSettingsPanel();
+                }
+            });
+            
+            // 选项卡事件
             tabItems.forEach(tab => {
                 tab.addEventListener('click', () => {
                     switchTab(tab.dataset.tab);
                 });
             });
             
-            // 初始化指示器
-            updateIndicatorPosition();
-            
-            // 添加滑动功能
-            let startX = 0;
-            let startY = 0;
-            let currentX = 0;
-            let isSwiping = false;
-            
-            tabsContainer.addEventListener('touchstart', (e) => {
-                startX = e.touches[0].clientX;
-                startY = e.touches[0].clientY;
-                isSwiping = true;
-            }, { passive: true });
-            
-            tabsContainer.addEventListener('touchmove', (e) => {
-                if (!isSwiping) return;
-                currentX = e.touches[0].clientX;
-            }, { passive: true });
-            
-            tabsContainer.addEventListener('touchend', () => {
-                if (!isSwiping) return;
-                
-                const diffX = startX - currentX;
-                
-                // 水平滑动距离大于50px才切换
-                if (Math.abs(diffX) > 50) {
-                    const activeTab = document.querySelector('.tab-item.active');
-                    const tabIndex = Array.from(tabItems).indexOf(activeTab);
-                    
-                    if (diffX > 0 && tabIndex < tabItems.length - 1) {
-                        // 向左滑动
-                        switchTab(tabItems[tabIndex + 1].dataset.tab);
-                    } else if (diffX < 0 && tabIndex > 0) {
-                        // 向右滑动
-                        switchTab(tabItems[tabIndex - 1].dataset.tab);
-                    }
+            // 窗口大小变化时更新指示器和canvas
+            window.addEventListener('resize', () => {
+                updateIndicatorPosition();
+                if (snowEffect.checked) {
+                    snowCanvas.width = window.innerWidth;
+                    snowCanvas.height = window.innerHeight;
                 }
-                
-                isSwiping = false;
-            }, { passive: true });
-        }
-
-// 初始化所有功能
-document.addEventListener('DOMContentLoaded', () => {
-    updateCountdown();
-    setInterval(updateCountdown, 5000);
-    updateCounter();
-    initTabs();
-    
-// 设置面板功能
-const settingsToggle = document.getElementById('settingsToggle');
-const settingsPanel = document.getElementById('settingsPanel');
-const settingsClose = document.getElementById('settingsClose');
-const autoDarkMode = document.getElementById('autoDarkMode');
-
-// 夜间模式按钮
-const themeToggle = document.getElementById('themeToggle');
-
-// 关闭设置面板
-function closeSettings() {
-    settingsPanel.classList.remove('active');
-    // 延迟移除active类，确保动画完成
-    setTimeout(() => {
-        settingsToggle.classList.remove('active');
-    }, 300);
-}
-
-// 打开设置面板
-function openSettings() {
-    settingsPanel.classList.add('active');
-    settingsToggle.classList.add('active');
-}
-
-// 切换设置面板状态
-function toggleSettings() {
-    if (settingsPanel.classList.contains('active')) {
-        closeSettings();
-    } else {
-        openSettings();
-    }
-}
-
-// 绑定设置按钮事件
-settingsToggle.addEventListener('click', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    
-    // 立即切换active状态
-    if (settingsPanel.classList.contains('active')) {
-        settingsToggle.classList.remove('active');
-    } else {
-        settingsToggle.classList.add('active');
-    }
-    
-    toggleSettings();
-});
-
-// 绑定关闭按钮事件
-settingsClose.addEventListener('click', function(e) {
-    e.stopPropagation();
-    closeSettings();
-});
-
-// 点击外部关闭面板
-document.addEventListener('click', function(e) {
-    if (settingsPanel.classList.contains('active') && 
-        !settingsPanel.contains(e.target) && 
-        e.target !== settingsToggle) {
-        closeSettings();
-    }
-});
-
-// 修改夜间模式切换函数
-function toggleTheme() {
-    // 添加按钮动画
-    themeToggle.classList.add('active');
-    
-    // 切换主题
-    body.classList.toggle('dark-mode');
-    const isDarkMode = body.classList.contains('dark-mode');
-    
-    // 切换图标
-    themeToggle.innerHTML = isDarkMode 
-        ? '<i class="fas fa-sun"></i>' 
-        : '<i class="fas fa-moon"></i>';
-    
-    // 存储状态
-    localStorage.setItem('darkMode', isDarkMode);
-    
-    // 延迟移除active状态
-    setTimeout(() => {
-        themeToggle.classList.remove('active');
-    }, 300);
-}
-
-// 阻止面板内部点击冒泡
-settingsPanel.addEventListener('click', function(e) {
-    e.stopPropagation();
-});
-
-    // 自动夜间模式功能
-    function checkAutoDarkMode(initialCheck = false) {
-        const isNightTime = isAutoNightTime();
-        
-        if (isNightTime) {
-            if (!body.classList.contains('dark-mode')) {
-                enableDarkMode();
-            }
-        } else {
-            if (!initialCheck && autoDarkMode.checked && body.classList.contains('dark-mode')) {
-                disableDarkMode();
-            }
-        }
-    }
-
-    // 初始化自动夜间模式设置
-    if (localStorage.getItem('autoDarkMode') === 'true') {
-        autoDarkMode.checked = true;
-        checkAutoDarkMode(true);
-    }
-
-    autoDarkMode.addEventListener('change', function() {
-        localStorage.setItem('autoDarkMode', this.checked);
-        if (this.checked) {
-            checkAutoDarkMode(true);
-        } else if (isAutoNightTime() && body.classList.contains('dark-mode')) {
-            disableDarkMode();
-        }
-    });
-
-    // 每分钟检查一次时间
-    setInterval(() => {
-        if (autoDarkMode.checked) {
-            checkAutoDarkMode();
-        }
-    }, 60000);
-});
+            });
+            
+            // 背景设置事件
+            snowEffect.addEventListener('change', function() {
+                if (this.checked) {
+                    toggleBackgroundFunctions('snowEffect');
+                } else {
+                    disableSnowEffect();
+                    saveBackgroundSettings();
+                }
+            });
+            
+            urlBackground.addEventListener('change', function() {
+                if (this.checked) {
+                    toggleBackgroundFunctions('urlBackground');
+                } else {
+                    saveBackgroundSettings();
+                }
+            });
+            
+            localBackground.addEventListener('change', function() {
+                if (this.checked) {
+                    toggleBackgroundFunctions('localBackground');
+                } else {
+                    saveBackgroundSettings();
+                }
+            });
+            
+            applyUrlBtn.addEventListener('click', function() {
+                if (bgUrlInput.value) {
+                    body.style.backgroundImage = `url('${bgUrlInput.value}')`;
+                    body.style.backgroundSize = 'cover';
+                    body.style.backgroundAttachment = 'fixed';
+                    saveBackgroundSettings();
+                }
+            });
+            
+            selectLocalBtn.addEventListener('click', function() {
+                bgFileInput.click();
+            });
+            
+            bgFileInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    const filePath = URL.createObjectURL(file);
+                    bgLocalInput.value = filePath;
+                    
+                    if (localBackground.checked) {
+                        body.style.backgroundImage = `url('${filePath}')`;
+                        body.style.backgroundSize = 'cover';
+                        body.style.backgroundAttachment = 'fixed';
+                    }
+                    
+                    saveBackgroundSettings();
+                }
+            });
+            
+            autoDarkMode.addEventListener('change', function() {
+                localStorage.setItem('autoDarkMode', this.checked);
+                if (this.checked) {
+                    checkAutoDarkMode();
+                }
+            });
+            
+            // 初始化页面
+            initPage();
+        });
     </script>
 </body>
 </html>
