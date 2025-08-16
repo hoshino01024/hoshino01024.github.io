@@ -584,26 +584,33 @@
             background: radial-gradient(circle, rgba(58,12,163,0.08) 0%, rgba(58,12,163,0) 70%);
         }
 
-        .settings-btn {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 44px;
-            height: 44px;
-            background: var(--card-bg);
-            color: var(--primary-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: var(--ios-shadow);
-            cursor: pointer;
-            z-index: 100;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
-            transform: none !important;
-        }
+        /* 优化夜间模式的按钮切换效果 */
+body.dark-mode .theme-btn {
+    background: var(--dark-card-bg);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #5e72e4;
+}
+
+/* 按钮位置调整：确保按钮在移动端和PC端的显示一致 */
+.settings-btn {
+    position: fixed;
+    top: 20px;  /* 更改位置，使其更易触及 */
+    right: 15px;
+    width: 44px;
+    height: 44px;
+    background: var(--card-bg);
+    color: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: var(--ios-shadow);
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
 
         .dark-mode .settings-btn {
             background: var(--dark-card-bg);
@@ -615,23 +622,24 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        .settings-panel {
-            position: fixed;
-            top: 80px;
-            right: 25px;
-            width: 300px;
-            background: var(--card-bg);
-            border-radius: var(--ios-card-radius);
-            box-shadow: var(--ios-shadow);
-            padding: 15px;
-            z-index: 1000;
-            transform: translateY(-20px);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-            border: 1px solid rgba(0,0,0,0.05);
-            font-size: 0.85rem;
-        }
+.settings-panel {
+    position: fixed;
+    top: 80px;
+    right: 25px;
+    width: 280px;
+    max-height: 80%; /* 设置最大高度 */
+    background: var(--card-bg);
+    border-radius: var(--ios-card-radius);
+    box-shadow: var(--ios-shadow);
+    padding: 15px;
+    z-index: 1000;
+    transform: translateY(-20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
+    border: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.85rem;
+}
 
         .settings-category {
             margin-bottom: 12px;
@@ -1109,6 +1117,18 @@
                 color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
         
+        .settings-btn, .theme-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    line-height: 40px;
+}
+
+/* 自动夜间模式状态保持不关闭设置面板 */
+.auto-night-mode-btn {
+    display: block;  /* 显示按钮 */
+    margin: 10px 0;
+}
         .dark-mode .simple-decoration {
             opacity: 0.3;
         }
@@ -1293,6 +1313,13 @@
                 font-size: 18px;
                 line-height: 40px;
             }
+            
+            .settings-panel {
+        width: 90%; /* 使设置面板在小屏设备上占用更大空间 */
+        max-height: 80%;
+        top: 50px;
+        right: 10px;
+        }
         }
     </style>
 </head>
@@ -1463,67 +1490,71 @@
             </button>
         </div>
         
-        <div class="settings-columns">
-            <div class="settings-column functions-column">
-                <div class="settings-category">
-                    <div class="category-title">
-                        <i class="fas fa-image"></i> 背景设置
-                    </div>
-                    
-                    <!-- 添加自动夜间模式开关 -->
-                    <div class="function-item">
-                        <div class="function-label">
-                            <span>自动夜间模式</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="autoDarkMode">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="function-desc">
-                        <p>根据时间自动切换夜间模式 (20:00-5:00)</p>
-                    </div>
-                    
-                    <div class="function-item">
-                        <div class="function-label">
-                            <span>雪花飘落背景</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="snowEffect">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="function-desc">
-                        <p>开启后页面会显示动态雪花飘落效果</p>
-                    </div>
-                
-                    <div class="function-item">
-                        <div class="function-label">
-                            <span>图床图片背景</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="urlBackground">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="function-desc">
-                        <p>使用在线图片URL设置背景</p>
-                    </div>
-                    
-                    <div class="function-item">
-                        <div class="function-label">
-                            <span>本地图片背景</span>
-                        </div>
-                        <label class="switch">
-                            <input type="checkbox" id="localBackground">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="function-desc">
-                        <p>使用设备中的图片设置背景</p>
-                    </div>
-                </div>
+        <!-- settings-columns -->
+<div class="settings-columns">
+    <div class="settings-column">
+        <!-- 设置功能项：将原左侧功能移到右侧 -->
+        <div class="settings-category">
+            <div class="category-title">
+                <i class="fas fa-image"></i> 背景设置
             </div>
+
+            <div class="function-item">
+                <div class="function-label">
+                    <span>自动夜间模式</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="autoDarkMode">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="function-desc">
+                <p>根据时间自动切换夜间模式 (20:00-5:00)</p>
+            </div>
+
+            <!-- 其他功能项同理 -->
+            <div class="function-item">
+                <div class="function-label">
+                    <span>雪花飘落背景</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="snowEffect">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="function-desc">
+                <p>开启后页面会显示动态雪花飘落效果</p>
+            </div>
+
+            <div class="function-item">
+                <div class="function-label">
+                    <span>图床图片背景</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="urlBackground">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="function-desc">
+                <p>使用在线图片URL设置背景</p>
+            </div>
+
+            <div class="function-item">
+                <div class="function-label">
+                    <span>本地图片背景</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="localBackground">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="function-desc">
+                <p>使用设备中的图片设置背景</p>
+            </div>
+        </div>
+    </div>
+</div>
+
             
             <!-- 右侧输入栏 -->
             <div class="settings-column inputs-column">
@@ -1585,37 +1616,36 @@
             let snowAnimationId = null;
             
             // 主题切换功能
-            function toggleTheme() {
-                // 添加过渡类
-                body.classList.add('dark-mode-transition');
-                
-                // 添加按钮动画
-                themeToggle.classList.add('active');
-                
-                // 切换主题
-                body.classList.toggle('dark-mode');
-                const isDarkMode = body.classList.contains('dark-mode');
-                
-                // 切换图标
-                themeToggle.innerHTML = isDarkMode 
-                    ? '<i class="fas fa-sun"></i>' 
-                    : '<i class="fas fa-moon"></i>';
-                
-                // 存储当前模式
-                localStorage.setItem('darkMode', isDarkMode);
-                
-                // 延迟移除状态
-                setTimeout(() => {
-                    themeToggle.classList.remove('active');
-                    body.classList.remove('dark-mode-transition');
-                }, 800);
-            }
-            
-            // 设置面板功能
-            function toggleSettingsPanel() {
-                settingsPanel.classList.toggle('active');
-                settingsToggle.classList.toggle('active');
-            }
+// 夜间模式切换函数
+function toggleTheme() {
+    // 添加过渡类
+    body.classList.add('dark-mode-transition');
+    
+    // 切换夜间模式
+    body.classList.toggle('dark-mode');
+    const isDarkMode = body.classList.contains('dark-mode');
+    
+    // 切换图标
+    themeToggle.innerHTML = isDarkMode 
+        ? '<i class="fas fa-sun"></i>' 
+        : '<i class="fas fa-moon"></i>';
+    
+    // 存储当前模式
+    localStorage.setItem('darkMode', isDarkMode);
+    
+    // 延迟移除状态
+    setTimeout(() => {
+        themeToggle.classList.remove('active');
+        body.classList.remove('dark-mode-transition');
+    }, 800);
+}
+
+// 设置面板切换函数
+function toggleSettingsPanel() {
+    settingsPanel.classList.toggle('active');
+    settingsToggle.classList.toggle('active');
+}
+
             
             // 选项卡功能
 function updateIndicatorPosition() {
@@ -1789,47 +1819,51 @@ function updateIndicatorPosition() {
                 body.style.backgroundImage = 'none';
             }
             
-            function saveBackgroundSettings() {
-                const settings = {
-                    snowEffect: snowEffect.checked,
-                    urlBackground: urlBackground.checked,
-                    localBackground: localBackground.checked,
-                    bgUrl: bgUrlInput.value,
-                    localPath: bgLocalInput.value
-                };
-                localStorage.setItem('backgroundSettings', JSON.stringify(settings));
-            }
-            
-            function loadBackgroundSettings() {
-                const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
-                
-                if (settings.snowEffect) snowEffect.checked = true;
-                if (settings.urlBackground) urlBackground.checked = true;
-                if (settings.localBackground) localBackground.checked = true;
-                if (settings.bgUrl) bgUrlInput.value = settings.bgUrl;
-                if (settings.localPath) bgLocalInput.value = settings.localPath;
-                
-                // 应用已保存的背景
-                applySavedBackground();
-            }
-            
-            function applySavedBackground() {
-                const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
-                
-                if (settings.snowEffect) {
-                    enableSnowEffect();
-                } else if (settings.urlBackground && settings.bgUrl) {
-                    body.style.backgroundImage = `url('${settings.bgUrl}')`;
-                    body.style.backgroundSize = 'cover';
-                    body.style.backgroundAttachment = 'fixed';
-                } else if (settings.localBackground && settings.localPath) {
-                    body.style.backgroundImage = `url('${settings.localPath}')`;
-                    body.style.backgroundSize = 'cover';
-                    body.style.backgroundAttachment = 'fixed';
-                } else {
-                    resetBackground();
-                }
-            }
+function saveBackgroundSettings() {
+    const settings = {
+        snowEffect: snowEffect.checked,
+        urlBackground: urlBackground.checked,
+        localBackground: localBackground.checked,
+        bgUrl: bgUrlInput.value,
+        localPath: bgLocalInput.value
+    };
+    localStorage.setItem('backgroundSettings', JSON.stringify(settings));
+}
+
+function loadBackgroundSettings() {
+    const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
+
+    if (settings.snowEffect) snowEffect.checked = true;
+    if (settings.urlBackground) urlBackground.checked = true;
+    if (settings.localBackground) localBackground.checked = true;
+    if (settings.bgUrl) bgUrlInput.value = settings.bgUrl;
+    if (settings.localPath) bgLocalInput.value = settings.localPath;
+
+    // 应用已保存的背景
+    applySavedBackground();
+}
+
+function applySavedBackground() {
+    const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
+
+    if (settings.snowEffect) {
+        enableSnowEffect();
+    } else if (settings.urlBackground && settings.bgUrl) {
+        body.style.backgroundImage = `url('${settings.bgUrl}')`;
+        body.style.backgroundSize = 'cover';  // 背景图片覆盖整个屏幕
+        body.style.backgroundPosition = 'center';  // 背景图片居中
+        body.style.backgroundAttachment = 'fixed';  // 背景固定
+    } else if (settings.localBackground && settings.localPath) {
+        body.style.backgroundImage = `url('${settings.localPath}')`;
+        body.style.backgroundSize = 'cover';  // 背景图片覆盖整个屏幕
+        body.style.backgroundPosition = 'center';  // 背景图片居中
+        body.style.backgroundAttachment = 'fixed';  // 背景固定
+    } else {
+        resetBackground();
+    }
+}
+
+
             
             // 访问计数器
             async function updateCounter() {
