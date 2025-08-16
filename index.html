@@ -47,6 +47,10 @@
             position: relative;
             overflow-x: hidden;
             will-change: transform;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            transition: background 1s ease;  /* 平滑过渡 */
             transition: 
                 background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
                 color 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -65,7 +69,29 @@
                 background 0.6s cubic-bezier(0.22, 0.61, 0.36, 1),
                 opacity 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
         }
+        
+        #snowEffectContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 9999; 
+    opacity: 0;  
+    display: block; 
+}
 
+#snowCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998; 
+    display: none;
+}
         .container {
             background: var(--card-bg);
             border-radius: var(--ios-card-radius);
@@ -1124,14 +1150,33 @@ body.dark-mode .theme-btn {
     line-height: 40px;
 }
 
-/* 自动夜间模式状态保持不关闭设置面板 */
 .auto-night-mode-btn {
-    display: block;  /* 显示按钮 */
+    display: block;
     margin: 10px 0;
 }
         .dark-mode .simple-decoration {
             opacity: 0.3;
         }
+
+        @keyframes fall {
+    0% {
+        top: -10px;
+        opacity: 1;
+    }
+    100% {
+        top: 100vh;
+        opacity: 0;
+    }
+}
+
+.snowflake {
+    width: 5px;
+    height: 5px;
+    background-color: white;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: fall linear infinite;
+}
 
         /* 添加电脑端适配 */
         @media (min-width: 768px) {
@@ -1375,53 +1420,53 @@ body.dark-mode .theme-btn {
             </div>
             
             <!-- 更新日志面板 -->
-            <div class="content-pane" id="updatesPane">
-                <h1><i class="fas fa-history"></i> 更新日志</h1>
-                <div class="update-timeline">
-                    <!-- 新更新条目 -->
-                    <div class="update-item">
-                        <div class="update-date">
-                            <i class="fas fa-calendar-day"></i> 2025-08-15 19:20
-                        </div>
-                        <div class="update-content">
-                            <ul>
-                                <li>·更新了选项栏指示器的过渡动画</li>
-                                <li>·优化了电脑端体验和显示效果</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- 之前的更新条目 -->
-                    <div class="update-item">
-                        <div class="update-date">
-                            <i class="fas fa-calendar-day"></i> 2025-08-15 18:02
-                        </div>
-                        <div class="update-content">
-                            <ul>
-                                <li>·新增了更新日志的左右滑动功能</li>
-                                <li>·添加了大多数界面的过渡动画</li>
-                                <li>·优化了夜间模式切换的过渡效果</li>
-                                <li>·改进了选项卡切换的动画流畅度</li>
-                                <li>·增强了文本框的过渡动画一致性</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- 原更新条目 -->
-                    <div class="update-item">
-                        <div class="update-date">
-                            <i class="fas fa-calendar-day"></i> 2025-08-15 17:02
-                        </div>
-                        <div class="update-content">
-                            <ul>
-                                <li>·新增更新日志功能</li>
-                                <li>·修复了夜间模式切换的问题</li>
-                                <li>·优化了设置面板的展示效果</li>
-                                <li>·修复了选项指示器偏右的问题</li>
-                                <li>·添加了部分过渡动画</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+<div class="content-pane" id="updatesPane">
+    <h1><i class="fas fa-history"></i> 更新日志</h1>
+    <div class="update-timeline">
+        <!-- 最新更新条目 -->
+        <div class="update-item">
+            <div class="update-date">
+                <i class="fas fa-calendar-day"></i> 2025-08-16 22:16
             </div>
+            <div class="update-content">
+                <ul>
+                    <li>· 修复了雪花飘屏效果在白天模式下不可见的问题。</li>
+                    <li>· 解决了背景图与雪花效果显示冲突的问题，现在可以同时显示自定义图片背景和雪花飘屏。</li>
+                    <li>· 增强了设置面板的功能，使其更易于使用和自定义。</li>
+                    <li>· 优化了夜间模式和白天模式下雪花效果的显示，确保更加明显。</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 之前的更新条目 -->
+        <div class="update-item">
+            <div class="update-date">
+                <i class="fas fa-calendar-day"></i> 2025-08-15 19:20
+            </div>
+            <div class="update-content">
+                <ul>
+                    <li>· 更新了选项栏指示器的过渡动画</li>
+                    <li>· 优化了电脑端体验和显示效果</li>
+                </ul>
+            </div>
+        </div>
+        <!-- 更多更新条目 -->
+        <div class="update-item">
+            <div class="update-date">
+                <i class="fas fa-calendar-day"></i> 2025-08-15 18:02
+            </div>
+            <div class="update-content">
+                <ul>
+                    <li>· 新增了更新日志的左右滑动功能</li>
+                    <li>· 添加了大多数界面的过渡动画</li>
+                    <li>· 优化了夜间模式切换的过渡效果</li>
+                    <li>· 改进了选项卡切换的动画流畅度</li>
+                    <li>· 增强了文本框的过渡动画一致性</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
             
             <!-- 开发信息页面 -->
             <div class="content-pane" id="devPane">
@@ -1473,6 +1518,8 @@ body.dark-mode .theme-btn {
     
     <!-- 访问计数器 -->
     <div id="visit-counter">
+    <!-- 雪花效果容器 -->
+    <div id="snowEffectContainer"></div>
         <i class="fas fa-users"></i> 总访问量: <span id="count">加载中...</span>
     </div>
     
@@ -1724,55 +1771,64 @@ function updateIndicatorPosition() {
             }
             
             // 雪花效果
-            function enableSnowEffect() {
-                // 显示canvas
-                snowCanvas.style.display = 'block';
-                
-                const ctx = snowCanvas.getContext('2d');
-                
-                // 设置canvas尺寸
-                snowCanvas.width = window.innerWidth;
-                snowCanvas.height = window.innerHeight;
-                
-                // 创建雪花
-                snowflakes = [];
-                const snowflakeCount = 150;
-                
-                for (let i = 0; i < snowflakeCount; i++) {
-                    snowflakes.push({
-                        x: Math.random() * snowCanvas.width,
-                        y: Math.random() * snowCanvas.height,
-                        radius: Math.random() * 3 + 1,
-                        speed: Math.random() * 1 + 0.5,
-                        opacity: Math.random() * 0.5 + 0.5
-                    });
-                }
-                
-                // 绘制雪花
-                function drawSnowflakes() {
-                    ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                    
-                    snowflakes.forEach(flake => {
-                        ctx.beginPath();
-                        ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-                        ctx.closePath();
-                        ctx.fill();
-                        
-                        // 更新雪花位置
-                        flake.y += flake.speed;
-                        if (flake.y > snowCanvas.height) {
-                            flake.y = 0;
-                            flake.x = Math.random() * snowCanvas.width;
-                        }
-                    });
-                    
-                    snowAnimationId = requestAnimationFrame(drawSnowflakes);
-                }
-                
-                // 开始动画
-                drawSnowflakes();
+// 雪花效果（简单实现）
+function enableSnowEffect() {
+    const snowEffectContainer = document.getElementById('snowEffectContainer');
+    const snowCanvas = document.getElementById('snowCanvas');
+
+    // 显示canvas
+    snowEffectContainer.style.opacity = 1;
+    snowCanvas.style.display = 'block';
+
+    const ctx = snowCanvas.getContext('2d');
+
+    // 设置canvas尺寸
+    snowCanvas.width = window.innerWidth;
+    snowCanvas.height = window.innerHeight;
+
+    // 雪花颜色设置（白天模式使用浅蓝色，夜间模式使用白色）
+    const snowColor = body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.8)' : 'rgba(135, 206, 235, 0.8)'; // 白天使用天蓝色
+
+    // 创建雪花
+    snowflakes = [];
+    const snowflakeCount = 150;
+
+    for (let i = 0; i < snowflakeCount; i++) {
+        snowflakes.push({
+            x: Math.random() * snowCanvas.width,
+            y: Math.random() * snowCanvas.height,
+            radius: Math.random() * 3 + 1,
+            speed: Math.random() * 1 + 0.5,
+            opacity: Math.random() * 0.5 + 0.5
+        });
+    }
+
+    // 绘制雪花
+    function drawSnowflakes() {
+        ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+        ctx.fillStyle = snowColor;  // 使用动态颜色
+
+        snowflakes.forEach(flake => {
+            ctx.beginPath();
+            ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+            ctx.closePath();
+            ctx.fill();
+
+            // 更新雪花位置
+            flake.y += flake.speed;
+            if (flake.y > snowCanvas.height) {
+                flake.y = 0;
+                flake.x = Math.random() * snowCanvas.width;
             }
+        });
+
+        snowAnimationId = requestAnimationFrame(drawSnowflakes);
+    }
+
+    // 开始动画
+    drawSnowflakes();
+}
+
             
             function disableSnowEffect() {
                 if (snowAnimationId) {
@@ -1847,21 +1903,54 @@ function applySavedBackground() {
     const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
 
     if (settings.snowEffect) {
-        enableSnowEffect();
-    } else if (settings.urlBackground && settings.bgUrl) {
+        enableSnowEffect();  // 启用雪花效果
+    } else {
+        disableSnowEffect();  // 禁用雪花效果
+    }
+
+    if (settings.urlBackground && settings.bgUrl) {
         body.style.backgroundImage = `url('${settings.bgUrl}')`;
-        body.style.backgroundSize = 'cover';  // 背景图片覆盖整个屏幕
-        body.style.backgroundPosition = 'center';  // 背景图片居中
-        body.style.backgroundAttachment = 'fixed';  // 背景固定
     } else if (settings.localBackground && settings.localPath) {
         body.style.backgroundImage = `url('${settings.localPath}')`;
-        body.style.backgroundSize = 'cover';  // 背景图片覆盖整个屏幕
-        body.style.backgroundPosition = 'center';  // 背景图片居中
-        body.style.backgroundAttachment = 'fixed';  // 背景固定
     } else {
         resetBackground();
     }
+
+    // 同时设置背景图和雪花效果
+    applyBackground();
 }
+
+
+// 禁用雪花效果
+function disableSnowEffect() {
+    const snowEffectContainer = document.getElementById('snowEffectContainer');
+    snowEffectContainer.style.opacity = 0;  // 隐藏雪花效果
+}
+
+// 雪花效果（简单实现）
+function createSnowflakes() {
+    const snowEffectContainer = document.getElementById('snowEffectContainer');
+
+    // 创建雪花元素
+    setInterval(() => {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.style.position = 'absolute';
+        snowflake.style.top = '0';
+        snowflake.style.left = `${Math.random() * window.innerWidth}px`;
+        snowflake.style.animation = 'fall 10s linear infinite';
+
+        snowEffectContainer.appendChild(snowflake);
+
+        // 雪花掉落的动画
+        setTimeout(() => {
+            snowflake.remove();
+        }, 10000);  // 雪花10秒后消失
+    }, 100);  // 每100毫秒生成一个雪花
+}
+
+createSnowflakes();
+
 
 
             
@@ -1958,6 +2047,15 @@ function applySavedBackground() {
                 }
             });
             
+            window.addEventListener('resize', function() {
+    const snowCanvas = document.getElementById('snowCanvas');
+    if (snowCanvas.style.display === 'block') {
+        snowCanvas.width = window.innerWidth;
+        snowCanvas.height = window.innerHeight;
+    }
+});
+
+
             // 背景设置事件
             snowEffect.addEventListener('change', function() {
                 if (this.checked) {
