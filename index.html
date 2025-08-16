@@ -1618,16 +1618,18 @@
             }
             
             // 选项卡功能
-            function updateIndicatorPosition() {
-                const activeTab = document.querySelector('.tab-item.active');
-                if (!activeTab) return;
-                
-                const tabRect = activeTab.getBoundingClientRect();
-                const containerRect = tabsContainer.getBoundingClientRect();
-                
-                activeIndicator.style.width = `${tabRect.width}px`;
-                activeIndicator.style.transform = `translateX(${tabRect.left - containerRect.left}px)`;
-            }
+function updateIndicatorPosition() {
+    const activeTab = document.querySelector('.tab-item.active');
+    if (!activeTab) return;
+    
+    const tabRect = activeTab.getBoundingClientRect();
+    const containerRect = tabsContainer.getBoundingClientRect();
+    
+    // 添加5px的偏移量来补偿整体移动
+    const offsetLeft = 5;
+    activeIndicator.style.width = `${tabRect.width}px`;
+    activeIndicator.style.transform = `translateX(${tabRect.left - containerRect.left - offsetLeft}px)`;
+}
             
             function switchTab(tabName) {
                 // 更新选项卡激活状态
