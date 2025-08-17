@@ -910,11 +910,6 @@ body.dark-mode .theme-btn {
             color: var(--dark-text-color);
         }
 
-        .update-content ul {
-            padding-left: 18px;
-            margin-top: 8px;
-        }
-
         /* 滚动条样式 */
         .update-timeline::-webkit-scrollbar {
             width: 6px;
@@ -1026,7 +1021,7 @@ body.dark-mode .theme-btn {
             margin-top: 8px;
             padding-left: 20px;
             display: inline-block;
-            min-width: 100%;
+            text-align: left;
         }
 
         .update-content li {
@@ -1518,11 +1513,14 @@ body.dark-mode .theme-btn {
     
     <!-- 访问计数器 -->
     <div id="visit-counter">
-    <!-- 雪花效果容器 -->
-    <div id="snowEffectContainer"></div>
         <i class="fas fa-users"></i> 总访问量: <span id="count">加载中...</span>
     </div>
     
+    <!-- 雪花效果容器（必须存在） -->
+<div id="snowEffectContainer"></div>
+<canvas id="snowCanvas"
+        style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998;display:none;"></canvas>
+
     <!-- 设置按钮（右上角） -->
     <div class="settings-btn" id="settingsToggle">
         <i class="fas fa-cog"></i>
@@ -1631,8 +1629,6 @@ body.dark-mode .theme-btn {
         </div>
     </div>
     
-    <!-- 雪花效果Canvas -->
-    <canvas id="snowCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;display:none;"></canvas>
 
     <script>
         // 页面加载完成后执行
@@ -1648,7 +1644,6 @@ body.dark-mode .theme-btn {
             const tabItems = document.querySelectorAll('.tab-item');
             const tabPanes = document.querySelectorAll('.content-pane');
             const autoDarkMode = document.getElementById('autoDarkMode');
-            const snowEffect = document.getElementById('snowEffect');
             const urlBackground = document.getElementById('urlBackground');
             const localBackground = document.getElementById('localBackground');
             const bgUrlInput = document.getElementById('bgUrlInput');
@@ -1656,11 +1651,104 @@ body.dark-mode .theme-btn {
             const bgLocalInput = document.getElementById('bgLocalInput');
             const selectLocalBtn = document.getElementById('selectLocalBtn');
             const bgFileInput = document.getElementById('bgFileInput');
+            const snowEffect = document.getElementById('snowEffect');
             const snowCanvas = document.getElementById('snowCanvas');
-            
-            // 初始化变量
-            let snowflakes = [];
-            let snowAnimationId = null;
+
+// 可靠雪花：单一实现（粘到 DOMContentLoaded 的脚本里）
+let snowflakes = [];
+let snowAnimationId = null;
+let snowEnabled = false;
+const snowEffectContainer = document.getElementById('snowEffectContainer');
+// 请确保 snowCanvas 已通过： const snowCanvas = document.getElementById('snowCanvas');
+
+function resizeSnowCanvas() {
+    if (!snowCanvas) return;
+    snowCanvas.width = window.innerWidth;
+    snowCanvas.height = window.innerHeight;
+}
+
+function createSnowflakes(count = 120) {
+    if (!snowCanvas) return;
+    snowflakes = [];
+    for (let i = 0; i < count; i++) {
+        snowflakes.push({
+            x: Math.random() * snowCanvas.width,
+            y: Math.random() * snowCanvas.height,
+            radius: Math.random() * 3 + 1,
+            speed: Math.random() * 1.2 + 0.3,
+            drift: (Math.random() - 0.5) * 0.6,
+            opacity: Math.random() * 0.6 + 0.3
+        });
+    }
+}
+
+function drawSnow() {
+    if (!snowEnabled) {
+        // 关闭时清理并退出（不再 requestAnimationFrame）
+        if (!snowCanvas) return;
+        const ctx = snowCanvas.getContext('2d');
+        ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+        return;
+    }
+    const ctx = snowCanvas.getContext('2d');
+    ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+
+    const snowColor = document.body.classList.contains('dark-mode') ? 'rgba(255,255,255,0.9)' : 'rgba(200,230,255,0.9)';
+    snowflakes.forEach(f => {
+        ctx.beginPath();
+        ctx.fillStyle = snowColor;
+        ctx.globalAlpha = f.opacity;
+        ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+
+        f.y += f.speed;
+        f.x += f.drift;
+
+        if (f.y > snowCanvas.height + 10) {
+            f.y = -10;
+            f.x = Math.random() * snowCanvas.width;
+        }
+        if (f.x > snowCanvas.width + 10) f.x = -10;
+        if (f.x < -10) f.x = snowCanvas.width + 10;
+    });
+
+    snowAnimationId = requestAnimationFrame(drawSnow);
+}
+
+function enableSnowEffect() {
+    if (snowEnabled) return;
+    snowEnabled = true;
+    if (snowEffectContainer) snowEffectContainer.style.opacity = 1;
+    if (snowCanvas) snowCanvas.style.display = 'block';
+    resizeSnowCanvas();
+    createSnowflakes(140);
+    if (snowAnimationId) cancelAnimationFrame(snowAnimationId);
+    snowAnimationId = requestAnimationFrame(drawSnow);
+}
+
+function disableSnowEffect() {
+    snowEnabled = false;
+    if (snowAnimationId) {
+        cancelAnimationFrame(snowAnimationId);
+        snowAnimationId = null;
+    }
+    if (snowCanvas) {
+        try {
+            const ctx = snowCanvas.getContext('2d');
+            ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
+        } catch (e) {}
+        snowCanvas.style.display = 'none';
+    }
+    if (snowEffectContainer) snowEffectContainer.style.opacity = 0;
+    snowflakes = [];
+}
+
+// 适配窗口尺寸
+window.addEventListener('resize', function() {
+    resizeSnowCanvas();
+});
+
             
             // 主题切换功能
 // 夜间模式切换函数
@@ -1770,101 +1858,33 @@ function updateIndicatorPosition() {
                 }
             }
             
-            // 雪花效果
-// 雪花效果（简单实现）
-function enableSnowEffect() {
-    const snowEffectContainer = document.getElementById('snowEffectContainer');
-    const snowCanvas = document.getElementById('snowCanvas');
-
-    // 显示canvas
-    snowEffectContainer.style.opacity = 1;
-    snowCanvas.style.display = 'block';
-
-    const ctx = snowCanvas.getContext('2d');
-
-    // 设置canvas尺寸
-    snowCanvas.width = window.innerWidth;
-    snowCanvas.height = window.innerHeight;
-
-    // 雪花颜色设置（白天模式使用浅蓝色，夜间模式使用白色）
-    const snowColor = body.classList.contains('dark-mode') ? 'rgba(255, 255, 255, 0.8)' : 'rgba(135, 206, 235, 0.8)'; // 白天使用天蓝色
-
-    // 创建雪花
-    snowflakes = [];
-    const snowflakeCount = 150;
-
-    for (let i = 0; i < snowflakeCount; i++) {
-        snowflakes.push({
-            x: Math.random() * snowCanvas.width,
-            y: Math.random() * snowCanvas.height,
-            radius: Math.random() * 3 + 1,
-            speed: Math.random() * 1 + 0.5,
-            opacity: Math.random() * 0.5 + 0.5
-        });
-    }
-
-    // 绘制雪花
-    function drawSnowflakes() {
-        ctx.clearRect(0, 0, snowCanvas.width, snowCanvas.height);
-        ctx.fillStyle = snowColor;  // 使用动态颜色
-
-        snowflakes.forEach(flake => {
-            ctx.beginPath();
-            ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.fill();
-
-            // 更新雪花位置
-            flake.y += flake.speed;
-            if (flake.y > snowCanvas.height) {
-                flake.y = 0;
-                flake.x = Math.random() * snowCanvas.width;
-            }
-        });
-
-        snowAnimationId = requestAnimationFrame(drawSnowflakes);
-    }
-
-    // 开始动画
-    drawSnowflakes();
-}
-
-            
-            function disableSnowEffect() {
-                if (snowAnimationId) {
-                    cancelAnimationFrame(snowAnimationId);
-                    snowAnimationId = null;
-                }
-                snowCanvas.style.display = 'none';
-            }
-            
             // 背景设置功能
             function toggleBackgroundFunctions(activeId) {
-                [snowEffect, urlBackground, localBackground].forEach(el => {
-                    if (el.id !== activeId) el.checked = false;
-                });
-                
-                // 应用效果
-                if (snowEffect.checked) {
-                    enableSnowEffect();
-                } else {
-                    disableSnowEffect();
-                }
-                
-                if (urlBackground.checked && bgUrlInput.value) {
-                    body.style.backgroundImage = `url('${bgUrlInput.value}')`;
-                    body.style.backgroundSize = 'cover';
-                    body.style.backgroundAttachment = 'fixed';
-                } else if (localBackground.checked && bgLocalInput.value) {
-                    body.style.backgroundImage = `url('${bgLocalInput.value}')`;
-                    body.style.backgroundSize = 'cover';
-                    body.style.backgroundAttachment = 'fixed';
-                } else {
-                    resetBackground();
-                }
-                
-                saveBackgroundSettings();
-            }
+    // 仅让 URL 和 本地背景互斥
+    if (activeId === 'urlBackground' && urlBackground.checked) {
+        localBackground.checked = false;
+    } else if (activeId === 'localBackground' && localBackground.checked) {
+        urlBackground.checked = false;
+    }
+
+
+    // 应用背景（优先 URL，其次本地，否则重置）
+    if (urlBackground.checked && bgUrlInput.value) {
+        body.style.backgroundImage = `url('${bgUrlInput.value}')`;
+        body.style.backgroundSize = 'cover';
+        body.style.backgroundAttachment = 'fixed';
+    } else if (localBackground.checked && bgLocalInput.value) {
+        body.style.backgroundImage = `url('${bgLocalInput.value}')`;
+        body.style.backgroundSize = 'cover';
+        body.style.backgroundAttachment = 'fixed';
+    } else {
+        resetBackground();
+    }
+
+    saveBackgroundSettings();
+}
+
+
             
             function resetBackground() {
                 if (body.classList.contains('dark-mode')) {
@@ -1877,7 +1897,7 @@ function enableSnowEffect() {
             
 function saveBackgroundSettings() {
     const settings = {
-        snowEffect: snowEffect.checked,
+        snowEffect: (typeof snowEffect !== 'undefined') ? snowEffect.checked : false,
         urlBackground: urlBackground.checked,
         localBackground: localBackground.checked,
         bgUrl: bgUrlInput.value,
@@ -1888,25 +1908,17 @@ function saveBackgroundSettings() {
 
 function loadBackgroundSettings() {
     const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
-
     if (settings.snowEffect) snowEffect.checked = true;
     if (settings.urlBackground) urlBackground.checked = true;
     if (settings.localBackground) localBackground.checked = true;
     if (settings.bgUrl) bgUrlInput.value = settings.bgUrl;
     if (settings.localPath) bgLocalInput.value = settings.localPath;
 
-    // 应用已保存的背景
     applySavedBackground();
 }
 
 function applySavedBackground() {
     const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
-
-    if (settings.snowEffect) {
-        enableSnowEffect();  // 启用雪花效果
-    } else {
-        disableSnowEffect();  // 禁用雪花效果
-    }
 
     if (settings.urlBackground && settings.bgUrl) {
         body.style.backgroundImage = `url('${settings.bgUrl}')`;
@@ -1916,41 +1928,12 @@ function applySavedBackground() {
         resetBackground();
     }
 
-    // 同时设置背景图和雪花效果
-    applyBackground();
+    if (settings.snowEffect) {
+        enableSnowEffect();
+    } else {
+        disableSnowEffect();
+    }
 }
-
-
-// 禁用雪花效果
-function disableSnowEffect() {
-    const snowEffectContainer = document.getElementById('snowEffectContainer');
-    snowEffectContainer.style.opacity = 0;  // 隐藏雪花效果
-}
-
-// 雪花效果（简单实现）
-function createSnowflakes() {
-    const snowEffectContainer = document.getElementById('snowEffectContainer');
-
-    // 创建雪花元素
-    setInterval(() => {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.style.position = 'absolute';
-        snowflake.style.top = '0';
-        snowflake.style.left = `${Math.random() * window.innerWidth}px`;
-        snowflake.style.animation = 'fall 10s linear infinite';
-
-        snowEffectContainer.appendChild(snowflake);
-
-        // 雪花掉落的动画
-        setTimeout(() => {
-            snowflake.remove();
-        }, 10000);  // 雪花10秒后消失
-    }, 100);  // 每100毫秒生成一个雪花
-}
-
-createSnowflakes();
-
 
 
             
@@ -2022,14 +2005,16 @@ createSnowflakes();
             settingsToggle.addEventListener('click', toggleSettingsPanel);
             settingsClose.addEventListener('click', toggleSettingsPanel);
             
-            // 关闭设置面板当点击外部区域
-            document.addEventListener('click', (e) => {
-                if (settingsPanel.classList.contains('active') && 
-                    !settingsPanel.contains(e.target) && 
-                    !settingsToggle.contains(e.target)) {
-                    toggleSettingsPanel();
-                }
-            });
+    document.addEventListener("click", function(event) {
+    const target = event.target;
+    // 如果点击既不在设置面板内，也不在设置按钮本身（包括其子元素），就关闭面板
+    if (!settingsPanel.contains(target) && !settingsToggle.contains(target)) {
+        settingsPanel.classList.remove('active');
+        settingsToggle.classList.remove('active');
+    }
+});
+
+
             
             // 选项卡事件
             tabItems.forEach(tab => {
@@ -2041,30 +2026,12 @@ createSnowflakes();
             // 窗口大小变化时更新指示器和canvas
             window.addEventListener('resize', () => {
                 updateIndicatorPosition();
-                if (snowEffect.checked) {
-                    snowCanvas.width = window.innerWidth;
-                    snowCanvas.height = window.innerHeight;
-                }
             });
             
             window.addEventListener('resize', function() {
-    const snowCanvas = document.getElementById('snowCanvas');
-    if (snowCanvas.style.display === 'block') {
-        snowCanvas.width = window.innerWidth;
-        snowCanvas.height = window.innerHeight;
-    }
 });
 
 
-            // 背景设置事件
-            snowEffect.addEventListener('change', function() {
-                if (this.checked) {
-                    toggleBackgroundFunctions('snowEffect');
-                } else {
-                    disableSnowEffect();
-                    saveBackgroundSettings();
-                }
-            });
             
             urlBackground.addEventListener('change', function() {
                 if (this.checked) {
@@ -2109,6 +2076,19 @@ createSnowflakes();
                     
                     saveBackgroundSettings();
                 }
+            
+            // 雪花开关绑定
+        if (snowEffect) {
+    snowEffect.addEventListener('change', function() {
+        if (this.checked) {
+            enableSnowEffect();
+        } else {
+            disableSnowEffect();
+        }
+        saveBackgroundSettings(); // 可选：把雪花偏好也保存
+    });
+}
+
             });
             
             autoDarkMode.addEventListener('change', function() {
