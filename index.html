@@ -30,6 +30,18 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
+        
+
+.image-bg-active .container {
+    background: rgba(255,255,255,0.78) !important;
+    border-color: rgba(0,0,0,0.06) !important;
+}
+.dark-mode.image-bg-active .container {
+    background: rgba(24,24,24,0.78) !important;
+    border-color: rgba(255,255,255,0.06) !important;
+}
+
+
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
@@ -1761,9 +1773,13 @@ function toggleTheme() {
     const isDarkMode = body.classList.contains('dark-mode');
     
     // 切换图标
-    themeToggle.innerHTML = isDarkMode 
-        ? '<i class="fas fa-sun"></i>' 
-        : '<i class="fas fa-moon"></i>';
+    // 切换图标（不重建节点，只换class）
+const icon = themeToggle.querySelector("i");
+if (icon) {
+    icon.classList.remove("fa-moon", "fa-sun");
+    icon.classList.add(isDarkMode ? "fa-sun" : "fa-moon");
+}
+
     
     // 存储当前模式
     localStorage.setItem('darkMode', isDarkMode);
@@ -1859,60 +1875,79 @@ function updateIndicatorPosition() {
             }
             
             // 背景设置功能
-            function toggleBackgroundFunctions(activeId) {
-    // 仅让 URL 和 本地背景互斥
+            /* ====== 背景与雪花：更稳健的实现 ====== */
+
+function toggleBackgroundFunctions(activeId) {
+    // 保证 URL / 本地 背景互斥
     if (activeId === 'urlBackground' && urlBackground.checked) {
         localBackground.checked = false;
     } else if (activeId === 'localBackground' && localBackground.checked) {
         urlBackground.checked = false;
     }
 
+    // 先清除 html 上的任何背景（避免两层冲突）
+    document.documentElement.style.backgroundImage = 'none';
 
-    // 应用背景（优先 URL，其次本地，否则重置）
+    // 优先 URL -> 本地 -> 无
     if (urlBackground.checked && bgUrlInput.value) {
-        body.style.backgroundImage = `url('${bgUrlInput.value}')`;
-        body.style.backgroundSize = 'cover';
-        body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundImage = `url('${bgUrlInput.value}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundColor = 'transparent';
+        // 确保 body 覆盖视口（图片显示在主页面后面）
+        document.body.style.minHeight = '100vh';
     } else if (localBackground.checked && bgLocalInput.value) {
-        body.style.backgroundImage = `url('${bgLocalInput.value}')`;
-        body.style.backgroundSize = 'cover';
-        body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundImage = `url('${bgLocalInput.value}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.backgroundColor = 'transparent';
+        document.body.style.minHeight = '100vh';
     } else {
+        // 没有图片背景时，清除 body 的图片并恢复 body 的渐变（用 resetBackground 统一处理）
+        document.body.style.backgroundImage = 'none';
         resetBackground();
     }
 
     saveBackgroundSettings();
 }
 
+function resetBackground() {
+    // 清除 html 和 body 背景图片
+    document.documentElement.style.backgroundImage = 'none';
+    document.body.style.backgroundImage = 'none';
+    // 恢复 body 的渐变（白天/夜间）
+    if (body.classList.contains('dark-mode')) {
+        body.style.background = 'linear-gradient(135deg, #0f172a, #1e293b)';
+    } else {
+        body.style.background = 'linear-gradient(135deg, #f5f7fa, #e4e7f1)';
+    }
+    // 取消 minHeight 强制（保持原始样式可覆盖）
+    document.body.style.minHeight = '';
+}
 
-            
-            function resetBackground() {
-                if (body.classList.contains('dark-mode')) {
-                    body.style.background = 'linear-gradient(135deg, #0f172a, #1e293b)';
-                } else {
-                    body.style.background = 'linear-gradient(135deg, #f5f7fa, #e4e7f1)';
-                }
-                body.style.backgroundImage = 'none';
-            }
-            
 function saveBackgroundSettings() {
     const settings = {
-        snowEffect: (typeof snowEffect !== 'undefined') ? snowEffect.checked : false,
-        urlBackground: urlBackground.checked,
-        localBackground: localBackground.checked,
-        bgUrl: bgUrlInput.value,
-        localPath: bgLocalInput.value
+        snowEffect: !!(typeof snowEffect !== 'undefined' && snowEffect.checked),
+        urlBackground: !!(typeof urlBackground !== 'undefined' && urlBackground.checked),
+        localBackground: !!(typeof localBackground !== 'undefined' && localBackground.checked),
+        bgUrl: bgUrlInput.value || '',
+        localPath: bgLocalInput.value || ''
     };
     localStorage.setItem('backgroundSettings', JSON.stringify(settings));
 }
 
 function loadBackgroundSettings() {
     const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
-    if (settings.snowEffect) snowEffect.checked = true;
-    if (settings.urlBackground) urlBackground.checked = true;
-    if (settings.localBackground) localBackground.checked = true;
-    if (settings.bgUrl) bgUrlInput.value = settings.bgUrl;
-    if (settings.localPath) bgLocalInput.value = settings.localPath;
+    // 强制布尔化，避免字符串"false"被误判
+    if (typeof snowEffect !== 'undefined') snowEffect.checked = !!settings.snowEffect;
+    if (typeof urlBackground !== 'undefined') urlBackground.checked = !!settings.urlBackground;
+    if (typeof localBackground !== 'undefined') localBackground.checked = !!settings.localBackground;
+    bgUrlInput.value = settings.bgUrl || '';
+    bgLocalInput.value = settings.localPath || '';
 
     applySavedBackground();
 }
@@ -1920,20 +1955,53 @@ function loadBackgroundSettings() {
 function applySavedBackground() {
     const settings = JSON.parse(localStorage.getItem('backgroundSettings') || '{}');
 
+    // 清除 html 上的背景（避免和 body 冲突）
+    document.documentElement.style.backgroundImage = 'none';
+
     if (settings.urlBackground && settings.bgUrl) {
-        body.style.backgroundImage = `url('${settings.bgUrl}')`;
+        document.body.style.backgroundImage = `url('${settings.bgUrl}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.minHeight = '100vh';
     } else if (settings.localBackground && settings.localPath) {
-        body.style.backgroundImage = `url('${settings.localPath}')`;
+        document.body.style.backgroundImage = `url('${settings.localPath}')`;
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundRepeat = 'no-repeat';
+        document.body.style.minHeight = '100vh';
     } else {
+        // 无自定义图片：恢复渐变
         resetBackground();
     }
 
-    if (settings.snowEffect) {
+    // 雪花开关：兼容 boolean 和字符串 'true'
+    if (settings.snowEffect === true || settings.snowEffect === 'true') {
         enableSnowEffect();
+        if (typeof snowEffect !== 'undefined') snowEffect.checked = true;
     } else {
         disableSnowEffect();
+        if (typeof snowEffect !== 'undefined') snowEffect.checked = false;
     }
 }
+
+/* 去除重复绑定：只保留一个 change 监听器 */
+bgFileInput.removeEventListener && bgFileInput.removeEventListener('change', null); // 安全尝试移除（有些环境无效）
+bgFileInput.addEventListener('change', function(e) {
+    if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0];
+        const filePath = URL.createObjectURL(file);
+        bgLocalInput.value = filePath;
+        // 自动勾选本地背景开关并应用
+        localBackground.checked = true;
+        toggleBackgroundFunctions('localBackground');
+        saveBackgroundSettings();
+    }
+});
+
+
 
 
             
@@ -2007,12 +2075,17 @@ function applySavedBackground() {
             
     document.addEventListener("click", function(event) {
     const target = event.target;
-    // 如果点击既不在设置面板内，也不在设置按钮本身（包括其子元素），就关闭面板
-    if (!settingsPanel.contains(target) && !settingsToggle.contains(target)) {
+    // 如果点击既不在设置面板内，也不在设置按钮，也不在夜间模式按钮上，就关闭面板
+    if (
+        !settingsPanel.contains(target) &&
+        !settingsToggle.contains(target) &&
+        !themeToggle.contains(target)
+    ) {
         settingsPanel.classList.remove('active');
         settingsToggle.classList.remove('active');
     }
 });
+
 
 
             
@@ -2034,48 +2107,40 @@ function applySavedBackground() {
 
             
             urlBackground.addEventListener('change', function() {
-                if (this.checked) {
-                    toggleBackgroundFunctions('urlBackground');
-                } else {
-                    saveBackgroundSettings();
-                }
-            });
-            
-            localBackground.addEventListener('change', function() {
-                if (this.checked) {
-                    toggleBackgroundFunctions('localBackground');
-                } else {
-                    saveBackgroundSettings();
-                }
-            });
+    toggleBackgroundFunctions('urlBackground');
+});
+
+localBackground.addEventListener('change', function() {
+    toggleBackgroundFunctions('localBackground');
+});
+
             
             applyUrlBtn.addEventListener('click', function() {
-                if (bgUrlInput.value) {
-                    body.style.backgroundImage = `url('${bgUrlInput.value}')`;
-                    body.style.backgroundSize = 'cover';
-                    body.style.backgroundAttachment = 'fixed';
-                    saveBackgroundSettings();
-                }
-            });
+    if (bgUrlInput.value) {
+        // 同步打开上方的开关并调用统一逻辑（保证状态一致）
+        urlBackground.checked = true;
+        toggleBackgroundFunctions('urlBackground');
+    }
+});
+
             
             selectLocalBtn.addEventListener('click', function() {
                 bgFileInput.click();
             });
             
             bgFileInput.addEventListener('change', function(e) {
-                if (e.target.files.length > 0) {
-                    const file = e.target.files[0];
-                    const filePath = URL.createObjectURL(file);
-                    bgLocalInput.value = filePath;
-                    
-                    if (localBackground.checked) {
-                        body.style.backgroundImage = `url('${filePath}')`;
-                        body.style.backgroundSize = 'cover';
-                        body.style.backgroundAttachment = 'fixed';
-                    }
-                    
-                    saveBackgroundSettings();
-                }
+bgFileInput.addEventListener('change', function(e) {
+    if (e.target.files.length > 0) {
+        const file = e.target.files[0];
+        const filePath = URL.createObjectURL(file);
+        bgLocalInput.value = filePath;
+        // 自动勾选本地背景开关并应用
+        localBackground.checked = true;
+        toggleBackgroundFunctions('localBackground');
+        saveBackgroundSettings();
+    }
+});
+
             
             // 雪花开关绑定
         if (snowEffect) {
@@ -2102,5 +2167,6 @@ function applySavedBackground() {
             initPage();
         });
     </script>
+    
 </body>
 </html>
