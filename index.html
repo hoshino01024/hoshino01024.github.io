@@ -1185,6 +1185,61 @@ body.dark-mode .theme-btn {
     animation: fall linear infinite;
 }
 
+.timetable-wrap { overflow-x: auto; padding: 6px 0; }
+.timetable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--ios-shadow);
+  background: var(--card-bg);
+}
+.timetable thead th {
+  padding: 12px 14px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  background: linear-gradient(90deg, rgba(67,97,238,0.95), rgba(58,12,163,0.9));
+  color: #fff;
+  font-size: 0.98rem;
+}
+.timetable tbody td {
+  padding: 12px 10px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-color);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  font-size: 0.95rem;
+}
+.timetable tbody tr:nth-child(odd) td { background: rgba(255,255,255,0.02); }
+.timetable tbody tr.today td {
+  background: linear-gradient(90deg, rgba(67,97,238,0.06), rgba(58,12,163,0.04));
+  border-left: 4px solid var(--primary-color);
+  font-weight: 800;
+  color: var(--primary-color);
+}
+.small-card {
+  background: var(--card-bg);
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: var(--ios-shadow);
+  min-height: 68px;
+}
+.small-card h4 { margin: 0 0 6px 0; font-size: 1rem; color: var(--primary-color); }
+.small-card p { margin:0; color:#666; font-size:0.95rem; line-height:1.4; }
+
+body.dark-mode .timetable { background: var(--dark-card-bg); }
+body.dark-mode .timetable tbody td { color: var(--dark-text-color); border-bottom: 1px solid rgba(255,255,255,0.03); }
+body.dark-mode .timetable thead th { color: #fff; }
+body.dark-mode .small-card { background: var(--dark-card-bg); }
+
+@media (max-width:680px) {
+  .timetable { min-width: 560px; }
+  .timetable thead th { padding:10px; font-size:0.9rem; }
+  .timetable tbody td { padding:10px; font-size:0.9rem; }
+}
+
         /* 添加电脑端适配 */
         @media (min-width: 768px) {
             .theme-btn {
@@ -1385,7 +1440,7 @@ body.dark-mode .theme-btn {
         <!-- 选项卡导航 -->
         <div class="tabs-container" id="tabsContainer">
             <div class="active-indicator" id="activeIndicator"></div>
-            <div class="tab-item active" data-tab="notice">九年级通知</div>
+            <div class="tab-item active" data-tab="notice">课程表</div>
             <div class="tab-item" data-tab="updates">更新日志</div> <!-- 新增 -->
             <div class="tab-item" data-tab="dev">开发信息</div>
         </div>
@@ -1393,44 +1448,62 @@ body.dark-mode .theme-btn {
         <!-- 选项卡内容 -->
         <div class="tab-content" id="tabContent">
             <!-- 通知页面 -->
-            <div class="content-pane active" id="noticePane">
-                <h1><i class="fas fa-bell"></i> 九年级重要通知</h1>
-                
-                <div class="countdown">
-                    <div>距离九年级托管开始还有：</div>
-                    <div>
-                        <span class="countdown-numbers" id="days">--</span>天 
-                        <span class="countdown-numbers" id="hours">--</span>小时
-                    </div>
-                    <div style="font-size: 1rem; margin-top: 10px; color: #666;">
-                        2025年8月20日正式开始托管
-                    </div>
-                </div>
-                
-                <div class="placeholder">
-                    <p><i class="fas fa-tools"></i> 其他功能开发中，敬请期待...</p>
-                </div>
-                
-                <div class="ios-notification">
-                    <h3><i class="fas fa-info-circle"></i> 性能优化说明</h3>
-                    <p>已移除可能导致卡顿的毛玻璃效果，优化了动画性能，确保页面在各种设备上流畅运行。</p>
-                </div>
+<!-- 通知页面 -->
+<div class="content-pane active" id="noticePane">
+  <!-- 替换为下面的内容（从这里开始） -->
+  <h1><i class="fas fa-calendar-alt"></i> 课程表</h1>
 
-                <div class="action-buttons">
-                    <a href="mailto:2709923043@qq.com" class="btn btn-primary">
-                        <i class="fas fa-envelope"></i> 联系开发者
-                    </a>
-                    <a href="https://u7t.cn/902app" class="btn btn-secondary">
-                        <i class="fas fa-download"></i> 下载应用
-                    </a>
-                </div>
-            </div>
+  <div class="timetable-intro" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;">
+    <div class="small-card" id="todayCard" style="flex:1;min-width:220px;"></div>
+    <div class="small-card" id="tomorrowCard" style="flex:1;min-width:220px;"></div>
+  </div>
+
+  <div class="timetable-wrap" style="margin-top:16px;">
+    <table class="timetable" id="timetableTable" aria-label="托管课程表">
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>节次一</th>
+          <th>节次二</th>
+          <th>节次三</th>
+          <th>节次四</th>
+          <th>节次五</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:18px;text-align:center;">
+    <small style="color:#666;">托管起始：2025-08-20 · 本表显示已安排的托管课程（美观响应式）</small>
+  </div>
+
+  <!-- 保留原来的联系按钮（可选） -->
+  <div class="action-buttons" style="margin-top:18px;">
+    <a href="mailto:2709923043@qq.com" class="btn btn-primary">
+      <i class="fas fa-envelope"></i> 联系开发者
+    </a>
+    <a href="https://u7t.cn/902app" class="btn btn-secondary">
+      <i class="fas fa-download"></i> 下载应用
+    </a>
+  </div>
+</div>
             
             <!-- 更新日志面板 -->
 <div class="content-pane" id="updatesPane">
     <h1><i class="fas fa-history"></i> 更新日志</h1>
     <div class="update-timeline">
         <!-- 最新更新条目 -->
+        <div class="update-item">
+    <div class="update-date">
+        <i class="fas fa-calendar-day"></i> 2025-08-20 12:53
+    </div>
+    <div class="update-content">
+        <ul>
+            <li>· 更改了托管倒计时为托管课程表</li>
+        </ul>
+    </div>
+</div>
         <div class="update-item">
             <div class="update-date">
                 <i class="fas fa-calendar-day"></i> 2025-08-16 22:16
@@ -1678,6 +1751,86 @@ function resizeSnowCanvas() {
     snowCanvas.width = window.innerWidth;
     snowCanvas.height = window.innerHeight;
 }
+
+/* ---------- 课程表数据（由你给出） ---------- */
+const timetableData = {
+  '2025-08-21': ['英语','历史','英语','道法','化学'],
+  '2025-08-22': ['语文','语文','数学','物理','数学'],
+  '2025-08-23': ['数学','数学','化学','英语','英语'],
+  '2025-08-24': ['英语','英语','语文','物理','语文'],
+  '2025-08-25': ['道法','道法','历史','历史','数学']
+};
+
+/* 辅助：把 Date -> YYYY-MM-DD */
+function toYMD(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+function niceDateLabel(dateStr){
+  // 2025-08-21 -> 8月21日 周四（本地）
+  const d = new Date(dateStr + 'T00:00:00');
+  const opts = { month:'numeric', day:'numeric', weekday:'short' };
+  return d.toLocaleDateString(undefined, opts).replace(/\//g,'-');
+}
+
+function renderTimetable(){
+  const tbody = document.querySelector('#timetableTable tbody');
+  if(!tbody) return;
+  tbody.innerHTML = '';
+
+  const keys = Object.keys(timetableData).sort();
+  const todayStr = toYMD(new Date());
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate()+1);
+  const tomorrowStr = toYMD(tomorrow);
+
+  // 填表（按日期顺序）
+  keys.forEach(dateStr => {
+    const tr = document.createElement('tr');
+    if(dateStr === todayStr) tr.classList.add('today');
+
+    // 日期列
+    const tdDate = document.createElement('td');
+    tdDate.innerHTML = `<div style="font-weight:700">${niceDateLabel(dateStr)}</div><div style="font-size:0.82rem;color:#888">${dateStr}</div>`;
+    tr.appendChild(tdDate);
+
+    // 5 节课程（若缺省则显示 - ）
+    const arr = timetableData[dateStr] || [];
+    for(let i=0;i<5;i++){
+      const td = document.createElement('td');
+      td.textContent = arr[i] || '-';
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  });
+
+  // 今天卡片（用户说“今天课已经上完” — 我们显示已完成提示）
+  const todayCard = document.getElementById('todayCard');
+  if(todayCard){
+    // 如果今天有排课，则列出；否则显示“今日课程已全部上完”
+    if(timetableData[todayStr] && timetableData[todayStr].length){
+      const list = timetableData[todayStr].map((c,idx)=>`第${idx+1}节：${c}`).join('<br>');
+      todayCard.innerHTML = `<h4>今天 ${niceDateLabel(todayStr)}</h4><p>${list}</p>`;
+    } else {
+      todayCard.innerHTML = `<h4>今天 ${new Date().toLocaleDateString()}</h4><p>今天的托管课程已全部上完 ✅</p>`;
+    }
+  }
+
+  // 明天卡片（若有）
+  const tomorrowCard = document.getElementById('tomorrowCard');
+  if(tomorrowCard){
+    if(timetableData[tomorrowStr] && timetableData[tomorrowStr].length){
+      const list = timetableData[tomorrowStr].map((c,idx)=>`第${idx+1}节：${c}`).join('<br>');
+      tomorrowCard.innerHTML = `<h4>明天 ${niceDateLabel(tomorrowStr)}</h4><p style="font-weight:700">${list}</p>`;
+    } else {
+      tomorrowCard.innerHTML = `<h4>明天 ${niceDateLabel(tomorrowStr)}</h4><p style="color:#888">暂无安排</p>`;
+    }
+  }
+}
+
+/* 把 renderTimetable() 在页面初始化时调用一次（把下面这行加入 initPage 函数中） */
+// renderTimetable();
 
 function createSnowflakes(count = 120) {
     if (!snowCanvas) return;
@@ -2055,17 +2208,21 @@ bgFileInput.addEventListener('change', function(e) {
                 // 初始化访问计数器
                 updateCounter();
                 
-                // 加载背景设置
-                loadBackgroundSettings();
-                
-                // 初始化自动夜间模式
-                if (localStorage.getItem('autoDarkMode') === 'true') {
-                    autoDarkMode.checked = true;
-                    checkAutoDarkMode();
-                }
-                
-                // 每分钟检查一次自动夜间模式
-                setInterval(checkAutoDarkMode, 60000);
+// 加载背景设置
+loadBackgroundSettings();
+
+// 初始化自动夜间模式
+if (localStorage.getItem('autoDarkMode') === 'true') {
+    autoDarkMode.checked = true;
+    checkAutoDarkMode();
+}
+
+// 新增：渲染课程表
+renderTimetable();
+
+// 每分钟检查一次自动夜间模式
+setInterval(checkAutoDarkMode, 60000);
+
             }
             
             // 事件绑定
