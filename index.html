@@ -1234,6 +1234,52 @@ body.dark-mode .timetable tbody td { color: var(--dark-text-color); border-botto
 body.dark-mode .timetable thead th { color: #fff; }
 body.dark-mode .small-card { background: var(--dark-card-bg); }
 
+.timetable,
+.timetable thead th,
+.timetable tbody td,
+.timetable tbody tr,
+.small-card,
+#todayCard, #tomorrowCard {
+  transition:
+    background-color 0.56s cubic-bezier(0.22,0.61,0.36,1),
+    color 0.56s cubic-bezier(0.22,0.61,0.36,1),
+    border-color 0.56s cubic-bezier(0.22,0.61,0.36,1),
+    box-shadow 0.56s cubic-bezier(0.22,0.61,0.36,1),
+    transform 0.42s cubic-bezier(0.22,0.61,0.36,1),
+    opacity 0.42s cubic-bezier(0.22,0.61,0.36,1);
+  will-change: background-color, color, transform, opacity;
+}
+
+body.theme-switching .timetable,
+body.theme-switching .small-card,
+body.theme-switching #todayCard,
+body.theme-switching #tomorrowCard {
+  opacity: 0.92;
+  transform: translateY(6px) scale(0.998);
+}
+
+/* 让表头文本的颜色也平滑过渡（表头通常用深色渐变，文本仍需动画） */
+.timetable thead th {
+  transition: color 0.56s cubic-bezier(0.22,0.61,0.36,1), background-color 0.56s;
+}
+
+.timetable tbody tr.today td {
+  transition: background 0.56s cubic-bezier(0.22,0.61,0.36,1), color 0.56s;
+}
+
+.timetable tbody td {
+  transition: color 0.48s cubic-bezier(0.22,0.61,0.36,1);
+}
+
+.small-card h4, .small-card p, .timetable tbody td div, .timetable tbody td span {
+  transition: color 0.48s cubic-bezier(0.22,0.61,0.36,1), opacity 0.4s;
+}
+
+body.theme-switching .timetable {
+  filter: blur(0.4px);
+}
+*/
+
 @media (max-width:680px) {
   .timetable { min-width: 560px; }
   .timetable thead th { padding:10px; font-size:0.9rem; }
@@ -1475,7 +1521,7 @@ body.dark-mode .small-card { background: var(--dark-card-bg); }
   </div>
 
   <div style="margin-top:18px;text-align:center;">
-    <small style="color:#666;">托管起始：2025-08-20 · 本表显示已安排的托管课程（美观响应式）</small>
+    <small style="color:#666;">托管起始：2025-08-20 · 本表显示已安排的托管课程</small>
   </div>
 
   <!-- 保留原来的联系按钮（可选） -->
@@ -1494,6 +1540,16 @@ body.dark-mode .small-card { background: var(--dark-card-bg); }
     <h1><i class="fas fa-history"></i> 更新日志</h1>
     <div class="update-timeline">
         <!-- 最新更新条目 -->
+<div class="update-item">
+  <div class="update-date">
+    <i class="fas fa-calendar-day"></i> 2025-08-20 22:05
+  </div>
+  <div class="update-content">
+    <ul>
+      <li>· 给课程表类显示增加过渡动画效果</li>
+    </ul>
+  </div>
+</div>
         <div class="update-item">
     <div class="update-date">
         <i class="fas fa-calendar-day"></i> 2025-08-20 12:53
@@ -1805,7 +1861,7 @@ function renderTimetable(){
     tbody.appendChild(tr);
   });
 
-  // 今天卡片（用户说“今天课已经上完” — 我们显示已完成提示）
+  // 今天卡片
   const todayCard = document.getElementById('todayCard');
   if(todayCard){
     // 如果今天有排课，则列出；否则显示“今日课程已全部上完”
@@ -1917,31 +1973,46 @@ window.addEventListener('resize', function() {
             
             // 主题切换功能
 // 夜间模式切换函数
+// 替换原有 toggleTheme 函数 —— 粘贴并覆盖原函数体
 function toggleTheme() {
-    // 添加过渡类
-    body.classList.add('dark-mode-transition');
-    
-    // 切换夜间模式
-    body.classList.toggle('dark-mode');
-    const isDarkMode = body.classList.contains('dark-mode');
-    
-    // 切换图标
-    // 切换图标（不重建节点，只换class）
-const icon = themeToggle.querySelector("i");
-if (icon) {
-    icon.classList.remove("fa-moon", "fa-sun");
-    icon.classList.add(isDarkMode ? "fa-sun" : "fa-moon");
-}
+    // 加入短时的内容过渡类，驱动上面 CSS 的微位移动画
+    body.classList.add('theme-switching', 'dark-mode-transition');
 
-    
-    // 存储当前模式
-    localStorage.setItem('darkMode', isDarkMode);
-    
-    // 延迟移除状态
-    setTimeout(() => {
-        themeToggle.classList.remove('active');
-        body.classList.remove('dark-mode-transition');
-    }, 800);
+    // 用 requestAnimationFrame 确保样式变更被浏览器采样（避免跳跃）
+    requestAnimationFrame(() => {
+        // 切换夜间模式类
+        body.classList.toggle('dark-mode');
+        const isDarkMode = body.classList.contains('dark-mode');
+
+        // 切换按钮图标（保留你原来的图标逻辑）
+        const icon = themeToggle.querySelector("i");
+        if (icon) {
+            icon.classList.remove("fa-moon", "fa-sun");
+            icon.classList.add(isDarkMode ? "fa-sun" : "fa-moon");
+        }
+
+        // 保存首选项
+        localStorage.setItem('darkMode', isDarkMode);
+
+        // 如果雪花正在运行，立即触发一次 draw，使雪花颜色马上按模式更新（若定义了 drawSnow）
+        try {
+            if (typeof drawSnow === 'function' && snowEnabled) {
+                // 强制同步绘制一帧
+                drawSnow();
+            }
+        } catch (e) {
+            // 不影响主逻辑
+            console.warn('drawSnow 调用失败：', e);
+        }
+
+        // 在 700ms 后移除过渡类（与 CSS 中 0.56s/0.42s 的过渡保持一致）
+        clearTimeout(window._themeSwitchTimeout);
+        window._themeSwitchTimeout = setTimeout(() => {
+            body.classList.remove('theme-switching', 'dark-mode-transition');
+            // 清理（可选）——保持按钮状态
+            themeToggle.classList.remove('active');
+        }, 720);
+    });
 }
 
 // 设置面板切换函数
