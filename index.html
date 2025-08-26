@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -1808,13 +1809,12 @@ function resizeSnowCanvas() {
     snowCanvas.height = window.innerHeight;
 }
 
-/* ---------- 课程表数据（由你给出） ---------- */
+/* ---------- 课程表数据 ---------- */
 const timetableData = {
-  '2025-08-21': ['英语','历史','英语','道法','化学'],
-  '2025-08-22': ['语文','语文','数学','物理','数学'],
-  '2025-08-23': ['数学','数学','化学','英语','英语'],
-  '2025-08-24': ['英语','英语','语文','物理','语文'],
-  '2025-08-25': ['道法','道法','历史','历史','数学']
+  '2025-08-27': ['英语','历史','英语','道法','化学'],
+  '2025-08-28': ['语文','语文','数学','物理','数学'],
+  '2025-08-29': ['数学','数学','化学','英语','英语'],
+  '2025-08-30': ['英语','英语','语文','物理','语文']
 };
 
 /* 辅助：把 Date -> YYYY-MM-DD */
@@ -1825,7 +1825,7 @@ function toYMD(d){
   return `${y}-${m}-${day}`;
 }
 function niceDateLabel(dateStr){
-  // 2025-08-21 -> 8月21日 周四（本地）
+  // 2025-08-27 -> 8月27日 周四（本地）
   const d = new Date(dateStr + 'T00:00:00');
   const opts = { month:'numeric', day:'numeric', weekday:'short' };
   return d.toLocaleDateString(undefined, opts).replace(/\//g,'-');
